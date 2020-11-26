@@ -1,0 +1,7 @@
+base   workbook
+author Michael P. Hofmann
+email  admin@mphofmann.com
+date   2020-07-29
+name   Workbook Plugin
+desc   Plugin for workbooks.
+url    http://www.mphofmann.com
