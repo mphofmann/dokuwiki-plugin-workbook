@@ -20,7 +20,7 @@ class DokuDataSqlite {
     }
     /* -------------------------------------------------------------------- */
     private static function __ObjNew($inDb) {
-        $sqlite = DokuXhtmlPlugin::Load('helper', 'sqlite');
+        $sqlite = DokuPlugin::Load('helper', 'sqlite');
         if (!$sqlite) {
             DokuXhtmlMsg::Echo('Error', __METHOD__, '', 'Plugin "sqlite" required.');
             return false;

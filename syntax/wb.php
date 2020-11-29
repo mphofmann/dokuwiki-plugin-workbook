@@ -20,7 +20,7 @@ class syntax_plugin_workbook_wb extends DokuWiki_Syntax_Plugin {
     }
     /* -------------------------------------------------------------------- */
     public function connectTo($inMode) {
-        if (strpos(doku\DokuSysGlobal::NsidGet(), 'zsync:sync:') !== false) return; // for zsync
+        if (strpos(doku\DokuGlobal::NsidGet(), 'zsync:sync:') !== false) return; // for zsync
         $this->Lexer->addSpecialPattern('<' . $this->__Pattern . '\/>', $inMode, 'plugin_' . $this->__Plugin . '_' . $this->__Pattern);
         $this->Lexer->addSpecialPattern('<' . $this->__Pattern . ' [^>]*?\/>', $inMode, 'plugin_' . $this->__Plugin . '_' . $this->__Pattern);
         $this->Lexer->addSpecialPattern('<' . $this->__Pattern . ' [^>]*?>.*?<\/' . $this->__Pattern . '>', $inMode, 'plugin_' . $this->__Plugin . '_' . $this->__Pattern);

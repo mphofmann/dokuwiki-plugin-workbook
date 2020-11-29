@@ -41,7 +41,7 @@ class admin_plugin_workbook_content extends DokuWiki_Admin_Plugin {
         } else {
             echo('<h2>Content</h2>');
             // Form
-            echo('<form action="' . doku\DokuUtil::WikiLinkGet(doku\DokuSysGlobal::NsidGet()) . '" method="post">');
+            echo('<form action="' . doku\DokuUtil::WikiLinkGet(doku\DokuGlobal::NsidGet()) . '" method="post">');
             echo('  <input type="hidden" name="do"   value="admin" />');
             echo('  <input type="hidden" name="page" value="' . $this->getPluginName() . '_content" />');
             doku\DokuXhtmlForm::SecTokenEcho();

@@ -19,7 +19,7 @@ class AdmincoreOperating {
                 admin\AdminCmd::SystemEcho('touch conf/local.php');
                 break;
             default:
-                xhtml\XhtmlMsg::Add('Notice', __METHOD__, $inAction, "Unknown action.");
+                base\BaseXhtmlMsg::Add('Notice', __METHOD__, $inAction, "Unknown action.");
                 break;
         }
     }
@@ -52,7 +52,7 @@ class AdmincoreOperating {
                 }
                 break;
             default:
-                xhtml\XhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
+                base\BaseXhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
                 break;
         }
     }
@@ -83,12 +83,12 @@ class AdmincoreOperating {
                         }
                         break;
                     default:
-                        xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                        base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                         break;
                 }
                 break;
             default:
-                xhtml\XhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inScope", "Unknown action.");
+                base\BaseXhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inScope", "Unknown action.");
                 break;
         }
     }
@@ -104,7 +104,7 @@ class AdmincoreOperating {
                 admin\AdminCmd::SystemEcho("find '{$datapath}'/cache/?/ -type f -mtime +$days -delete 2>&1"); // remove files older than $inDays days from the cache
                 break;
             default:
-                xhtml\XhtmlMsg::Add('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                base\BaseXhtmlMsg::Add('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
     }

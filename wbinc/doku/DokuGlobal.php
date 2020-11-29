@@ -1,6 +1,16 @@
 <?php
 namespace workbook\wbinc\doku;
-class DokuSysGlobal {
+use function getEntities;
+class DokuGlobal {
+    /* -------------------------------------------------------------------- */
+    public static function ActGet() {
+        global $ACT;
+        return @$ACT;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function BrowserIdGet() {
+        return auth_browseruid();
+    }
     /* -------------------------------------------------------------------- */
     public static function ConstGet($inConst) {
         $return = '';
@@ -21,11 +31,6 @@ class DokuSysGlobal {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function ActGet() {
-        global $ACT;
-        return @$ACT;
-    }
-    /* -------------------------------------------------------------------- */
     public static function ConfGet($inVar1, $inVar2 = '', $inVar3 = '') {
         global $conf;
         if (empty($inVar2)) {
@@ -44,6 +49,9 @@ class DokuSysGlobal {
         return $return;
     }
     /* -------------------------------------------------------------------- */
+    public static function EntitiesAr() {
+        return getEntities();
+    }    /* -------------------------------------------------------------------- */
     public static function NsidGet() {
         global $INFO, $ID;
         if (!empty($_REQUEST['id'])) return $_REQUEST['id'];

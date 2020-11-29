@@ -3,7 +3,6 @@ namespace workbook\wbinc\admincore;
 use workbookcore\wbinc\base;
 use workbookcore\wbinc\env;
 use workbookcore\wbinc\sys;
-use workbookcore\wbinc\xhtml;
 /* -------------------------------------------------------------------- */
 class AdmincoreSchema {
     /*
@@ -77,7 +76,7 @@ class AdmincoreSchema {
             $i++;
         }
         $return = json_encode($returns);
-        $return = strtr($return, ['$wb$' => $wb, '$table$' => $table, '$lang$' => env\EnvLang::Get('1'), '$currency$' => env\EnvConf::CurrencyGet()]);
+        $return = strtr($return, ['$wb$' => $wb, '$table$' => $table, '$lang$' => env\EnvLang::Get('1'), '$currency$' => env\EnvGlobal::CurrencyGet()]);
         return $return;
     }
     /* -------------------------------------------------------------------- */
@@ -149,8 +148,8 @@ class AdmincoreSchema {
             }
         }
         if (!empty($mapold)) {
-            xhtml\XhtmlMsg::Echo('Error', __METHOD__, '', 'Json field mapping incorrect.');
-            xhtml\XhtmlMsg::PrintR($mapold);
+            base\BaseXhtmlMsg::Echo('Error', __METHOD__, '', 'Json field mapping incorrect.');
+            base\BaseXhtmlMsg::PrintR($mapold);
         }
         return json_encode($new);
     }
@@ -162,9 +161,9 @@ class AdmincoreSchema {
     public static function JsonImport($inSchema, $inJson) {
         $rc = base\BaseDataStruct::MetaSchemaJsonImport($inSchema, $inJson);
         if ($rc) {
-            xhtml\XhtmlMsg::Echo('Info', __METHOD__, $inSchema, 'Schema refreshed.');
+            base\BaseXhtmlMsg::Echo('Info', __METHOD__, $inSchema, 'Schema refreshed.');
         } else {
-            xhtml\XhtmlMsg::Echo('Error', __METHOD__, $inSchema, 'Something went wrong while saving.');
+            base\BaseXhtmlMsg::Echo('Error', __METHOD__, $inSchema, 'Something went wrong while saving.');
         }
     }
     /* -------------------------------------------------------------------- */

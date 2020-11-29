@@ -11,9 +11,9 @@ class DokuDataStructTable {
     private static $__RowLimit = '50';
     /* -------------------------------------------------------------------- */
     public static function XhtmlGet($inWb, $inTable, $inWiki = 'local', $inType = 'table', $inParas = []) {
-        if (DokuXhtmlPlugin::DisabledIs('struct')) return false;
+        if (DokuPlugin::DisabledIs('struct')) return false;
         $type = ($inType == 'gantt') ? 'structgantt' : "struct_{$inType}";
-        $p = DokuXhtmlPlugin::Load('syntax', $type);
+        $p = DokuPlugin::Load('syntax', $type);
         if (!$p) return false;
         $return = '';
         // defaults

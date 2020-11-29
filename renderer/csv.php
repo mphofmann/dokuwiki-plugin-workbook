@@ -12,9 +12,9 @@ class renderer_plugin_workbook_csv extends Doku_Renderer {
     }
     /* -------------------------------------------------------------------- */
     function document_start() {
-        $filename = doku\DokuUtil::PageGet(doku\DokuSysGlobal::NsidGet()).'.csv';
+        $filename = doku\DokuUtil::PageGet(doku\DokuGlobal::NsidGet()).'.csv';
         $headers = array('Content-Type' => 'text/csv', 'Content-Disposition' => 'attachment; filename="' . $filename . '";');
-        p_set_metadata(doku\DokuSysGlobal::NsidGet(), array('format' => array('workbook_csv' => $headers)));
+        p_set_metadata(doku\DokuGlobal::NsidGet(), array('format' => array('workbook_csv' => $headers)));
         // no cache
         $this->nocache();
     }

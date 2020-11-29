@@ -24,10 +24,10 @@ class AdmincoreWb {
     }
     /* -------------------------------------------------------------------- */
     public static function Install($inWb) {
-        if (empty($inWb)) return xhtml\XhtmlMsg::Echo('Warning', __METHOD__, "$inWb", "Missing inputs.");
-        if (!mod\ModWb::CommandEnabledCheck($inWb, 'install')) return xhtml\XhtmlMsg::Echo('Notice', __METHOD__, "$inWb", "Method 'install' not enabled.");
+        if (empty($inWb)) return base\BaseXhtmlMsg::Echo('Warning', __METHOD__, "$inWb", "Missing inputs.");
+        if (!mod\ModWb::CommandEnabledCheck($inWb, 'install')) return base\BaseXhtmlMsg::Echo('Notice', __METHOD__, "$inWb", "Method 'install' not enabled.");
         // Install
-        xhtml\XhtmlMsg::Echo('Info', __METHOD__, "$inWb", "");
+        base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inWb", "");
         $path = "data/pages/{$inWb}";
         if (!is_dir($path)) {
             mkdir($path);
@@ -44,10 +44,10 @@ class AdmincoreWb {
     }
     /* -------------------------------------------------------------------- */
     public static function Reset($inWb, $inCommand = 'reset') {
-        if (empty($inWb)) return xhtml\XhtmlMsg::Echo('Warning', __METHOD__, "$inWb", "Missing inputs.");
-        if (!mod\ModWb::CommandEnabledCheck($inWb, 'reset')) return xhtml\XhtmlMsg::Echo('Notice', __METHOD__, "$inWb", "Method 'reset' not enabled.");
+        if (empty($inWb)) return base\BaseXhtmlMsg::Echo('Warning', __METHOD__, "$inWb", "Missing inputs.");
+        if (!mod\ModWb::CommandEnabledCheck($inWb, 'reset')) return base\BaseXhtmlMsg::Echo('Notice', __METHOD__, "$inWb", "Method 'reset' not enabled.");
         // Reset
-        xhtml\XhtmlMsg::Echo('Info', __METHOD__, "$inWb", "$inCommand");
+        base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inWb", "$inCommand");
         $tools = [];
         if ($inCommand == 'reset') {
             foreach (sys\SysNs::ScandirAr($inWb, 'local', 'pages', 'dirs hidepages') as $tool) { // foreach (self::ToolAr($inWb) as $tool => $modes) {
@@ -75,7 +75,7 @@ class AdmincoreWb {
         }
         $ar = mod\ModWb::IniAr($inWb);
         if (is_array($ar['pages'])) {
-            xhtml\XhtmlMsg::Echo('Info', __METHOD__, "$inWb", "");
+            base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inWb", "");
             foreach ($ar['pages'] as $id => $val) {
                 $id = strtr($id, ['@wb@' => $inWb]);
                 self::__IdReplace($id, $val, true, ['@wb@' => $inWb, '\n' => "\n"]);
@@ -85,16 +85,16 @@ class AdmincoreWb {
     }
     /* -------------------------------------------------------------------- */
     public static function Syncclear($inWb) {
-        if (empty($inWb)) return xhtml\XhtmlMsg::Echo('Warning', __METHOD__, "$inWb", "Missing inputs.");
+        if (empty($inWb)) return base\BaseXhtmlMsg::Echo('Warning', __METHOD__, "$inWb", "Missing inputs.");
         AdmincoreOperating::WbSyncExec('clear', $inWb);
-        xhtml\XhtmlMsg::Echo('Info', __METHOD__, "$inWb", "Cache cleared.");
+        base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inWb", "Cache cleared.");
     }
     /* -------------------------------------------------------------------- */
     public static function ZArchive($inWb) {
-        if (empty($inWb)) return xhtml\XhtmlMsg::Echo('Warning', __METHOD__, "$inWb", "Missing inputs.");
+        if (empty($inWb)) return base\BaseXhtmlMsg::Echo('Warning', __METHOD__, "$inWb", "Missing inputs.");
         // if (!mod\ModWbTool::CommandEnabledCheck($inWb, $inTool, __FUNCTION__)) return base\BaseMsg::Echo('Warning', __METHOD__, "$inWb $inTool", "Method '" . __FUNCTION__ . "' not enabled.");
         // ZArchive
-        xhtml\XhtmlMsg::Echo('Info', __METHOD__, "$inWb", "Moving to zarchive.");
+        base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inWb", "Moving to zarchive.");
         $pathin = "data/pages/$inWb/";
         $pathout = "data/pages/zworkbook/zarchive/" . date('Y');
         $dir = date('Y-m-d-His') . "-{$inWb}";
@@ -123,7 +123,7 @@ class AdmincoreWb {
         $content = strtr($inContent, $arReplace);
         $rc = sys\SysNsid::ContentsPut($id, 'local', $content, $doCheck);
         $msg = ($rc) ? 'Page generated' : 'Page modified ... skipping';
-        xhtml\XhtmlMsg::Echo('Info', __METHOD__, "$inId", $msg);
+        base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inId", $msg);
     }
     /* -------------------------------------------------------------------- */
 }

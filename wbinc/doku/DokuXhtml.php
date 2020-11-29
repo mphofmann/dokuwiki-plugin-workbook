@@ -34,6 +34,10 @@ class DokuXhtml {
         return tpl_getMediaFile($inMediaidAr);
     }
     /* -------------------------------------------------------------------- */
+    public static function SectokGet() {
+        return getSecurityToken();
+    }
+    /* -------------------------------------------------------------------- */
     public static function DokuIndexerGet() { // provide DokuWiki housekeeping, required in all templates
         $return = '';
         $return .= '<div class="no">';

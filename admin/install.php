@@ -32,7 +32,7 @@ class admin_plugin_workbook_install extends DokuWiki_Admin_Plugin {
         admin\AdminExec::OutputEcho($this->__Out);
         echo('<h2>Install</h2>');
         // Form
-        echo('<form action="' . doku\DokuUtil::WikiLinkGet(doku\DokuSysGlobal::NsidGet()) . '" method="post">');
+        echo('<form action="' . doku\DokuUtil::WikiLinkGet(doku\DokuGlobal::NsidGet()) . '" method="post">');
         echo('  <input type="hidden" name="do"   value="admin" />');
         echo('  <input type="hidden" name="page" value="' . $this->getPluginName() . '_install" />');
         doku\DokuXhtmlForm::SecTokenEcho();

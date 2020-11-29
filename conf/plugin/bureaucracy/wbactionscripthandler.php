@@ -1,6 +1,6 @@
 <?php
 use dokuwiki\plugin\bureaucracy\interfaces;
-use workbookcore\wbinc\xhtml;
+use workbookcore\wbinc\base;
 class helper_plugin_bureaucracy_handler_wbactionscripthandler implements interfaces\bureaucracy_handler_interface {
     /* -------------------------------------------------------------------- */
     public function handleData($fields, $thanks) {
@@ -14,7 +14,7 @@ class helper_plugin_bureaucracy_handler_wbactionscripthandler implements interfa
             include($filepath);
             __WbActionScriptGet($fields, $thanks);
         } else {
-            xhtml\XhtmlMsg::Add('Warning', __METHOD__, '', 'Script not found.');
+            base\BaseXhtmlMsg::Add('Warning', __METHOD__, '', 'Script not found.');
         }
     }
     /* -------------------------------------------------------------------- */

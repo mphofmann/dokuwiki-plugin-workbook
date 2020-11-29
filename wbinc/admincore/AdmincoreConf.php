@@ -14,13 +14,13 @@ class AdmincoreConf {
                 break;
             case 'login':
                 if (sys\SysRemote::EnabledCheck('login')) {
-                    xhtml\XhtmlMsg::Echo('Success', __METHOD__, '', 'Remote login successful.');
+                    base\BaseXhtmlMsg::Echo('Success', __METHOD__, '', 'Remote login successful.');
                 } else {
-                    xhtml\XhtmlMsg::Echo('Warning', __METHOD__, '', 'Remote login failed.');
+                    base\BaseXhtmlMsg::Echo('Warning', __METHOD__, '', 'Remote login failed.');
                 }
                 break;
             default:
-                xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
     }
@@ -40,7 +40,7 @@ class AdmincoreConf {
                     echo "<pre>$out</pre>";
                     break;
                 default:
-                    xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                    base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                     break;
             }
         }
@@ -61,7 +61,7 @@ class AdmincoreConf {
                     echo "<pre>$out</pre>";
                     break;
                 default:
-                    xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                    base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                     break;
             }
         }
@@ -82,7 +82,7 @@ class AdmincoreConf {
                     echo "<pre>$out</pre>";
                     break;
                 default:
-                    xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                    base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                     break;
             }
         }
@@ -175,7 +175,7 @@ class AdmincoreConf {
                 }
                 break;
             default:
-                xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
     }
@@ -189,7 +189,7 @@ class AdmincoreConf {
     }
     /* -------------------------------------------------------------------- */
     public static function Home($inAction, $inId) {
-        if (empty($inId)) return xhtml\XhtmlMsg::Echo('Warning', __METHOD__, '', 'Id is empty.');
+        if (empty($inId)) return base\BaseXhtmlMsg::Echo('Warning', __METHOD__, '', 'Id is empty.');
         $cnew = file_get_contents("lib/plugins/workbookcore/wbconf/data-pages-home/$inId");
         admin\AdminInode::FileAction($inAction, "data/pages/$inId", $cnew);
     }
@@ -213,7 +213,7 @@ class AdmincoreConf {
                 $installed = array();
                 break;
             default:
-                xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
         foreach ($installed as $id => $val) {
@@ -278,7 +278,7 @@ class AdmincoreConf {
                         $return .= "Conf $id ($val)\n";
                         break;
                     default:
-                        xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                        base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                         break;
                 }
                 unset($installed[array_search($id, $installed)]);
@@ -312,7 +312,7 @@ class AdmincoreConf {
                 $return .= (eval("global \$conf; return $inVal;")) ? "{$msgtrue}Conf $inId ($inVal) ok\n" : "{$msgfalse}Conf $inId ($inVal) failed\n";
                 break;
             default:
-                xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
         return $return;

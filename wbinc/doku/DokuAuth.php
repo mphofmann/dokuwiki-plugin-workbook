@@ -25,8 +25,4 @@ class DokuAuth {
         return auth_quickaclcheck($inId);
     }
     /* -------------------------------------------------------------------- */
-    public static function BrowserIdGet() {
-        return auth_browseruid();
-    }
-    /* -------------------------------------------------------------------- */
 }

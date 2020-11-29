@@ -8,6 +8,7 @@ class DokuXhtmlMsg {
     /* -------------------------------------------------------------------- */
     public static function Echo($inType, $inMethod, $inPara, $inText = '') {
         if (is_numeric($inType)) $inType = in_array($inType, self::$__Types);
+        if (!self::__FilterCheck($inType)) return false;
         echo self::Get($inType, $inMethod, $inPara, $inText);
         return $inType == 'Success' ? true : false;
     }
@@ -29,7 +30,7 @@ class DokuXhtmlMsg {
     }
     /* -------------------------------------------------------------------- */
     public static function Add($inType, $inMethod, $inPara, $inText) {
-        if (self::__DebugFilterCheck($inType) === false) return false;
+        if (!self::__FilterCheck($inType)) return false;
         if (is_numeric($inType)) $inType = in_array($inType, self::$__Types);
         msg(self::Get($inType, $inMethod, $inPara, $inText), self::$__Types[$inType]);
         return $inType == 1 ? true : false;
@@ -41,13 +42,11 @@ class DokuXhtmlMsg {
         return ob_get_clean();
     }
     /* -------------------------------------------------------------------- */
-    private static function __DebugFilterCheck($inType) {
-        // Filter debug messages (false if to be omitted, true is ok)
+    private static function __FilterCheck($inType) {
         if (substr($inType, 0, 5) != 'Debug') return true; // no Debug-* message
+        if (DokuGlobal::ConfGet('allowdebug') != '1') return false; // Debug not enabled
         if (substr($inType, 0, strlen('Debug-Info')) == 'Debug-Info') return false; // skip Debug-Info messages ... too many
-        if (!defined('DOKU_INC')) return true; // Not Dokuwiki
-        if (DokuSysGlobal::ConfGet('allowdebug') == '1') return true; // Debug enabled
-        return false;
+        return true;
     }
     /* -------------------------------------------------------------------- */
 }

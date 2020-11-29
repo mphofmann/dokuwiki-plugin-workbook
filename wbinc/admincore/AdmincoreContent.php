@@ -1,10 +1,10 @@
 <?php
 namespace workbook\wbinc\admincore;
 use workbook\wbinc\admin;
+use workbookcore\wbinc\base;
 use workbookcore\wbinc\env;
 use workbookcore\wbinc\sys;
 use workbookcore\wbinc\util;
-use workbookcore\wbinc\xhtml;
 class AdmincoreContent {
     /* -------------------------------------------------------------------- */
     public static function StartWbonlyExec($inAction = 'remove', $inNs = '') {
@@ -25,18 +25,18 @@ class AdmincoreContent {
                         if($inAction=='remove'){
                             if(trim(file_get_contents("{$path}{$inode}"))=='<wb/>') {
                                 unlink("{$path}{$inode}");
-                                xhtml\XhtmlMsg::Echo('Info', __METHOD__, $inNs, "'start' removed.");
+                                base\BaseXhtmlMsg::Echo('Info', __METHOD__, $inNs, "'start' removed.");
                             }
                         }
                     }
                 }
                 if($inAction=='verify' and !$found) {
                     sys\SysNsid::ContentsPut("$inNs:start", 'local', util\UtilSyntax::WbTagGet());
-                    xhtml\XhtmlMsg::Echo('Info', __METHOD__, $inNs, "'start' added.");
+                    base\BaseXhtmlMsg::Echo('Info', __METHOD__, $inNs, "'start' added.");
                 }
                 break;
             default:
-                xhtml\XhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
+                base\BaseXhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
                 break;
         }
     }
@@ -56,11 +56,11 @@ class AdmincoreContent {
                 $ar = util\UtilPath::Scandir($path);
                 if (count($ar) == 0) {
                     util\UtilPath::Rmdir($path);
-                    xhtml\XhtmlMsg::Echo('Info', __METHOD__, $inNs, "Empty '$inNs' removed.");
+                    base\BaseXhtmlMsg::Echo('Info', __METHOD__, $inNs, "Empty '$inNs' removed.");
                 }
                 break;
             default:
-                xhtml\XhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
+                base\BaseXhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
                 break;
         }
     } */
@@ -80,13 +80,13 @@ class AdmincoreContent {
                         if (!empty($ar)) {
                             $str = strtr($path . $inode, ['data/pages/' => '', '.txt' => '', '/' => ':']);
                             echo "<a href='?id=$str'>$str</a>: ";
-                            xhtml\XhtmlMsg::Echo('Notice', __METHOD__, $inAction, "Missing: " . implode(' ', $ar));
+                            base\BaseXhtmlMsg::Echo('Notice', __METHOD__, $inAction, "Missing: " . implode(' ', $ar));
                         }
                     }
                 }
                 break;
             default:
-                xhtml\XhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
+                base\BaseXhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
                 break;
         }
     }
@@ -111,7 +111,7 @@ class AdmincoreContent {
                 }
                 break;
             default:
-                xhtml\XhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
+                base\BaseXhtmlMsg::Add('Notice', __METHOD__, "$inAction, $inNs", "Unknown action.");
                 break;
         }
     }
@@ -142,7 +142,7 @@ class AdmincoreContent {
                 $linkdir = getcwd() . "/data/media/user/uprivate/{$user}_uu/";
                 util\UtilPath::MkdirCheck($linkdir);
                 admin\AdminCmd::SystemEcho("ln -s $tardir$tarfile $linkdir");
-                xhtml\XhtmlMsg::Add('Success', '', '', "Archive create for download with a link in your media files. <a href='?do=media&ns=user:uprivate:{$user}_uu'>&raquo;&raquo;&raquo;</a>");
+                base\BaseXhtmlMsg::Add('Success', '', '', "Archive create for download with a link in your media files. <a href='?do=media&ns=user:uprivate:{$user}_uu'>&raquo;&raquo;&raquo;</a>");
                 break;
             case 'clear':
                 admin\AdminInode::RmR('data/workbook/tmp/adminbackup/');
@@ -150,7 +150,7 @@ class AdmincoreContent {
                 admin\AdminCmd::SystemEcho("find -L $linkdir -type l -delete");
                 break;
             default:
-                xhtml\XhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
     }    /* -------------------------------------------------------------------- */

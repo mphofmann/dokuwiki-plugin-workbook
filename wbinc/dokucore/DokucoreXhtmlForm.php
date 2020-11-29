@@ -21,14 +21,14 @@ class DokucoreXhtmlForm {
         $return = '';
         $cssclass = util\UtilCss::ClassesGet(__METHOD__, 'method');
         $ar = [];
-        $ar['action'] = doku\DokuUtil::WikiLinkGet(base\Base::NsidGet());
+        $ar['action'] = doku\DokuUtil::WikiLinkGet(base\BaseGlobal::NsidGet());
         $ar['method'] = 'get';
         $ar['id'] = $cssclass;
         $ar['class'] = "$cssclass search-results-form";
         global $INPUT;
         $form = new Doku_Form($ar);
         $form->addHidden('do', 'search');
-        $form->addHidden('id', doku\DokuSysGlobal::NsidGet());
+        $form->addHidden('id', doku\DokuGlobal::NsidGet());
         $form->addHidden('sf', '1');
         if ($INPUT->has('min')) $form->addHidden('min', $INPUT->str('min'));
         if ($INPUT->has('max')) $form->addHidden('max', $INPUT->str('max'));
@@ -171,7 +171,7 @@ class DokucoreXhtmlForm {
             lock($nsid);
             saveWikiText($nsid, '', '', true);
             unlock($nsid);
-            xhtml\XhtmlMsg::Add('Success', '', $nsid, 'Page deleted.');
+            base\BaseXhtmlMsg::Add('Success', '', $nsid, 'Page deleted.');
         }
         return true;
     }
@@ -199,7 +199,7 @@ class DokucoreXhtmlForm {
         $files = self::__FilesReAr($_FILES['upload']);
         foreach ($files as $ar) {
             if ($ar['error'] == '1') {
-                xhtml\XhtmlMsg::Add('Notice', '', $ar['name'], 'Media upload error. [Size?]');
+                base\BaseXhtmlMsg::Add('Notice', '', $ar['name'], 'Media upload error. [Size?]');
                 $return = false;
                 continue;
             }
@@ -207,7 +207,7 @@ class DokucoreXhtmlForm {
                 $ns = base\Base::NsGet();
                 $res = media_save(['name' => $ar['tmp_name'],], "$ns:{$ar['name']}", true, doku\DokuAuth::NsAclGet($ns), 'copy_uploaded_file');
                 if ($res === false) {
-                    xhtml\XhtmlMsg::Add('Notice', '', $ar['name'], 'File save failed.');
+                    base\BaseXhtmlMsg::Add('Notice', '', $ar['name'], 'File save failed.');
                     $return = false;
                 }
             }
@@ -238,7 +238,7 @@ class DokucoreXhtmlForm {
         if (file_exists($mediafile)) {
             $ns = base\Base::NsGet();
             media_delete($media, doku\DokuAuth::NsAclGet($ns));
-            xhtml\XhtmlMsg::Add('Success', '', $media, 'Media deleted.');
+            base\BaseXhtmlMsg::Add('Success', '', $media, 'Media deleted.');
         }
         return true;
     }
@@ -259,8 +259,8 @@ class DokucoreXhtmlForm {
         $returns['method'] = 'post';
         $returns['id'] = $cssclass . uniqid();
         $returns['class'] = $cssclass;
-        $returns['action'] = '?id=' . base\Base::NsidGet();
-        $returns['data-actionform'] = doku\DokuUtil::WikiLinkGet(base\Base::NsidGet());
+        $returns['action'] = '?id=' . base\BaseGlobal::NsidGet();
+        $returns['data-actionform'] = doku\DokuUtil::WikiLinkGet(base\BaseGlobal::NsidGet());
         return $returns;
     }
     /* -------------------------------------------------------------------- */

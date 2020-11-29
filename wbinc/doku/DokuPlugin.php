@@ -1,19 +1,34 @@
 <?php
 namespace workbook\wbinc\doku;
+use Doku_Handler;
+use Doku_Renderer_xhtml;
+use DokuWiki_Syntax_Plugin;
+use function plugin_isdisabled;
+use function plugin_load;
 class DokuPlugin {
     /* -------------------------------------------------------------------- */
-    public static function FeedbackGet($inData = []) { // div added by plugin
-        if (($ps = DokuXhtmlPlugin::Load('syntax', 'feedback')) === false) return;
-        return DokuXhtmlPlugin::Render($ps, '{{FEEDBACK}}');
+    public static function DisabledIs($inId) {
+        return plugin_isdisabled($inId);
     }
     /* -------------------------------------------------------------------- */
-    public static function YearboxGet($inData = []) { // div added by plugin
-        if (($ps = DokuXhtmlPlugin::Load('syntax', 'yearbox')) === false) return false;
-        $year = (empty($inData['attrs']['date-year'])) ? date('Y') : $inData['attrs']['date-year'];
-        $ns = DokuSysGlobal::NsGet();
-        // TODO ns=.: not working with title
-        $markup = "{{yearbox>ns=$ns;year=$year;align=left;name=;size=0}}";
-        return DokuXhtmlPlugin::Render($ps, $markup);
+    public static function LoadRender($inType, $inId, $inMarkup) {
+        if (($ps = self::Load($inType, $inId)) === false) return false;
+        return self::Render($ps, $inMarkup);
+    }
+    /* -------------------------------------------------------------------- */
+    public static function Load($inType, $inId) {
+        $pos = strpos($inId, '_');
+        $id = ($pos === false) ? $inId : substr($inId, 0, $pos);
+        if (plugin_isdisabled($id)) return false;
+        return plugin_load($inType, $inId);
+    }
+    /* -------------------------------------------------------------------- */
+    public static function Render(DokuWiki_Syntax_Plugin $Plugin, $inMarkup) {
+        $dhandler = new Doku_Handler();
+        $data = $Plugin->handle($inMarkup, null, null, $dhandler);
+        $r = new Doku_Renderer_xhtml();
+        $Plugin->render('xhtml', $r, $data);
+        return $r->doc;
     }
     /* -------------------------------------------------------------------- */
 }

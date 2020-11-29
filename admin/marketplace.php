@@ -41,7 +41,7 @@ class admin_plugin_workbook_marketplace extends DokuWiki_Admin_Plugin {
         } else {
             echo('<h2>Marketplace</h2>');
             // Form
-            echo('<form action="' . doku\DokuUtil::WikiLinkGet(doku\DokuSysGlobal::NsidGet()) . '" method="post">');
+            echo('<form action="' . doku\DokuUtil::WikiLinkGet(doku\DokuGlobal::NsidGet()) . '" method="post">');
             echo('  <input type="hidden" name="do"   value="admin" />');
             echo('  <input type="hidden" name="page" value="' . $this->getPluginName() . '_marketplace" />');
             doku\DokuXhtmlForm::SecTokenEcho();
@@ -80,7 +80,7 @@ class admin_plugin_workbook_marketplace extends DokuWiki_Admin_Plugin {
                         if ($val == '1') $tools .= "{$id} ";
                     }
                 }
-                $dist = (!empty($ar2['*']['dist']) and @$ar2['*']['dist'] != 'prod') ? strtr("[{$ar2['*']['dist']}]", env\EnvConf::EntitiesAr()) : '';
+                $dist = (!empty($ar2['*']['dist']) and @$ar2['*']['dist'] != 'prod') ? strtr("[{$ar2['*']['dist']}]", env\EnvGlobal::EntitiesAr()) : '';
                 $status = xhtml\XhtmlUnicode::StatusGet($color);
                 if ($color == 'green') {
                     $button = admin\AdminXhtml::LinkGet('?do=admin&page=workbook_workbook');

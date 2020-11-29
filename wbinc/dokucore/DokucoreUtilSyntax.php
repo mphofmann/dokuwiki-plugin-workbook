@@ -10,7 +10,7 @@ class DokucoreUtilSyntax {
         $inData['mode'] = $inMode;
         switch ($inMode) {
             case 'metadata':
-                $R->meta['title'] = mod\ModNsid::HeadingGet(doku\DokuSysGlobal::NsidGet());
+                $R->meta['title'] = mod\ModNsid::HeadingGet(doku\DokuGlobal::NsidGet());
                 break;
             case 'workbook_csv':
             case 'xhtml':

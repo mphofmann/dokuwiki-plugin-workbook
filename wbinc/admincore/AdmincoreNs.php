@@ -1,8 +1,8 @@
 <?php
 namespace workbook\wbinc\admincore;
 use workbook\wbinc\admin;
+use workbookcore\wbinc\base;
 use workbookcore\wbinc\util;
-use workbookcore\wbinc\xhtml;
 class AdmincoreNs {
     /* -------------------------------------------------------------------- */
     public static function ZArchive($inNs) {
@@ -14,8 +14,8 @@ class AdmincoreNs {
     }
     /* -------------------------------------------------------------------- */
     private static function __Move($inType = 'zarchive', $inNs = '') {
-        if (empty($inNs)) return xhtml\XhtmlMsg::Echo('Warning', __METHOD__, "$inNs", "Missing inputs.");
-        xhtml\XhtmlMsg::Echo('Info', __METHOD__, "$inNs", "Moving to $inType.");
+        if (empty($inNs)) return base\BaseXhtmlMsg::Echo('Warning', __METHOD__, "$inNs", "Missing inputs.");
+        base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inNs", "Moving to $inType.");
         $pathoutyear = "data/pages/zworkbook/$inType/" . date('Y') . "/";
         util\UtilPath::MkdirCheck($pathoutyear);
         $pathin = "data/pages/" . strtr($inNs, [':' => '/']) . "/";

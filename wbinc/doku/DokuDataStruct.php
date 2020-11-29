@@ -24,7 +24,7 @@ class DokuDataStruct {
         $return = false;
         $builder = new meta\SchemaImporter($inSchema, $inJson);
         if ($builder->build()) {
-            touch(DokuSysGlobal::ConfGet('cachedir') . '/struct.schemarefresh'); // doesnt work: touch(action_plugin_struct_cache::getSchemaRefreshFile());
+            touch(DokuGlobal::ConfGet('cachedir') . '/struct.schemarefresh'); // doesnt work: touch(action_plugin_struct_cache::getSchemaRefreshFile());
             $return = true;
         }
         return $return;
@@ -172,8 +172,8 @@ class DokuDataStruct {
     }
     /* -------------------------------------------------------------------- */
     public static function TableXhtmlGet($inWb, $inTable, $inWiki = 'local', $inType = 'table', $inParas = []) {
-        if (DokuXhtmlPlugin::DisabledIs('struct')) return false;
-        $p = DokuXhtmlPlugin::Load('syntax', ($inType == 'gantt') ? 'structgantt' : "struct_{$inType}");
+        if (DokuPlugin::DisabledIs('struct')) return false;
+        $p = DokuPlugin::Load('syntax', ($inType == 'gantt') ? 'structgantt' : "struct_{$inType}");
         if (!$p) return false;
         $return = '';
         // defaults
