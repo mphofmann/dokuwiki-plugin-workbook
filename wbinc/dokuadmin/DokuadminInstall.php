@@ -28,6 +28,7 @@ class DokuadminInstall {
             'structgantt' => 'https://github.com/cosmocode/dokuwiki-plugin-structgantt/archive/master.zip', //
             'tablelayout' => 'https://github.com/cosmocode/dokuwiki-plugin-tablelayout/archive/master.zip', //
             // splitbrain
+            'captcha' => 'https://github.com/splitbrain/dokuwiki-plugin-captcha/archive/master.zip', //
             'passpolicy' => 'https://github.com/splitbrain/dokuwiki-plugin-passpolicy/archive/master.zip', //
             'searchindex' => 'https://github.com/splitbrain/dokuwiki-plugin-searchindex/archive/master.zip', //
             'toolbox' => 'https://github.com/splitbrain/dokuwiki-plugin-toolbox/archive/master.zip', //
@@ -70,7 +71,7 @@ class DokuadminInstall {
     private static $__DebUrl = ''; //
     /* -------------------------------------------------------------------- */
     public static function __constructStatic() {
-        $url = doku\DokuSysGlobal::ConfGet('plugin', 'workbook', 'remote_install_url');
+        $url = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'remote_install_url');
         if (empty($url) or $url == '!!not set!!') {
             doku\DokuXhtmlMsg::Add('Notice', '', '', "Remote-Install-Url not set.");
         } else {
