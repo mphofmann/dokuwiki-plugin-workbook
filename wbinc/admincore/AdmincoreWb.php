@@ -109,10 +109,10 @@ class AdmincoreWb {
         foreach (@$inArray as $id => $ar) {
             if (is_array($ar)) {
                 foreach ($ar as $id2 => $val2) {
-                    $returns[base\BaseAuth::AclStrip($id2)] = $val2;
+                    $returns[base\BaseAcl::AclStrip($id2)] = $val2;
                 }
             } else {
-                $returns[base\BaseAuth::AclStrip($id)] = $ar;
+                $returns[base\BaseAcl::AclStrip($id)] = $ar;
             }
         }
         return $returns;

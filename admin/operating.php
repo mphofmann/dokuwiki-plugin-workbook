@@ -68,7 +68,7 @@ class admin_plugin_workbook_operating extends DokuWiki_Admin_Plugin {
         // $returns[] = ["Workbook Search", "Search and replace in Workbook pages.", '', admin\AdminXhtml::ButtonGet('admincore\AdmincoreOperating::WbSearchExec action=form', 'search', $attr), ''];
         $returns[] = ['Dokuwiki Cache', 'Clears all Dokuwiki cache.', admin\AdminCmd::ExecGet('admincore\AdmincoreOperating::DokuCacheExec action=status scope=/', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreOperating::DokuCacheExec action=clear', 'clear'), ''];
         $returns[] = ["Workbook Sync", "Clears all Workbook sync.", admin\AdminCmd::ExecGet('admincore\AdmincoreOperating::WbSyncExec action=status scope=/', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreOperating::WbSyncExec action=clear', 'clear', ''), ''];
-        if (doku\DokuAuth::AdminIs()) {
+        if (doku\DokuAcl::AdminIs()) {
             $returns[] = ['TH:Periodic (admin)'];
             $returns[] = ['Dokuwiki Search-Index', 'Rebuilds Dokuwiki search index.', '', '', admin\AdminXhtml::LinkGet('?do=admin&page=searchindex')];
             $returns[] = ['Dokuwiki Cleanup', 'Cleanups Dokuwiki.', '', '', admin\AdminXhtml::LinkGet('?do=admin&page=cleanup')];

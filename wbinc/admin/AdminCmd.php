@@ -28,7 +28,7 @@ class AdminCmd {
         // Exec
         $class = $paras['class'];
         $method = $paras['method'];
-        $classpathclass = __workbookclassnsget($class) . $class;
+        $classpathclass = workbookclassnsget($class) . $class;
         if (!class_exists($classpathclass)) {
             $return .= "Error: Class unknown: $inCmd ($class)";
             return $return;

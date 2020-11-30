@@ -50,7 +50,7 @@ class DokucoreXhtmlForm {
     }
     /* -------------------------------------------------------------------- */
     public static function NsAdd() {
-        if (doku\DokuAuth::NsAclGet(base\Base::NsGet()) < AUTH_DELETE) return '';
+        if (doku\DokuAcl::NsAclGet(base\Base::NsGet()) < AUTH_DELETE) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         $form = new Doku_Form(self::__FormAr(__METHOD__));
         $form->addHidden('data-actionform', 'dokucore\DokucoreXhtmlForm::NsAddAction');
@@ -81,7 +81,7 @@ class DokucoreXhtmlForm {
     }
     /* -------------------------------------------------------------------- */
     public static function PageAdd() {
-        if (doku\DokuAuth::NsAclGet(base\Base::NsGet()) < AUTH_CREATE) return '';
+        if (doku\DokuAcl::NsAclGet(base\Base::NsGet()) < AUTH_CREATE) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         // langs
         $langs = explode('-', env\EnvLang::Get());
@@ -126,7 +126,7 @@ class DokucoreXhtmlForm {
     /* -------------------------------------------------------------------- */
     public static function PageStartAdd($inLang = '') {
         if (empty($inLang)) return '';
-        if (doku\DokuAuth::NsAclGet(base\Base::NsGet()) < AUTH_CREATE) return '';
+        if (doku\DokuAcl::NsAclGet(base\Base::NsGet()) < AUTH_CREATE) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         $form = new Doku_Form(self::__FormAr(__METHOD__));
         $form->addHidden('data-actionform', 'dokucore\DokucoreXhtmlForm::PageStartAddAction');
@@ -150,7 +150,7 @@ class DokucoreXhtmlForm {
     /* -------------------------------------------------------------------- */
     public static function PageDelete($inNsid = '') {
         if (empty($inNsid)) return false;
-        $auth = doku\DokuAuth::NsAclGet(base\Base::NsGet());
+        $auth = doku\DokuAcl::NsAclGet(base\Base::NsGet());
         if ($auth < AUTH_DELETE) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         $form = new Doku_Form(self::__FormAr(__METHOD__));
@@ -177,7 +177,7 @@ class DokucoreXhtmlForm {
     }
     /* -------------------------------------------------------------------- */
     public static function MediaUpload() { // multiple
-        $auth = doku\DokuAuth::NsAclGet(base\Base::NsGet());
+        $auth = doku\DokuAcl::NsAclGet(base\Base::NsGet());
         if ($auth < AUTH_UPLOAD) return '';
         $return = '';
         $cssclass = util\UtilCss::ClassesGet(__METHOD__, 'method');
@@ -205,7 +205,7 @@ class DokucoreXhtmlForm {
             }
             if ($ar['tmp_name']) {
                 $ns = base\Base::NsGet();
-                $res = media_save(['name' => $ar['tmp_name'],], "$ns:{$ar['name']}", true, doku\DokuAuth::NsAclGet($ns), 'copy_uploaded_file');
+                $res = media_save(['name' => $ar['tmp_name'],], "$ns:{$ar['name']}", true, doku\DokuAcl::NsAclGet($ns), 'copy_uploaded_file');
                 if ($res === false) {
                     base\BaseXhtmlMsg::Add('Notice', '', $ar['name'], 'File save failed.');
                     $return = false;
@@ -218,7 +218,7 @@ class DokucoreXhtmlForm {
     public static function MediaDelete($inNsmedia = '') {
         if (empty($inNsmedia)) return false;
         if (media_inuse($inNsmedia)) return false;
-        $auth = doku\DokuAuth::NsAclGet(base\Base::NsGet());
+        $auth = doku\DokuAcl::NsAclGet(base\Base::NsGet());
         if ($auth < AUTH_DELETE) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         $form = new Doku_Form(self::__FormAr(__METHOD__));
@@ -237,7 +237,7 @@ class DokucoreXhtmlForm {
         $mediafile = 'data/media/' . strtr($media, [':' => '/']);
         if (file_exists($mediafile)) {
             $ns = base\Base::NsGet();
-            media_delete($media, doku\DokuAuth::NsAclGet($ns));
+            media_delete($media, doku\DokuAcl::NsAclGet($ns));
             base\BaseXhtmlMsg::Add('Success', '', $media, 'Media deleted.');
         }
         return true;
