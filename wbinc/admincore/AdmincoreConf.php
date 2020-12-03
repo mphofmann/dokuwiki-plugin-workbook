@@ -89,42 +89,42 @@ class AdmincoreConf {
     }
     /* -------------------------------------------------------------------- */
     public static function LocalProtected($inAction) {
-        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . base\Base::VersionGet() . ":conf:local.protected.php", '');
+        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:local.protected.php", '');
         admin\AdminInode::FileAction($inAction, 'conf/local.protected.php', $cnew);
     }
     /* -------------------------------------------------------------------- */
     public static function Acl($inAction) {
-        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . base\Base::VersionGet() . ":conf:acl.auth.php", '');
+        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:acl.auth.php", '');
         admin\AdminInode::FileAction($inAction, 'conf/acl.auth.php', $cnew);
     }
     /* -------------------------------------------------------------------- */
     public static function AclWb($inAction) {
-        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . base\Base::VersionGet() . ":conf:acl.auth.wb.php", '');
+        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:acl.auth.wb.php", '');
         admin\AdminInode::FileAction($inAction, 'conf/acl.auth.wb.php', $cnew);
     }
     /* -------------------------------------------------------------------- */
     public static function Entities($inAction) {
-        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . base\Base::VersionGet() . ":conf:entities.local.conf", '');
+        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:entities.local.conf", '');
         admin\AdminInode::FileAction($inAction, 'conf/entities.local.conf', $cnew);
     }
     /* -------------------------------------------------------------------- */
     public static function Acronyms($inAction) {
-        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . base\Base::VersionGet() . ":conf:acronyms.local.conf", '');
+        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:acronyms.local.conf", '');
         admin\AdminInode::FileAction($inAction, 'conf/acronyms.local.conf', $cnew);
     }
     /* -------------------------------------------------------------------- */
     public static function Interwiki($inAction) {
-        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . base\Base::VersionGet() . ":conf:interwiki.local.conf", '');
+        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:interwiki.local.conf", '');
         admin\AdminInode::FileAction($inAction, 'conf/interwiki.local.conf', $cnew);
     }
     /* -------------------------------------------------------------------- */
     public static function Mime($inAction) {
-        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . base\Base::VersionGet() . ":conf:mime.local.conf", '');
+        $cnew = sys\SysNsid::ContentsGet("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:mime.local.conf", '');
         admin\AdminInode::FileAction($inAction, 'conf/mime.local.conf', $cnew);
     }
     /* -------------------------------------------------------------------- */
     public static function License($inAction) {
-        $ar = sys\SysNsid::IniAr("zsync:sync:" . base\Base::VersionGet() . ':conf:licenses.ini', '');
+        $ar = sys\SysNsid::IniAr("zsync:sync:" . sys\SysRemote::VersionGet() . ':conf:licenses.ini', '');
         if (!is_array($ar)) {
             echo xhtml\XhtmlUnicode::StatusGet('red', "wb.license.ini not parsable.");
             return '';
@@ -181,11 +181,11 @@ class AdmincoreConf {
     }
     /* -------------------------------------------------------------------- */
     public static function Inc($inAction) {
-        admin\AdminInode::DirAction($inAction, 'inc/', 'lib/plugins/workbook/lib/' . base\Base::VersionGet() . '/inc/', '.txt');
+        admin\AdminInode::DirAction($inAction, 'inc/', 'lib/plugins/workbook/lib/' . sys\SysRemote::VersionGet() . '/inc/', '.txt');
     }
     /* -------------------------------------------------------------------- */
     public static function Lib($inAction) {
-        admin\AdminInode::DirAction($inAction, 'lib/', 'lib/plugins/workbook/lib/' . base\Base::VersionGet() . '/lib/', '.txt');
+        admin\AdminInode::DirAction($inAction, 'lib/', 'lib/plugins/workbook/lib/' . sys\SysRemote::VersionGet() . '/lib/', '.txt');
     }
     /* -------------------------------------------------------------------- */
     public static function Home($inAction, $inId) {
@@ -196,7 +196,7 @@ class AdmincoreConf {
     /* -------------------------------------------------------------------- */
     private static function __InisCheckGet($inAction) {
         $return = '';
-        $ar = sys\SysNsid::IniAr("zsync:sync:" . base\Base::VersionGet() . ":conf:$inAction.ini", '');
+        $ar = sys\SysNsid::IniAr("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:$inAction.ini", '');
         if (empty($ar)) {
             echo xhtml\XhtmlUnicode::StatusGet('red', "wb.$inAction.ini missing.");
             return '';

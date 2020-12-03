@@ -215,7 +215,7 @@ class AdmincoreSchema {
     private static function __ConfigAr($inField) {
         $returns = [];
         if (empty(self::$__FieldConfigs)) {
-            self::$__FieldConfigs = sys\SysNsid::IniAr("zsync:sync:" . base\Base::VersionGet() . ":db:db_fieldconfigs.ini", '');
+            self::$__FieldConfigs = sys\SysNsid::IniAr("zsync:sync:" . sys\SysRemote::VersionGet() . ":db:db_fieldconfigs.ini", '');
         }
         if (isset(self::$__FieldConfigs[$inField])) {
             $returns['config'] = self::$__FieldConfigs[$inField];
