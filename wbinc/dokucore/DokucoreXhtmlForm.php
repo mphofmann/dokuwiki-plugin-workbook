@@ -91,7 +91,7 @@ class DokucoreXhtmlForm {
         // template
         $tpls = [];
         $tpls[] = ''; // blank for simple heading
-        foreach (sys\SysNs::ScandirAr("zsync:sync:" . base\Base::VersionGet() . ':template', '', 'pages', 'files') as $file) {
+        foreach (sys\SysNs::ScandirAr("zsync:sync:" . sys\SysRemote::VersionGet() . ':template', '', 'pages', 'files') as $file) {
             if (substr($file, 0, strlen('template.')) != 'template.') continue;
             $tpls[$file] = $file;
         }
