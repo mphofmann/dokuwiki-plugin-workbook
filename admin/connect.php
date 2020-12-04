@@ -34,7 +34,7 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
                         list($ext, $package, $tarpath) = explode(':', $val);
                         $url = "{$ar['*']['deburl']}{$ar['*']['debprefix']}{$package}.{$ext}";
                     }
-                    $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminInstall::ExtensionAction action=note type=$exttype id=$id url=$url"), admin\AdminCmd::ExecGet("dokuadmin\DokuadminInstall::ExtensionAction action=status type=$exttype id=$id url=$url"), admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminInstall::ExtensionAction action=install type=$exttype id=$id, url=$url tarpath=$tarpath", 'install'), admin\AdminXhtml::LinkGet("?do=admin&page=extension&tab=$exttype")];
+                    $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminInstall::ExtensionAction action=note type=$exttype id=$id url=$url"), admin\AdminCmd::ExecGet("dokuadmin\DokuadminInstall::ExtensionAction action=status type=$exttype id=$id url=$url"), admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminInstall::ExtensionAction action=install type=$exttype id=$id url=$url tarpath=$tarpath", 'install'), admin\AdminXhtml::LinkGet("?do=admin&page=extension&tab=$exttype")];
                 }
             }
         }
