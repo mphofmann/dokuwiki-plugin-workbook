@@ -3,6 +3,7 @@ namespace workbook\action;
 use Doku_Event;
 use Doku_Event_Handler;
 use DokuWiki_Action_Plugin;
+use Throwable;
 abstract class a_Action extends DokuWiki_Action_Plugin {
     /* -------------------------------------------------------------------- */
     protected $_Events = [];
@@ -30,10 +31,9 @@ abstract class a_Action extends DokuWiki_Action_Plugin {
             if (@isset($this->_Events[$act][$Event->name])) {
                 $classpathclass = $this->_Events[$act][$Event->name];
                 $method = 'Event' . ucfirst($inType) . '_' . $Event->name;
-                if (class_exists($classpathclass)) {
-                    if (method_exists($classpathclass, $method)) {
-                        $classpathclass::$method($Event, $inPara);
-                    }
+                try {
+                    $classpathclass::$method($Event, $inPara);
+                } catch (Throwable $e) {
                 }
             }
         }
