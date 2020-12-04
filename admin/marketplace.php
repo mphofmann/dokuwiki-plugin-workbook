@@ -1,64 +1,13 @@
 <?php
 use workbook\wbinc\admin;
-use workbook\wbinc\doku;
 use workbookcore\wbinc\env;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\xhtml;
-class admin_plugin_workbook_marketplace extends DokuWiki_Admin_Plugin {
+class admin_plugin_workbook_marketplace extends workbook\admin\a_adminpage {
     /* -------------------------------------------------------------------- */
-    private $__Out = '';
-    private $__Cmds = ['cmd' => ''];
+    protected $_Page = 'marketplace';
     /* -------------------------------------------------------------------- */
-    public function forAdminOnly() {
-        return false;
-    }
-    /* -------------------------------------------------------------------- */
-    public function getMenuIcon() {
-        return DOKU_PLUGIN . 'workbook/admin_marketplace.svg';
-    }
-    /* -------------------------------------------------------------------- */
-    public function getMenuSort() {
-        return 7771;
-    }
-    /* -------------------------------------------------------------------- */
-    public function getMenuText($language) {
-        return $this->getLang('menu_marketplace');
-    }
-    /* -------------------------------------------------------------------- */
-    function handle() {
-        $str = admin\AdminExec::HandleExec($this->__Cmds);
-        if ($str === false) return;
-        $this->__Out = $str;
-    }
-    /* -------------------------------------------------------------------- */
-    function html() {
-        // Heading
-        echo('<h1>Workbook</h1>');
-        echo(admin\AdminXhtml::MenuGet());
-        admin\AdminExec::OutputEcho($this->__Out);
-        if (strpos(@constant('WB_RUNMODE'), 'workbookcore-ok') === false) {
-            echo admin\AdminXhtml::TextInstallLinkGet();
-        } else {
-            echo('<h2>Marketplace</h2>');
-            // Form
-            echo('<form action="' . doku\DokuUtil::WikiLinkGet(doku\DokuGlobal::NsidGet()) . '" method="post">');
-            echo('  <input type="hidden" name="do"   value="admin" />');
-            echo('  <input type="hidden" name="page" value="' . $this->getPluginName() . '_marketplace" />');
-            doku\DokuXhtmlForm::SecTokenEcho();
-            // Table
-            $rows = $this->__ArrayMarketplaceGet();
-            if (empty($rows)) {
-                echo "---";
-            } else {
-                $styles = ['height:25px; width:150px; white-space:nowrap;', 'min-width:200px;', 'min-width:200px;', 'width:100px;text-align:center;', 'width:100px;text-align:center;', 'width:100px;text-align:center;', 'width:100px;text-align:center;'];
-                echo admin\AdminXhtml::TableGet($rows, $styles);
-            }
-            // Form
-            echo('</form>');
-        }
-    }
-    /* -------------------------------------------------------------------- */
-    private function __ArrayMarketplaceGet() {
+    protected function _ArrayGet() {
         $returns = [];
         $ar = mod\ModWb::IniArs();
         if (!empty($ar)) {
@@ -105,6 +54,10 @@ class admin_plugin_workbook_marketplace extends DokuWiki_Admin_Plugin {
             }
         }
         return $returns;
+    }
+    /* -------------------------------------------------------------------- */
+    protected function _StylesAr() {
+        return ['height:25px; width:150px; white-space:nowrap;', 'min-width:200px;', 'min-width:200px;', 'width:100px;text-align:center;', 'width:100px;text-align:center;', 'width:100px;text-align:center;', 'width:100px;text-align:center;'];
     }
     /* -------------------------------------------------------------------- */
 }

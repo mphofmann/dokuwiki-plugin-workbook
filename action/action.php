@@ -6,7 +6,7 @@ class action_plugin_workbook_action extends workbook\action\a_Action {
         'all' => [ //
             'ACTION_ACT_PREPROCESS' => 'workbook\action\inccore\ActionAll',             // $ACT
             'TPL_METAHEADER_OUTPUT' => 'workbook\action\inccore\ActionAll',             // font-awesome stylesheet
-            'AUTH_ACL_CHECK' => 'workbookuser\action\inccore\ActionAll',                // ACL-WB logic
+            'AUTH_ACL_CHECK' => 'workbookuseracl\action\inccore\ActionAll',                // ACL-WB logic
         ], //
         'admin' => [ //
             'PLUGIN_CONFIG_PLUGINLIST' => 'workbook\action\inccore\ActionAdmin',        //

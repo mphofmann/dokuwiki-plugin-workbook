@@ -3,32 +3,19 @@ namespace workbook\wbinc\doku;
 use function getEntities;
 class DokuGlobal {
     /* -------------------------------------------------------------------- */
-    public static function ActGet() {
-        global $ACT;
-        return @$ACT;
-    }
+    private static $__Consts = [ //
+        'DOKU_INC' => DOKU_INC, //
+        'DOKU_BASE' => DOKU_BASE, //
+        'DOKU_REL' => DOKU_REL, //
+        'DOKU_URL' => DOKU_URL, //
+    ];
     /* -------------------------------------------------------------------- */
     public static function BrowserIdGet() {
         return auth_browseruid();
     }
     /* -------------------------------------------------------------------- */
     public static function ConstGet($inConst) {
-        $return = '';
-        switch ($inConst) {
-            case 'DOKU_BASE':
-                $return = DOKU_BASE;
-                break;
-            case 'DOKU_INC':
-                $return = DOKU_INC;
-                break;
-            case 'DOKU_REL':
-                $return = DOKU_REL;
-                break;
-            case 'DOKU_URL':
-                $return = DOKU_URL;
-                break;
-        }
-        return $return;
+        return @self::$__Consts[$inConst];
     }
     /* -------------------------------------------------------------------- */
     public static function ConfGet($inVar1, $inVar2 = '', $inVar3 = '') {
@@ -63,6 +50,11 @@ class DokuGlobal {
         $nsid = self::NsidGet();
         $pos = strrpos((string)$nsid, ':');
         return ($pos === false) ? '' : substr((string)$nsid, 0, $pos);
+    }
+    /* -------------------------------------------------------------------- */
+    public static function VersionGet() {
+        $return = @file_get_contents('VERSION');
+        return substr($return, 0, 10);
     }
     /* -------------------------------------------------------------------- */
     public static function InfoGet($inVar1, $inVar2 = '', $inVar3 = '') {

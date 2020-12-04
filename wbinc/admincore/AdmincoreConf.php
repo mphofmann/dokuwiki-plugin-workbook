@@ -3,27 +3,7 @@ namespace workbook\wbinc\admincore;
 use workbook\wbinc\admin;
 use workbookcore\wbinc\base;
 use workbookcore\wbinc\sys;
-use workbookcore\wbinc\xhtml;
 class AdmincoreConf {
-    /* -------------------------------------------------------------------- */
-    public static function Remote($inAction) {
-        $status = (sys\SysRemote::EnabledCheck()) ? 'green' : 'red';
-        switch ($inAction) {
-            case 'status':
-                echo xhtml\XhtmlUnicode::StatusGet($status);
-                break;
-            case 'login':
-                if (sys\SysRemote::EnabledCheck('login')) {
-                    base\BaseXhtmlMsg::Echo('Success', __METHOD__, '', 'Remote login successful.');
-                } else {
-                    base\BaseXhtmlMsg::Echo('Warning', __METHOD__, '', 'Remote login failed.');
-                }
-                break;
-            default:
-                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
-                break;
-        }
-    }
     /* -------------------------------------------------------------------- */
     public static function Confs($inAction) {
         $out = self::__InisCheckGet('confs');
@@ -34,13 +14,13 @@ class AdmincoreConf {
             if (stripos($out, '[error]') !== false) $status = 'red';
             switch ($inAction) {
                 case 'status':
-                    echo xhtml\XhtmlUnicode::StatusGet($status, 'Confs');
+                    echo admin\AdminXhtml::StatusGet($status, 'Confs');
                     break;
                 case 'check':
                     echo "<pre>$out</pre>";
                     break;
                 default:
-                    base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                    admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                     break;
             }
         }
@@ -55,13 +35,13 @@ class AdmincoreConf {
             if (stripos($out, '[error]') !== false) $status = 'red';
             switch ($inAction) {
                 case 'status':
-                    echo xhtml\XhtmlUnicode::StatusGet($status, 'Plugins');
+                    echo admin\AdminXhtml::StatusGet($status, 'Plugins');
                     break;
                 case 'check':
                     echo "<pre>$out</pre>";
                     break;
                 default:
-                    base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                    admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                     break;
             }
         }
@@ -76,13 +56,13 @@ class AdmincoreConf {
             if (stripos($out, '[error]') !== false) $status = 'red';
             switch ($inAction) {
                 case 'status':
-                    echo xhtml\XhtmlUnicode::StatusGet($status, 'Templates');
+                    echo admin\AdminXhtml::StatusGet($status, 'Templates');
                     break;
                 case 'check':
                     echo "<pre>$out</pre>";
                     break;
                 default:
-                    base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                    admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                     break;
             }
         }
@@ -126,7 +106,7 @@ class AdmincoreConf {
     public static function License($inAction) {
         $ar = sys\SysNsid::IniAr("zsync:sync:" . sys\SysRemote::VersionGet() . ':conf:licenses.ini', '');
         if (!is_array($ar)) {
-            echo xhtml\XhtmlUnicode::StatusGet('red', "wb.license.ini not parsable.");
+            echo admin\AdminXhtml::StatusGet('red', "wb.license.ini not parsable.");
             return '';
         }
         $cnew = array();
@@ -153,7 +133,7 @@ class AdmincoreConf {
                 } else {
                     $status = 'yellow';
                 }
-                echo xhtml\XhtmlUnicode::StatusGet($status, $title);
+                echo admin\AdminXhtml::StatusGet($status, $title);
                 break;
             case 'relink':
                 $ar = ['conf/lang', 'conf/plugin', 'conf/plugin_lang'];
@@ -175,7 +155,7 @@ class AdmincoreConf {
                 }
                 break;
             default:
-                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
     }
@@ -189,7 +169,7 @@ class AdmincoreConf {
     }
     /* -------------------------------------------------------------------- */
     public static function Home($inAction, $inId) {
-        if (empty($inId)) return base\BaseXhtmlMsg::Echo('Warning', __METHOD__, '', 'Id is empty.');
+        if (empty($inId)) return admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, '', 'Id is empty.');
         $cnew = file_get_contents("lib/plugins/workbookcore/wbconf/data-pages-home/$inId");
         admin\AdminInode::FileAction($inAction, "data/pages/$inId", $cnew);
     }
@@ -198,7 +178,7 @@ class AdmincoreConf {
         $return = '';
         $ar = sys\SysNsid::IniAr("zsync:sync:" . sys\SysRemote::VersionGet() . ":conf:$inAction.ini", '');
         if (empty($ar)) {
-            echo xhtml\XhtmlUnicode::StatusGet('red', "wb.$inAction.ini missing.");
+            echo admin\AdminXhtml::StatusGet('red', "wb.$inAction.ini missing.");
             return '';
         }
         $installed = [];
@@ -213,7 +193,7 @@ class AdmincoreConf {
                 $installed = array();
                 break;
             default:
-                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
         foreach ($installed as $id => $val) {
@@ -278,7 +258,7 @@ class AdmincoreConf {
                         $return .= "Conf $id ($val)\n";
                         break;
                     default:
-                        base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                        admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                         break;
                 }
                 unset($installed[array_search($id, $installed)]);
@@ -312,7 +292,7 @@ class AdmincoreConf {
                 $return .= (eval("global \$conf; return $inVal;")) ? "{$msgtrue}Conf $inId ($inVal) ok\n" : "{$msgfalse}Conf $inId ($inVal) failed\n";
                 break;
             default:
-                base\BaseXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
         return $return;

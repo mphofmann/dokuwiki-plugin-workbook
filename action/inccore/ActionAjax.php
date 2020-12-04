@@ -63,7 +63,7 @@ class ActionAjax {
         if (isset($_REQUEST['date'])) $date = (int)$_REQUEST['date'];
         $INFO = pageinfo();
         // Check ACL
-        if (auth_quickaclcheck($ID) < AUTH_EDIT) {
+        if (auth_quickaclcheck($ID) < base\BaseGlobal::ConstGet('AUTH_EDIT')) {
             echo "You do not have permission to edit this file.\nAccess was denied.";
             return;
         }

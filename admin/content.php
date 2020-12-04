@@ -1,61 +1,18 @@
 <?php
-use workbook\wbinc\doku;
+use workbook\wbinc\admin;
 use workbookcore\wbinc\env;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\sys;
-use workbook\wbinc\admin;
-class admin_plugin_workbook_content extends DokuWiki_Admin_Plugin {
+class admin_plugin_workbook_content extends workbook\admin\a_adminpage {
     /* -------------------------------------------------------------------- */
-    private $__Out = '';
-    private $__Cmds = ['cmd' => ''];
+    protected $_Page = 'content';
     /* -------------------------------------------------------------------- */
-    public function getMenuSort() {
-        return 7771;
+    protected function _StylesAr() {
+        $strstyle = 'width:130px; text-align:center; white-space:nowrap;';
+        return ['width:130px; white-space:nowrap;', $strstyle, $strstyle, $strstyle, $strstyle, $strstyle, $strstyle];
     }
     /* -------------------------------------------------------------------- */
-    public function getMenuText($language) {
-        return $this->getLang('menu_content');
-    }
-    /* -------------------------------------------------------------------- */
-    public function getMenuIcon() {
-        return DOKU_PLUGIN . 'workbook/admin_content.svg';
-    }
-    /* -------------------------------------------------------------------- */
-    public function forAdminOnly() {
-        return false;
-    }
-    /* -------------------------------------------------------------------- */
-    function handle() {
-        $str = admin\AdminExec::HandleExec($this->__Cmds);
-        if ($str === false) return;
-        $this->__Out = $str;
-    }
-    /* -------------------------------------------------------------------- */
-    function html() {
-        // Heading
-        echo('<h1>Workbook</h1>');
-        echo(admin\AdminXhtml::MenuGet());
-        admin\AdminExec::OutputEcho($this->__Out);
-        if (strpos(@constant('WB_RUNMODE'), 'workbookcore-ok') === false) {
-            echo admin\AdminXhtml::TextInstallLinkGet();
-        } else {
-            echo('<h2>Content</h2>');
-            // Form
-            echo('<form action="' . doku\DokuUtil::WikiLinkGet(doku\DokuGlobal::NsidGet()) . '" method="post">');
-            echo('  <input type="hidden" name="do"   value="admin" />');
-            echo('  <input type="hidden" name="page" value="' . $this->getPluginName() . '_content" />');
-            doku\DokuXhtmlForm::SecTokenEcho();
-            // Table
-            $rows = $this->__ArraySetupGet();
-            $strstyle = 'width:130px; text-align:center; white-space:nowrap;';
-            $styles = ['width:130px; white-space:nowrap;', $strstyle, $strstyle, $strstyle, $strstyle, $strstyle, $strstyle];
-            echo admin\AdminXhtml::TableGet($rows, $styles);
-            // Form
-            echo('</form>');
-        }
-    }
-    /* -------------------------------------------------------------------- */
-    private function __ArraySetupGet() {
+    protected function _ArrayGet() {
         $returns = [];
         $returns[] = ['TH:WORKBOOK', 'TH:start (&lt;wb/&gt; only)', 'TH:Links', 'TH:Trash', 'TH:Download'];
         $returns[] = ['', 'Checks start.txt', 'Check links', 'Clear trash', admin\AdminXhtml::LinkGet("?do=media&ns=user:uprivate:" . env\EnvUserCurrent::Get() . "_uu", 'Download &raquo;&raquo;&raquo;')];

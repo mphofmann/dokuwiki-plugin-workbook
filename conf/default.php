@@ -1,4 +1,10 @@
 <?php
+$conf['connect_url']                = '!!not set!!';
+$conf['connect_username']           = '!!not set!!';
+$conf['connect_password']           = '!!not set!!';
+$conf['connect_version']            = '2020-07-29';
+$conf['connect_refresh_days']       = '';
+
 $conf['lang1']                      = '';
 $conf['lang2']                      = '';
 $conf['lang3']                      = '';
@@ -10,13 +16,6 @@ $conf['company_phone']              = '+99-999-9999';
 $conf['company_home_url']           = 'http://www.somewhere.com';
 $conf['company_privacy_url']        = 'http://privacy.somewhere.com';
 $conf['company_impressum_url']      = 'http://impressum.somewhere.com';
-
-$conf['remote_install_url']         = '!!not set!!';
-$conf['remote_url']                 = '!!not set!!';
-$conf['remote_username']            = '!!not set!!';
-$conf['remote_password']            = '!!not set!!';
-$conf['remote_version']             = '2020-07-29';
-$conf['remote_refresh_days']        = '';
 
 $conf['acl_groups']                 = '';
 

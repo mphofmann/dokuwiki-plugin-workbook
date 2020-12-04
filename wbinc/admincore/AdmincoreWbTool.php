@@ -6,8 +6,7 @@ use workbookcore\wbinc\env;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\sys;
 use workbookcore\wbinc\util;
-use workbookcore\wbinc\xhtml;
-use workbookuser\wbinc\user;
+use workbookuseracl\wbinc\user;
 class AdmincoreWbTool {
     /* -------------------------------------------------------------------- */
     public static function Exists($inWb, $inTool) {
@@ -142,7 +141,7 @@ class AdmincoreWbTool {
         self::__DataCopy('media', $inWb, $inTool);
     }
     private static function __DataCopy($inType, $inWb, $inTool) {
-        $pathsource = "data/pages/wb/wb/" . base\Base::VersionGet() . "data/$inType/$inWb/$inTool/";
+        $pathsource = "data/pages/wb/wb/" . sys\SysRemote::VersionGet() . "data/$inType/$inWb/$inTool/";
         if (is_dir($pathsource)) {
             base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inWb:$inTool", "");
             $pathtarget = "data/$inType/$inWb/$inTool/";

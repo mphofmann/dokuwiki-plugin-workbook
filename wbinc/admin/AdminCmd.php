@@ -69,6 +69,14 @@ class AdminCmd {
                     $var4 = array_shift($paras);
                     $out = $classpathclass::$method($var1, $var2, $var3, $var4);
                     break;
+                case 5:
+                    $var1 = array_shift($paras);
+                    $var2 = array_shift($paras);
+                    $var3 = array_shift($paras);
+                    $var4 = array_shift($paras);
+                    $var5 = array_shift($paras);
+                    $out = $classpathclass::$method($var1, $var2, $var3, $var4, $var5);
+                    break;
             }
         }
         echo $out;

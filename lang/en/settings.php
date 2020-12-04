@@ -1,4 +1,10 @@
 <?php
+$lang['connect_url']                = 'Connect: Url';
+$lang['connect_username']           = 'Connect: Username';
+$lang['connect_password']           = 'Connect: Password';
+$lang['connect_version']            = 'Connect: Version';
+$lang['connect_refresh_days']       = 'Connect: Refresh after';
+
 $lang['lang1']                      = 'Language: 1';
 $lang['lang2']                      = 'Language: 2';
 $lang['lang3']                      = 'Language: 3';
@@ -10,13 +16,6 @@ $lang['company_phone']              = 'Company: Phone number';
 $lang['company_home_url']           = 'Company: Homepage url';
 $lang['company_privacy_url']        = 'Company: Privacy url';
 $lang['company_impressum_url']      = 'Company: Impressum url';
-
-$lang['remote_install_url']         = 'Remote: Install-Url';
-$lang['remote_url']                 = 'Remote: Url';
-$lang['remote_username']            = 'Remote: Username';
-$lang['remote_password']            = 'Remote: Password';
-$lang['remote_version']             = 'Remote: Version';
-$lang['remote_refresh_days']        = 'Remote: Refresh after';
 
 $lang['acl_groups']                 = 'ACL: Default groups';
 

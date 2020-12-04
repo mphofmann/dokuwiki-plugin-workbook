@@ -25,7 +25,6 @@ abstract class a_Action extends DokuWiki_Action_Plugin {
     }
     /* -------------------------------------------------------------------- */
     protected function _Exec($inType, Doku_Event $Event, $inPara) {
-        if (strpos(constant('WB_RUNMODE'), 'workbookcore-ok') === false) return;
         global $ACT;
         foreach (['all', 'ajax', @$ACT] as $act) {
             if (@isset($this->_Events[$act][$Event->name])) {

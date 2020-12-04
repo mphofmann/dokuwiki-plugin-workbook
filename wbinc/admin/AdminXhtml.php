@@ -7,7 +7,7 @@ class AdminXhtml {
         $ar = [];
         if (@$_SERVER['REMOTE_USER'] == 'admin') {
             $ar[] = "<a href='?do=admin&page=workbook_install'>01 Install</a>";
-            $ar[] = "<a href='?do=admin&page=workbook_conf'>02 Conf</a>";
+            $ar[] = "<a href='?do=admin&page=workbook_connect'>02 Connect</a>";
         }
         $ar[] = "<a href='?do=admin&page=workbook_operating'>1 Operating</a>";
         $ar[] = "<a href='?do=admin&page=workbook_marketplace'>2 Marketplace</a>";

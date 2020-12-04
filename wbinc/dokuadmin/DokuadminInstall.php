@@ -13,86 +13,46 @@ class DokuadminInstall {
     public static $Extensions = [ //
         'plugins' => [ //
             // MPH
-            'workbook' => 'deb:sappinternal-appsource-dokuwiki:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-71wb-public/$ID$/all/lib/plugins/$ID$/', // 'https://github.com/mphofmann/dokuwiki-plugin-workbook/archive/main.zip', //
-            'workbookcore' => 'deb:sappinternal-appsource-dokuwiki:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-71wb-public/$ID$/all/lib/plugins/$ID$/', //
-            'workbookuser' => 'deb:sappinternal-appsource-dokuwiki:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-71wb-public/$ID$/all/lib/plugins/$ID$/', //
+            'workbook' => 'deb:', // 'https://github.com/mphofmann/dokuwiki-plugin-workbook/archive/main.zip', //
+            'workbookcore' => 'deb:', //
+            'workbookuseracl' => 'deb:', //
             // CosmoCode
             'cleanup' => 'https://github.com/cosmocode/dokuwiki-plugin-cleanup/archive/master.zip', //
             'confmanager' => 'https://github.com/cosmocode/confmanager/archive/master.zip', //
-            'dropfiles' => 'https://github.com/cosmocode/dokuwiki-plugin-dropfiles/archive/master.zip', //
             'edittable' => 'https://github.com/cosmocode/edittable/archive/master.zip', //
-            'feedback' => 'https://github.com/cosmocode/dokuwiki-plugin-feedback/archive/master.zip', //
-            'prosemirror' => 'https://github.com/cosmocode/dokuwiki-plugin-prosemirror/archive/master.zip', //
             'sqlite' => 'https://github.com/cosmocode/sqlite/archive/master.zip', //
             'struct' => 'https://github.com/cosmocode/dokuwiki-plugin-struct/archive/master.zip', //
-            'structgantt' => 'https://github.com/cosmocode/dokuwiki-plugin-structgantt/archive/master.zip', //
-            'tablelayout' => 'https://github.com/cosmocode/dokuwiki-plugin-tablelayout/archive/master.zip', //
-            // splitbrain
+            // Splitbrain
             'captcha' => 'https://github.com/splitbrain/dokuwiki-plugin-captcha/archive/master.zip', //
             'passpolicy' => 'https://github.com/splitbrain/dokuwiki-plugin-passpolicy/archive/master.zip', //
             'searchindex' => 'https://github.com/splitbrain/dokuwiki-plugin-searchindex/archive/master.zip', //
-            'toolbox' => 'https://github.com/splitbrain/dokuwiki-plugin-toolbox/archive/master.zip', //
             'upgrade' => 'https://github.com/splitbrain/dokuwiki-plugin-upgrade/archive/master.zip', //
-            // michitux
+            // Michitux
             'move' => 'https://github.com/michitux/dokuwiki-plugin-move/archive/master.zip', //
+            // Optional
+            // 'dropfiles' => 'https://github.com/cosmocode/dokuwiki-plugin-dropfiles/archive/master.zip', //
+            'feedback' => 'https://github.com/cosmocode/dokuwiki-plugin-feedback/archive/master.zip', //
+            'prosemirror' => 'manual:,note:cosmocode', //
+            // 'structgantt' => 'https://github.com/cosmocode/dokuwiki-plugin-structgantt/archive/master.zip', //
+            'tablelayout' => 'https://github.com/cosmocode/dokuwiki-plugin-tablelayout/archive/master.zip', //
+            'toolbox' => 'https://github.com/splitbrain/dokuwiki-plugin-toolbox/archive/master.zip', //
         ], //
         'templates' => [ //
             // MPH
-            'workbook' => 'deb:sappinternal-appsource-dokuwiki:/opt/sapp/sapp-app/dokuwiki/source/addon-tpl-71wb-public/$ID$/all/lib/tpl/$ID$/', //
-        ], //
-    ];
-    public static $WbExtensions = [ //
-        'plugins' => [ //
-            // 73wb-inc
-            'workbookinc' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-inc/$ID$/all/lib/plugins/$ID$/', //
-            // 73wb-tag
-            'workbookconference' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag/$ID$/all/lib/plugins/$ID$/', //
-            'workbookdo' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag/$ID$/all/lib/plugins/$ID$/', //
-            'workbookmedia' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag/$ID$/all/lib/plugins/$ID$/', //
-            'workbookslide' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag/$ID$/all/lib/plugins/$ID$/', //
-            'workbooktag' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag/$ID$/all/lib/plugins/$ID$/', //
-            'workbookwbtool' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag/$ID$/all/lib/plugins/$ID$/', //
-            // 73wb-tag-external
-            'workbookdisqus' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag-external/$ID$/all/lib/plugins/$ID$/', //
-            'workbookgoogle' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag-external/$ID$/all/lib/plugins/$ID$/', //
-            'workbooksapp' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag-external/$ID$/all/lib/plugins/$ID$/', //
-            'workbookzapier' => 'deb:sappinternal-appsource-dokuwikiworkbook:/opt/sapp/sapp-app/dokuwiki/source/addon-plugins-73wb-tag-external/$ID$/all/lib/plugins/$ID$/', //
+            'workbook' => 'deb:', //
         ], //
     ];
     public static $Webroots = [ //
         'index.php' => 'Controller switcher', //
-        'doku.php' => 'Dokuwiki controller', //
+        // 'doku.php' => 'Dokuwiki controller', //
         'wb.php' => 'Workbook controller', //
     ];
     public static $Confs = [ //
         'local.protected.php' => 'Confs protected', //
         'acl.auth.php' => 'ACL rules', //
     ];
-    private static $__DebUrl = ''; //
     /* -------------------------------------------------------------------- */
-    public static function __constructStatic() {
-        $url = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'remote_install_url');
-        if (empty($url) or $url == '!!not set!!') {
-            doku\DokuXhtmlMsg::Add('Notice', '', '', "Remote-Install-Url not set.");
-        } else {
-            self::$__DebUrl = $url;
-        }
-    }
-    /* -------------------------------------------------------------------- */
-    public static function All($inAction) {
-        $return = '';
-        switch ($inAction) {
-            case 'install':
-                $return .= "TODO $inAction - not implemented yet.";
-                break;
-            default:
-                doku\DokuXhtmlMsg::Echo('Warning', __METHOD__, '', "All action unknown: $inAction");
-                break;
-        }
-        return $return;
-    }
-    /* -------------------------------------------------------------------- */
-    public static function Infra($inAction, $inId) {
+    public static function InfraAction($inAction, $inId) {
         $return = '';
         switch ($inAction) {
             case 'note':
@@ -126,7 +86,7 @@ class DokuadminInstall {
                         $return .= PHP_VERSION;
                         break;
                     case 'Dokuwiki':
-                        $return .= file_get_contents('VERSION');
+                        $return .= doku\DokuGlobal::VersionGet();
                         break;
                 }
                 break;
@@ -137,14 +97,64 @@ class DokuadminInstall {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function Extension($inAction, $inType, $inId) {
+    public static function WebrootAction($inAction, $inFilepath) {
+        $return = '';
+        switch ($inAction) {
+            case 'install':
+                $filepath = "lib/plugins/workbookcore/wbconf/$inFilepath";
+                if (file_exists($filepath)) {
+                    if (file_exists($inFilepath) and !file_exists("$inFilepath.orig")) {
+                        copy($inFilepath, "$inFilepath.orig");
+                    }
+                    copy($filepath, $inFilepath);
+                } else {
+                    admin\AdminXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
+                }
+                break;
+            case 'link':
+                $filepath = "lib/plugins/workbookcore/wbconf/$inFilepath";
+                if (file_exists($filepath)) {
+                    if (is_file($inFilepath) and !file_exists("$inFilepath.orig")) {
+                        copy($inFilepath, "$inFilepath.orig");
+                    }
+                    if (file_exists($inFilepath)) unlink($inFilepath);
+                    symlink($filepath, $inFilepath);
+                } else {
+                    admin\AdminXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
+                }
+                break;
+            case 'remove':
+                $return .= unlink($inFilepath);
+                break;
+            case 'restore':
+                if (file_exists("$inFilepath.orig")) {
+                    unlink($inFilepath);
+                    copy("$inFilepath.orig", $inFilepath);
+                    unlink("$inFilepath.orig");
+                } else {
+                    admin\AdminXhtmlMsg::Echo('Warning', '', '', "File '$inFilepath.orig' is missing.");
+                }
+                break;
+            case 'status':
+                $rc = (strpos("index.php wb.php", $inFilepath) === false) ? file_exists($inFilepath) : is_link($inFilepath);
+                $color = $rc ? 'green' : 'red';
+                $return .= admin\AdminXhtml::StatusGet($color);
+                break;
+            default:
+                admin\AdminXhtmlMsg::Echo('Warning', '', '', "Action unknown: $inAction $inFilepath");
+                break;
+        }
+        return $return;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function ExtensionAction($inAction, $inType, $inId, $inUrl = '', $inTarpath = '') {
         $return = '';
         switch ($inAction) {
             case 'note':
-                $return .= self::__ExtensionNoteGet($inType, $inId);
+                $return .= self::ExtensionNoteGet($inType, $inId, $inUrl);
                 break;
             case 'install':
-                $return .= self::__ExtensionInstall($inType, $inId);
+                $return .= self::ExtensionInstall($inType, $inId, $inUrl, $inTarpath);
                 break;
             case 'remove':
                 break;
@@ -160,138 +170,89 @@ class DokuadminInstall {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function Webroot($inAction, $inId) {
-        return self::__WbConfAction($inAction, $inId, self::$Webroots[$inId]);
-    }
-    /* -------------------------------------------------------------------- */
-    public static function Conf($inAction, $inId) {
-        return self::__WbConfAction($inAction, "conf/$inId", self::$Confs[$inId]);
-    }
-    /* -------------------------------------------------------------------- */
-    private static function __WbconfAction($inAction, $inFilepath, $inNote) {
+    public static function ExtensionNoteGet($inType, $inId, $inUrl = '') {
         $return = '';
-        switch ($inAction) {
-            case 'note':
-                $return .= $inNote;
-                break;
-            case 'install':
-                $filepath = "lib/plugins/workbookcore/wbconf/$inFilepath";
-                if (file_exists($filepath)) {
-                    if (file_exists($inFilepath) and !file_exists("$inFilepath.orig")) {
-                        copy($inFilepath, "$inFilepath.orig");
-                    }
-                    copy($filepath, $inFilepath);
-                } else {
-                    doku\DokuXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
-                }
-                break;
-            case 'remove':
-                $return .= unlink($inFilepath);
-                break;
-            case 'restore':
-                if (file_exists("$inFilepath.orig")) {
-                    copy("$inFilepath.orig", $inFilepath);
-                    unlink("$inFilepath.orig");
-                } else {
-                    doku\DokuXhtmlMsg::Echo('Warning', '', '', "File '$inFilepath.orig' is missing.");
-                }
-                break;
-            case 'status':
-                $color = file_exists($inFilepath) ? 'green' : 'red';
-                $return .= admin\AdminXhtml::StatusGet($color);
-                break;
-            default:
-                doku\DokuXhtmlMsg::Echo('Warning', '', '', "Action unknown: $inAction $inFilepath");
-                break;
-        }
-        return $return;
-    }
-    /* -------------------------------------------------------------------- */
-    private static function __ExtensionNoteGet($inType, $inId) {
-        $return = '';
-        $string = isset(self::$Extensions[$inType][$inId]) ? self::$Extensions[$inType][$inId] : self::$WbExtensions[$inType][$inId];
+        $url = self::__ExtensionUrlGet($inType, $inId, $inUrl);
         $ar = [ //
-            'workbook' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by MPH</span>', 'deb:' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by MPH</span>', //
+            'workbook' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by MPH</span>', '.deb' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by MPH</span>', 'deb:' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by MPH</span>', //
             'splitbrain' => '<span title="Andrea Gohr, Berlin, Germany">by Splitbrain</span>', //
             'cosmocode' => '<span title="CosmoCode GmbH, Berlin, Germany">by CosmoCode</span>', //
             'michitux' => '<span title="Michael Hamann, Karlsruhe, Germany">by Hamann</span>', //
         ];
         foreach ($ar as $id => $val) {
-            if (strpos($string, $id) !== false) {
+            if (strpos($url, $id) !== false) {
                 $return .= $val;
                 break;
             }
         }
-        if (empty($return)) $return .= $string;
+        if (empty($return)) $return .= $url;
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    private static function __ExtensionInstall($inType, $inId) {
-        if (empty(self::$__DebUrl)) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Remote-Install-Url is empty.");
-        $urlcode = isset(self::$Extensions[$inType][$inId]) ? self::$Extensions[$inType][$inId] : self::$WbExtensions[$inType][$inId];
-        $urlcode = strtr($urlcode, ['$ID$' => $inId]);
-        if (substr($urlcode, -4) == '.zip') {
-            $ext = 'zip';
-            $url = $urlcode;
-        } elseif (substr($urlcode, 0, 4) == 'deb:') {
-            list($ext, $repo, $tarpath) = explode(':', $urlcode);
-            $url = self::$__DebUrl . "{$repo}.{$ext}";
+    public static function ExtensionInstall($inType, $inId, $inUrl = '', $inTarpath = '') {
+        $url = self::__ExtensionUrlGet($inType, $inId, $inUrl);
+        if (empty($url)) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Url missing: $inType-$inId");
+        if (substr($url, -4) == '.deb' and empty($inTarpath)) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Tarpath is empty: $inType-$inId");
+        // download
+        $dirpath = "data/tmp/dir" . uniqid() . "/";
+        admin\AdminInode::MkdirCheck($dirpath);
+        $rc = file_put_contents("{$dirpath}download", file_get_contents($url));
+        if ($rc === false) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Download failed: $inType-$inId");
+        // extract
+        switch (substr($url, -4)) {
+            case '.zip':
+                $zip = new \ZipArchive;
+                $res = $zip->open("{$dirpath}download");
+                if ($res === false) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Extracting failed: $inType-$inId");
+                $zip->extractTo($dirpath);
+                $zip->close();
+                unlink("{$dirpath}download");
+                doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension downloaded: $inType-$inId");
+                break;
+            case '.deb':
+                system("cd $dirpath; ar -x download data.tar.xz 2>&1");
+                system("cd $dirpath; tar -xf data.tar.xz .{$inTarpath} 2>&1");
+                unlink("{$dirpath}download");
+                unlink("{$dirpath}data.tar.xz");
+                doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension downloaded: $inType-$inId");
+                break;
         }
-        if (!empty($url)) {
-            // download
-            $dirpath = "data/tmp/dir" . uniqid() . "/";
-            admin\AdminInode::MkdirCheck($dirpath);
-            $rc = file_put_contents("{$dirpath}download", file_get_contents($url));
-            if ($rc === false) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Download failed: $inType-$inId");
-            // extract
-            switch ($ext) {
-                case 'zip':
-                    $zip = new \ZipArchive;
-                    $res = $zip->open("{$dirpath}download");
-                    if ($res === false) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Extracting failed: $inType-$inId");
-                    $zip->extractTo($dirpath);
-                    $zip->close();
-                    unlink("{$dirpath}download");
-                    doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension downloaded: $inType-$inId");
-                    break;
-                case 'deb':
-                    system("cd $dirpath; ar -x download data.tar.xz 2>&1");
-                    system("cd $dirpath; tar -xf data.tar.xz .{$tarpath} 2>&1");
-                    unlink("{$dirpath}download");
-                    unlink("{$dirpath}data.tar.xz");
-                    doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension downloaded: $inType-$inId");
-                    break;
-            }
-            // move
-            $extpath = self::__ExtensionPathGet($inType, $inId);
-            switch ($ext) {
-                case 'zip':
-                    foreach (scandir($dirpath) as $inode) {
-                        if (substr($inode, 0, 1) == '.') continue;
-                        self::__ExtensionRemove($inType, $inId);
-                        system("mv {$dirpath}{$inode} {$extpath} 2>&1");
-                        doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension copied: $inType-$inId");
-                        break;
-                    }
-                    break;
-                case 'deb':
-                    system("mv {$dirpath}{$tarpath} {$extpath} 2>&1");
+        // move
+        $extpath = self::__ExtensionPathGet($inType, $inId);
+        switch (substr($url, -4)) {
+            case '.zip':
+                foreach (scandir($dirpath) as $inode) {
+                    if (substr($inode, 0, 1) == '.') continue;
+                    self::__ExtensionRemove($inType, $inId);
+                    system("mv {$dirpath}{$inode} {$extpath} 2>&1");
                     doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension copied: $inType-$inId");
                     break;
-            }
-            // cleanup
-            system("rm -R $dirpath 2>&1");
-            admin\AdminCmd::SystemEcho('touch conf/local.php');
-            doku\DokuXhtmlMsg::Echo('Success', '', '', "Extension installed: $inType-$inId");
+                }
+                break;
+            case '.deb':
+                system("mv {$dirpath}{$inTarpath} {$extpath} 2>&1");
+                doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension copied: $inType-$inId");
+                break;
         }
+        // cleanup
+        system("rm -R $dirpath 2>&1");
+        admin\AdminCmd::SystemEcho('touch conf/local.php');
+        doku\DokuXhtmlMsg::Echo('Success', '', '', "Extension installed: $inType-$inId");
     }
     /* -------------------------------------------------------------------- */
     private static function __ExtensionRemove($inType, $inId) {
         $extpath = self::__ExtensionPathGet($inType, $inId);
         if (is_dir($extpath)) {
             admin\AdminInode::RmR($extpath);
-            doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension removed: $inType $inId");
+            doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension removed: $inType-$inId");
         }
+    }
+    /* -------------------------------------------------------------------- */
+    private static function __ExtensionUrlGet($inType, $inId, $inUrl) {
+        $return = $inUrl;
+        if (empty($return)) $return = @self::$Extensions[$inType][$inId];
+        $return = strtr($return, ['$ID$' => $inId]);
+        return $return;
     }
     /* -------------------------------------------------------------------- */
     private static function __ExtensionPathGet($inType, $inId) {
