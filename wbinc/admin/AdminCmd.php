@@ -1,5 +1,6 @@
 <?php
 namespace workbook\wbinc\admin;
+use Throwable;
 class AdminCmd {
     /* -------------------------------------------------------------------- */
     public static function SystemEcho($inCmd, $showCmd = true) {
@@ -40,9 +41,7 @@ class AdminCmd {
         unset($paras['class'], $paras['method']);
         ob_start();
         $out = '';
-        if ($method == 'Action') {
-            $out = $classpathclass::$method($paras);
-        } else {
+        try {
             switch (count($paras)) {
                 case 0:
                     $out = $classpathclass::$method();
@@ -78,6 +77,8 @@ class AdminCmd {
                     $out = $classpathclass::$method($var1, $var2, $var3, $var4, $var5);
                     break;
             }
+        } catch (Throwable $e) {
+            AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
         }
         echo $out;
         $return .= ob_get_clean();

@@ -45,7 +45,15 @@ class a_adminpage extends \DokuWiki_Admin_Plugin {
             echo '  <input type="hidden" name="page" value="' . $this->getPluginName() . '_' . $this->_Page . '" />';
             doku\DokuXhtmlForm::SecTokenEcho();
             // Table
-            echo admin\AdminXhtml::TableGet($this->_ArrayGet(), $this->_StylesAr());
+            $ar = $this->_ArrayGet();
+            if (!empty($ar)) {
+                echo admin\AdminXhtml::TableGet($this->_ArrayGet(), $this->_StylesAr());
+            }
+            echo '<br/>';
+            $ar = $this->_Array2Get();
+            if (!empty($ar)) {
+                echo admin\AdminXhtml::TableGet($ar, $this->_StylesAr());
+            }
             // Form
             echo '</form>';
         }
@@ -62,6 +70,10 @@ class a_adminpage extends \DokuWiki_Admin_Plugin {
     }
     /* -------------------------------------------------------------------- */
     protected function _ArrayGet() {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected function _Array2Get() {
         return [];
     }
     /* -------------------------------------------------------------------- */

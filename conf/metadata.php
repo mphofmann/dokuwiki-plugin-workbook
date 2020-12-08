@@ -2,6 +2,7 @@
 $meta['connect_url']                = ['string'];
 $meta['connect_username']           = ['string'];
 $meta['connect_password']           = ['password'];
+$meta['connect_mail']               = ['email'];
 $meta['connect_version']            = ['multichoice', '_choices' => ['2020-07-29', '2018-04-22']];
 $meta['connect_refresh_days']       = ['multichoice', '_choices' => ['7 days', '14 days', '30 days']];
 

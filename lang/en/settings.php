@@ -2,6 +2,7 @@
 $lang['connect_url']                = 'Connect: Url';
 $lang['connect_username']           = 'Connect: Username';
 $lang['connect_password']           = 'Connect: Password';
+$lang['connect_mail']               = 'Connect: Mail address';
 $lang['connect_version']            = 'Connect: Version';
 $lang['connect_refresh_days']       = 'Connect: Refresh after';
 

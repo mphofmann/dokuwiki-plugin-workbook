@@ -4,6 +4,7 @@ use Doku_Event;
 use Doku_Event_Handler;
 use DokuWiki_Action_Plugin;
 use Throwable;
+use workbook\wbinc\admin;
 abstract class a_Action extends DokuWiki_Action_Plugin {
     /* -------------------------------------------------------------------- */
     protected $_Events = [];
@@ -31,9 +32,14 @@ abstract class a_Action extends DokuWiki_Action_Plugin {
             if (@isset($this->_Events[$act][$Event->name])) {
                 $classpathclass = $this->_Events[$act][$Event->name];
                 $method = 'Event' . ucfirst($inType) . '_' . $Event->name;
-                try {
-                    $classpathclass::$method($Event, $inPara);
-                } catch (Throwable $e) {
+                if (class_exists($classpathclass)) {
+                    if (method_exists($classpathclass, $method)) {
+                        try {
+                            $classpathclass::$method($Event, $inPara);
+                        } catch (Throwable $e) {
+                            admin\AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
+                        }
+                    }
                 }
             }
         }

@@ -50,7 +50,7 @@ class DokucoreXhtmlForm {
     }
     /* -------------------------------------------------------------------- */
     public static function NsAdd() {
-        if (doku\DokuAcl::NsAclGet(base\Base::NsGet()) < base\BaseGlobal::ConstGet('AUTH_DELETE')) return '';
+        if (base\BaseAcl::NsGet(base\Base::NsGet()) < base\BaseAcl::$Consts['AUTH_DELETE']) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         $form = new Doku_Form(self::__FormAr(__METHOD__));
         $form->addHidden('data-actionform', 'dokucore\DokucoreXhtmlForm::NsAddAction');
@@ -81,7 +81,7 @@ class DokucoreXhtmlForm {
     }
     /* -------------------------------------------------------------------- */
     public static function PageAdd() {
-        if (doku\DokuAcl::NsAclGet(base\Base::NsGet()) < base\BaseGlobal::ConstGet('AUTH_CREATE')) return '';
+        if (base\BaseAcl::NsGet(base\Base::NsGet()) < base\BaseAcl::$Consts['AUTH_CREATE']) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         // langs
         $langs = explode('-', env\EnvLang::Get());
@@ -126,7 +126,7 @@ class DokucoreXhtmlForm {
     /* -------------------------------------------------------------------- */
     public static function PageStartAdd($inLang = '') {
         if (empty($inLang)) return '';
-        if (doku\DokuAcl::NsAclGet(base\Base::NsGet()) < base\BaseGlobal::ConstGet('AUTH_CREATE')) return '';
+        if (base\BaseAcl::NsGet(base\Base::NsGet()) < base\BaseAcl::$Consts['AUTH_CREATE']) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         $form = new Doku_Form(self::__FormAr(__METHOD__));
         $form->addHidden('data-actionform', 'dokucore\DokucoreXhtmlForm::PageStartAddAction');
@@ -150,8 +150,7 @@ class DokucoreXhtmlForm {
     /* -------------------------------------------------------------------- */
     public static function PageDelete($inNsid = '') {
         if (empty($inNsid)) return false;
-        $auth = doku\DokuAcl::NsAclGet(base\Base::NsGet());
-        if ($auth < base\BaseGlobal::ConstGet('AUTH_DELETE')) return '';
+        if (base\BaseAcl::NsGet(base\Base::NsGet()) < base\BaseAcl::$Consts['AUTH_DELETE']) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         $form = new Doku_Form(self::__FormAr(__METHOD__));
         $form->addHidden('data-actionform', 'dokucore\DokucoreXhtmlForm::PageDeleteAction');
@@ -177,8 +176,8 @@ class DokucoreXhtmlForm {
     }
     /* -------------------------------------------------------------------- */
     public static function MediaUpload() { // multiple
-        $auth = doku\DokuAcl::NsAclGet(base\Base::NsGet());
-        if ($auth < base\BaseGlobal::ConstGet('AUTH_UPLOAD')) return '';
+        $auth = base\BaseAcl::NsGet(base\Base::NsGet());
+        if ($auth < base\BaseAcl::$Consts['AUTH_UPLOAD']) return '';
         $return = '';
         $cssclass = util\UtilCss::ClassesGet(__METHOD__, 'method');
         // styles see inctag/doku
@@ -205,7 +204,7 @@ class DokucoreXhtmlForm {
             }
             if ($ar['tmp_name']) {
                 $ns = base\Base::NsGet();
-                $res = media_save(['name' => $ar['tmp_name'],], "$ns:{$ar['name']}", true, doku\DokuAcl::NsAclGet($ns), 'copy_uploaded_file');
+                $res = media_save(['name' => $ar['tmp_name'],], "$ns:{$ar['name']}", true, base\BaseAcl::NsGet($ns), 'copy_uploaded_file');
                 if ($res === false) {
                     base\BaseXhtmlMsg::Add('Notice', '', $ar['name'], 'File save failed.');
                     $return = false;
@@ -218,8 +217,8 @@ class DokucoreXhtmlForm {
     public static function MediaDelete($inNsmedia = '') {
         if (empty($inNsmedia)) return false;
         if (media_inuse($inNsmedia)) return false;
-        $auth = doku\DokuAcl::NsAclGet(base\Base::NsGet());
-        if ($auth < base\BaseGlobal::ConstGet('AUTH_DELETE')) return '';
+        $auth = base\BaseAcl::NsGet(base\Base::NsGet());
+        if ($auth < base\BaseAcl::$Consts['AUTH_DELETE']) return '';
         $return = '<div class="' . util\UtilCss::ClassesGet(__METHOD__, 'class method') . '">';
         $form = new Doku_Form(self::__FormAr(__METHOD__));
         $form->addHidden('data-actionform', 'dokucore\DokucoreXhtmlForm::MediaDeleteAction');
@@ -237,7 +236,7 @@ class DokucoreXhtmlForm {
         $mediafile = 'data/media/' . strtr($media, [':' => '/']);
         if (file_exists($mediafile)) {
             $ns = base\Base::NsGet();
-            media_delete($media, doku\DokuAcl::NsAclGet($ns));
+            media_delete($media, base\BaseAcl::NsGet($ns));
             base\BaseXhtmlMsg::Add('Success', '', $media, 'Media deleted.');
         }
         return true;

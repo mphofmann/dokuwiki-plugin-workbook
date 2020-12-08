@@ -5,11 +5,6 @@ use workbook\wbinc\admin;
 use workbook\wbinc\doku;
 class DokuadminConnect {
     /* -------------------------------------------------------------------- */
-    public static $Webroots = [ //
-        'index.php' => 'Controller switcher', //
-        'doku.php' => 'Dokuwiki controller', //
-        'wb.php' => 'Workbook controller', //
-    ];
     private static $__Client = '';
     private static $__ClientLogin = '';
     private static $__Call = '';
@@ -18,7 +13,7 @@ class DokuadminConnect {
     private static $__ErrorString = 'WB-EXCEPTION: ';
     private static $__ErrorMessage = '';
     /* -------------------------------------------------------------------- */
-    public static function RemoteAction($inAction) {
+    public static function Action($inAction) {
         $status = (self::EnabledCheck()) ? 'green' : 'red';
         switch ($inAction) {
             case 'status':
@@ -37,14 +32,31 @@ class DokuadminConnect {
         }
     }
     /* -------------------------------------------------------------------- */
+    public static function NoteGet() {
+        $return = '<table style="white-space:nowrap; border:1px solid #ccc; font-size:smaller;">';
+        $url = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_url');
+        $username = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_username');
+        $password = str_pad('', strlen(doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_password')), '*');
+        $mail = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_mail');
+        $myip = admin\AdminUtil::IpPublicGet();
+        $return .= "<tr><td>Url:</td><td>{$url}</td></tr>";
+        $return .= "<tr><td>Login:</td><td>{$username} {$password}</td></tr>";
+        $return .= "<tr><td>Mail:</td><td>{$mail}</td></tr>";
+        $return .= "<tr><td>My IP:</td><td>{$myip}</td></tr>";
+        $return .= '</table>';
+        return $return;
+    }
+    /* -------------------------------------------------------------------- */
     public static function EnabledCheck($inType = '') {
         if (self::$__ClientLogin === true) return true;
         $url = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_url');
         $username = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_username');
         $password = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_password');
+        $mail = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_mail');
         if (empty($url) or !filter_var($url, FILTER_VALIDATE_URL)) return false;
         if (empty($username) or $username == '!!not set!!') return false;
         if (empty($password) or $password == '!!not set!!') return false;
+        if (empty($mail) or $mail == '!!not set!!') return false;
         $return = true;
         if ($inType == 'login') {
             $return = self::__ClientLogin();
