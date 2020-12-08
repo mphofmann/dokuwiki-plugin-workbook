@@ -5,6 +5,7 @@ use workbookcore\wbinc\base;
 class ActionSave {
     /* -------------------------------------------------------------------- */
     public static function EventBefore_COMMON_WIKIPAGE_SAVE(Doku_Event $Event, $inPara) {
+        if (workbookclassnsget('base\Base') == '') return;
         $out = base\BaseActionSave::Before_COMMON_WIKIPAGE_SAVE($Event->data['newContent']);
         if (!empty($out)) {
             $Event->data['newContent'] = $out;
@@ -12,6 +13,7 @@ class ActionSave {
     }
     /* -------------------------------------------------------------------- */
     public static function EventAfter_COMMON_WIKIPAGE_SAVE(Doku_Event $Event, $inPara) {
+        if (workbookclassnsget('base\Base') == '') return;
         base\BaseActionSave::After_COMMON_WIKIPAGE_SAVE($Event->data['id']);
     }
     /* -------------------------------------------------------------------- */

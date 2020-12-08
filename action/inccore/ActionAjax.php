@@ -8,6 +8,7 @@ use workbookcore\wbinc\util;
 class ActionAjax {
     /* -------------------------------------------------------------------- */
     public static function EventAfter_TOOLBAR_DEFINE(Doku_Event $Event, $inPara) {
+        if (workbookclassnsget('base\Base')=='') return;
         // Plugins
         $adds = [];
         foreach (scandir(DOKU_INC . 'lib/plugins/') as $plugin) {
@@ -44,6 +45,7 @@ class ActionAjax {
     }
     /* -------------------------------------------------------------------- */
     public static function EventBefore_AJAX_CALL_UNKNOWN(Doku_Event $Event, $inPara) {
+        if (workbookclassnsget('base\Base')=='') return;
         global $ID, $conf, $lang;
         if ($Event->data !== 'plugin_workbook_do') {
             return;
@@ -63,7 +65,7 @@ class ActionAjax {
         if (isset($_REQUEST['date'])) $date = (int)$_REQUEST['date'];
         $INFO = pageinfo();
         // Check ACL
-        if (auth_quickaclcheck($ID) < base\BaseGlobal::ConstGet('AUTH_EDIT')) {
+        if (auth_quickaclcheck($ID) < base\BaseAcl::$Consts['AUTH_EDIT']) {
             echo "You do not have permission to edit this file.\nAccess was denied.";
             return;
         }
@@ -115,12 +117,9 @@ class ActionAjax {
             }
         }
     }
-    private static function __JsonPrint($return) {
-        $json = new JSON();
-        echo $json->encode($return);
-    }
     /* -------------------------------------------------------------------- */
     public static function EventAfter_PLUGIN_MOVE_PAGE_RENAME(Doku_Event $Event, $inPara) {
+        if (workbookclassnsget('base\Base')=='') return;
         if (is_array($Event->data['affected_pages'])) {
             foreach ($Event->data['affected_pages'] as $val) {
                 base\BaseNsid::LinksRewrite($val, $Event->data['src_id'], $Event->data['dst_id']);
@@ -128,6 +127,11 @@ class ActionAjax {
         }
         base\BaseNsid::MetaReset($Event->data['src_id']);
         base\BaseNsid::MetaReset($Event->data['dst_id']);
+    }
+    /* -------------------------------------------------------------------- */
+    private static function __JsonPrint($return) {
+        $json = new JSON();
+        echo $json->encode($return);
     }
     /* -------------------------------------------------------------------- */
 }
