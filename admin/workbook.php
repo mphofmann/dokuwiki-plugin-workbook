@@ -8,7 +8,7 @@ class admin_plugin_workbook_workbook extends workbook\admin\a_adminpage {
     /* -------------------------------------------------------------------- */
     protected $_Page = 'workbook';
     /* -------------------------------------------------------------------- */
-    protected function _ArrayGet() {
+    protected function _Array1Get() {
         $returns = [];
         $returns[] = ['TH:WORKBOOK', 'TH:Action', 'TH:Tools', 'TH:Database & Datapages'];
         foreach (sys\SysNs::ScandirAr(':', 'local', 'pages', 'dirs hidepages') as $wb) {

@@ -7,7 +7,7 @@ class admin_plugin_workbook_marketplace extends workbook\admin\a_adminpage {
     /* -------------------------------------------------------------------- */
     protected $_Page = 'marketplace';
     /* -------------------------------------------------------------------- */
-    protected function _ArrayGet() {
+    protected function _Array1Get() {
         $returns = [];
         $ar = mod\ModWb::IniArs();
         if (!empty($ar)) {

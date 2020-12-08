@@ -12,7 +12,7 @@ class admin_plugin_workbook_content extends workbook\admin\a_adminpage {
         return ['width:130px; white-space:nowrap;', $strstyle, $strstyle, $strstyle, $strstyle, $strstyle, $strstyle];
     }
     /* -------------------------------------------------------------------- */
-    protected function _ArrayGet() {
+    protected function _Array1Get() {
         $returns = [];
         $returns[] = ['TH:WORKBOOK', 'TH:start (&lt;wb/&gt; only)', 'TH:Links', 'TH:Trash', 'TH:Download'];
         $returns[] = ['', 'Checks start.txt', 'Check links', 'Clear trash', admin\AdminXhtml::LinkGet("?do=media&ns=user:uprivate:" . env\EnvUserCurrent::Get() . "_uu", 'Download &raquo;&raquo;&raquo;')];

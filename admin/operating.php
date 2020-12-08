@@ -4,7 +4,7 @@ class admin_plugin_workbook_operating extends workbook\admin\a_adminpage {
     /* -------------------------------------------------------------------- */
     protected $_Page = 'operating';
     /* -------------------------------------------------------------------- */
-    protected function _ArrayGet() {
+    protected function _Array1Get() {
         $returns = [];
         $returns[] = ['TH:OPERATING', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         $returns[] = ['TH:Cache'];

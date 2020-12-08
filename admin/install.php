@@ -5,7 +5,7 @@ class admin_plugin_workbook_install extends workbook\admin\a_adminpage {
     /* -------------------------------------------------------------------- */
     protected $_Page = 'install';
     /* -------------------------------------------------------------------- */
-    protected function _ArrayGet() {
+    protected function _Array1Get() {
         $returns = [];
         $returns[] = ['TH:INSTALL', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         $returns[] = ['TH:Infra'];
