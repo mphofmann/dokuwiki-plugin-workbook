@@ -14,7 +14,7 @@ class AdminInode {
         $paths = [//
             'conf/lang/', 'conf/plugin/', 'conf/plugin_lang/', //
             'data/cache/', 'data/tmp/', 'data/workbook/sync/', 'data/workbook/tmp/',  //
-            'lib/plugins/', 'data/tpl/', //
+            'lib/plugins/', 'lib/tpl/', //
             '/ztrash/', // all trashes
         ];
         $do = false;

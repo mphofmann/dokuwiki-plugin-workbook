@@ -62,9 +62,9 @@ class AdmincoreOperating {
             case 'status':
                 switch ($inScope) {
                     case 'basic':
-                        AdmincoreConf::Confs('status');
                         AdmincoreConf::Plugins('status');
                         AdmincoreConf::Tpls('status');
+                        AdmincoreConf::Confs('status');
                         break;
                     case 'conf':
                         $methods = ['LocalProtected', 'Acl', 'Entities', 'Acronyms', 'Interwiki', 'Mime', 'License', 'Lang'];
