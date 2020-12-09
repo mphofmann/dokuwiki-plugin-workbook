@@ -58,6 +58,12 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
             $returns[] = ['Templates', 'Checks installed templates.', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('admincore\AdmincoreConf::Tpls action=status', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreConf::Tpls action=check', 'check', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=templates')];
             $returns[] = ['Confs', 'Checks the main configurations.', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('admincore\AdmincoreConf::Confs action=status', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreConf::Confs action=check', 'check', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=config#plugin____workbook____plugin_settings_name')];
         }
+        return $returns;
+    }
+    /* -------------------------------------------------------------------- */
+    protected function _Array2Get() {
+        $returns = [];
+        $returns[] = ['TH:WORKBOOKS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         // Workbooks
         $returns[] = ['TH:Workbooks (data/pages)'];
         if ($this->__ConnectedCheck) {
@@ -70,19 +76,19 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
         return $returns;
     }
     /* -------------------------------------------------------------------- */
-    protected function _Array2Get() {
+    protected function _Array3Get() {
         $returns = [];
         $returns[] = ['TH:PLUS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         // Webroots
         $returns[] = ['TH:Webroots (/)'];
         if ($this->__ConnectedCheck) {
-            $attr = $this->__ConnectedCheck * $this->__WorkbookcoreCheck * $this->__IoncubeCheck ? '' : 'disabled';
+            $attr = $this->__ConnectedCheck * $this->__WorkbookcoreCheck ? '' : 'disabled';
             $returns[] = ['index.php', 'Controller switcher', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('dokuadmin\DokuadminWebroot::Action action=status id=index.php', 'status'), admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminWebroot::Action action=link id=index.php", 'link', $attr) . admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminWebroot::Action action=restore id=index.php", 'restore', (file_exists("index.php.orig")) ? '' : 'disabled'), 'cli'];
             $returns[] = ['wb.php', 'Worbook controller', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet("dokuadmin\DokuadminWebroot::Action action=status id=wb.php"), admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminWebroot::Action action=link id=wb.php", 'link', $attr) . admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminWebroot::Action action=remove id=wb.php", 'remove', (file_exists('wb.php')) ? '' : 'disabled'), 'cli'];
         }
         // Plugins Premium
-        $returns[] = ["TH:Plugins Premium (lib/plugins)"];
-        if ($this->__ConnectedCheck) {
+        $returns[] = ["TH:Plugins (lib/plugins)"];
+        if ($this->__ConnectedCheck * $this->__IoncubeCheck) {
             $attr = $this->__ConnectedCheck * $this->__WorkbookcoreCheck * $this->__IoncubeCheck ? '' : 'disabled';
             if (is_array($this->__SystemsAr['plugins-premium'])) {
                 $returns = array_merge($returns, $this->__RowsExtensionGet($this->__SystemsAr['plugins-premium'], 'plugin', $this->__SystemsAr['*']['deburl'], $this->__SystemsAr['*']['debprefix'], $attr));
@@ -106,10 +112,10 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
                 $url = $val;
                 $tarpath = '';
             }
-            $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=note type=$inExttype id=$id url=$url"), admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=status type=$inExttype id=$id url=$url"), admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminExtension::Action action=install type=$inExttype id=$id url=$url tarpath=$tarpath", 'install', $inAttr), admin\AdminXhtml::LinkGet("?do=admin&page=extension&tab=$inExttype")];
+            $cmd = is_dir("lib/plugins/$id") ? 'replace' : 'install';
+            $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=note type=$inExttype id=$id url=$url"), $inAttr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=status type=$inExttype id=$id url=$url"), admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminExtension::Action action=$cmd type=$inExttype id=$id url=$url tarpath=$tarpath", $cmd, $inAttr), admin\AdminXhtml::LinkGet("?do=admin&page=extension&tab=$inExttype")];
         }
         return $returns;
     }
     /* -------------------------------------------------------------------- */
 }
-

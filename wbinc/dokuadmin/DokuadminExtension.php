@@ -44,7 +44,14 @@ class DokuadminExtension {
                 $return .= self::NoteGet($inType, $inId, $inUrl);
                 break;
             case 'install':
-                $return .= self::Install($inType, $inId, $inUrl, $inTarpath);
+                if(is_dir("lib/plugins/$inId")){
+                    doku\DokuXhtmlMsg::Echo('Warning', '', '', "Extension already installed: $inAction $inType $inId");
+                }else{
+                    $return .= self::Replace($inType, $inId, $inUrl, $inTarpath);
+                }
+                break;
+            case 'replace':
+                $return .= self::Replace($inType, $inId, $inUrl, $inTarpath);
                 break;
             case 'remove':
                 break;
@@ -64,7 +71,7 @@ class DokuadminExtension {
         $return = '';
         $url = self::__UrlGet($inType, $inId, $inUrl);
         $ar = [ //
-            'workbook' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by MPH</span>', '.deb' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by MPH</span>', 'deb:' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by MPH</span>', //
+            'workbook' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', '.deb' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', 'deb:' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', //
             'splitbrain' => '<span title="Andrea Gohr, Berlin, Germany">by Splitbrain</span>', //
             'cosmocode' => '<span title="CosmoCode GmbH, Berlin, Germany">by CosmoCode</span>', //
             'michitux' => '<span title="Michael Hamann, Karlsruhe, Germany">by Hamann</span>', //
@@ -79,7 +86,7 @@ class DokuadminExtension {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function Install($inType, $inId, $inUrl = '', $inTarpath = '') {
+    public static function Replace($inType, $inId, $inUrl = '', $inTarpath = '') {
         $url = self::__UrlGet($inType, $inId, $inUrl);
         if (empty($url)) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Url missing: $inType-$inId");
         if (substr($url, -4) == '.deb' and empty($inTarpath)) return doku\DokuXhtmlMsg::Echo('Warning', '', '', "Tarpath is empty: $inType-$inId");
@@ -120,6 +127,7 @@ class DokuadminExtension {
                 }
                 break;
             case '.deb':
+                self::__Remove($inType, $inId);
                 system("mv {$dirpath}{$inTarpath} {$extpath} 2>&1");
                 doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension copied: $inType-$inId");
                 break;

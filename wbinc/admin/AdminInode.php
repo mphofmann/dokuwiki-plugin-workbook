@@ -25,9 +25,7 @@ class AdminInode {
             }
         }
         if ($do) {
-            $cmd = "rm -R {$inPath}";
-            AdminXhtmlMsg::Echo('Debug-Info', __METHOD__, '', $cmd);
-            system($cmd);
+            system("rm -R {$inPath}");
         } else {
             AdminXhtmlMsg::Echo('Warning', __METHOD__, $inPath, 'Path not allowed.');
         }

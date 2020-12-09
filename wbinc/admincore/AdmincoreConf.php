@@ -1,7 +1,6 @@
 <?php
 namespace workbook\wbinc\admincore;
 use workbook\wbinc\admin;
-use workbookcore\wbinc\base;
 use workbookcore\wbinc\sys;
 class AdmincoreConf {
     /* -------------------------------------------------------------------- */

@@ -55,6 +55,11 @@ class a_adminpage extends \DokuWiki_Admin_Plugin {
                 echo admin\AdminXhtml::TableGet($ar, $this->_StylesAr());
                 echo '<br/>';
             }
+            $ar = $this->_Array3Get();
+            if (!empty($ar)) {
+                echo admin\AdminXhtml::TableGet($ar, $this->_StylesAr());
+                echo '<br/>';
+            }
             // Form
             echo '</form>';
         }
@@ -75,6 +80,10 @@ class a_adminpage extends \DokuWiki_Admin_Plugin {
     }
     /* -------------------------------------------------------------------- */
     protected function _Array2Get() {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected function _Array3Get() {
         return [];
     }
     /* -------------------------------------------------------------------- */
