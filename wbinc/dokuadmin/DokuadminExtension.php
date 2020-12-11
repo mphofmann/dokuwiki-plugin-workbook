@@ -5,35 +5,40 @@ use workbook\wbinc\doku;
 class DokuadminExtension {
     /* -------------------------------------------------------------------- */
     public static $Extensions = [ //
-        'plugins' => [ //
-            // MPH
-            'workbook' => 'deb:', // 'https://github.com/mphofmann/dokuwiki-plugin-workbook/archive/main.zip', //
-            'workbookcore' => 'deb:', //
-            'workbookuseracl' => 'deb:', //
-            // CosmoCode
-            'cleanup' => 'https://github.com/cosmocode/dokuwiki-plugin-cleanup/archive/master.zip', //
-            'confmanager' => 'https://github.com/cosmocode/confmanager/archive/master.zip', //
-            'edittable' => 'https://github.com/cosmocode/edittable/archive/master.zip', //
-            'sqlite' => 'https://github.com/cosmocode/sqlite/archive/master.zip', //
-            'struct' => 'https://github.com/cosmocode/dokuwiki-plugin-struct/archive/master.zip', //
-            // Splitbrain
-            'captcha' => 'https://github.com/splitbrain/dokuwiki-plugin-captcha/archive/master.zip', //
-            'passpolicy' => 'https://github.com/splitbrain/dokuwiki-plugin-passpolicy/archive/master.zip', //
-            'searchindex' => 'https://github.com/splitbrain/dokuwiki-plugin-searchindex/archive/master.zip', //
-            'upgrade' => 'https://github.com/splitbrain/dokuwiki-plugin-upgrade/archive/master.zip', //
-            // Michitux
-            'move' => 'https://github.com/michitux/dokuwiki-plugin-move/archive/master.zip', //
-            // Optional
-            // 'dropfiles' => 'https://github.com/cosmocode/dokuwiki-plugin-dropfiles/archive/master.zip', //
-            'feedback' => 'https://github.com/cosmocode/dokuwiki-plugin-feedback/archive/master.zip', //
-            'prosemirror' => 'manual:,note:cosmocode', //
-            // 'structgantt' => 'https://github.com/cosmocode/dokuwiki-plugin-structgantt/archive/master.zip', //
-            'tablelayout' => 'https://github.com/cosmocode/dokuwiki-plugin-tablelayout/archive/master.zip', //
-            'toolbox' => 'https://github.com/splitbrain/dokuwiki-plugin-toolbox/archive/master.zip', //
+        'depends' => [ //
+            'plugins' => [ //
+                // MPH
+                'workbook' => 'deb:', // 'https://github.com/mphofmann/dokuwiki-plugin-workbook/archive/main.zip', //
+                'workbookcore' => 'deb:', //
+                'workbookuseracl' => 'deb:', //
+                // CosmoCode
+                'cleanup' => 'https://github.com/cosmocode/dokuwiki-plugin-cleanup/archive/master.zip', //
+                'confmanager' => 'https://github.com/cosmocode/confmanager/archive/master.zip', //
+                'edittable' => 'https://github.com/cosmocode/edittable/archive/master.zip', //
+                'sqlite' => 'https://github.com/cosmocode/sqlite/archive/master.zip', //
+                'struct' => 'https://github.com/cosmocode/dokuwiki-plugin-struct/archive/master.zip', //
+                // Splitbrain
+                'captcha' => 'https://github.com/splitbrain/dokuwiki-plugin-captcha/archive/master.zip', //
+                'passpolicy' => 'https://github.com/splitbrain/dokuwiki-plugin-passpolicy/archive/master.zip', //
+                'searchindex' => 'https://github.com/splitbrain/dokuwiki-plugin-searchindex/archive/master.zip', //
+                'upgrade' => 'https://github.com/splitbrain/dokuwiki-plugin-upgrade/archive/master.zip', //
+                // Michitux
+                'move' => 'https://github.com/michitux/dokuwiki-plugin-move/archive/master.zip', //
+            ], //
+            'templates' => [ //
+                // MPH
+                'workbook' => 'deb:', //
+            ], //
         ], //
-        'templates' => [ //
-            // MPH
-            'workbook' => 'deb:', //
+        'recommends' => [ //
+            'plugins' => [ //
+                // 'dropfiles' => 'https://github.com/cosmocode/dokuwiki-plugin-dropfiles/archive/master.zip', //
+                'feedback' => 'https://github.com/cosmocode/dokuwiki-plugin-feedback/archive/master.zip', //
+                'prosemirror' => 'manual:,note:cosmocode', //
+                // 'structgantt' => 'https://github.com/cosmocode/dokuwiki-plugin-structgantt/archive/master.zip', //
+                'tablelayout' => 'https://github.com/cosmocode/dokuwiki-plugin-tablelayout/archive/master.zip', //
+                'toolbox' => 'https://github.com/splitbrain/dokuwiki-plugin-toolbox/archive/master.zip', //
+            ], //
         ], //
     ];
     /* -------------------------------------------------------------------- */
@@ -44,9 +49,9 @@ class DokuadminExtension {
                 $return .= self::NoteGet($inType, $inId, $inUrl);
                 break;
             case 'install':
-                if(is_dir("lib/plugins/$inId")){
+                if (is_dir("lib/plugins/$inId")) {
                     doku\DokuXhtmlMsg::Echo('Warning', '', '', "Extension already installed: $inAction $inType $inId");
-                }else{
+                } else {
                     $return .= self::Replace($inType, $inId, $inUrl, $inTarpath);
                 }
                 break;
@@ -56,9 +61,23 @@ class DokuadminExtension {
             case 'remove':
                 break;
             case 'status':
+                $color = 'red';
+                $title = 'Not installed';
                 $extpath = self::__PathGet($inType, $inId);
-                $color = is_dir($extpath) ? 'green' : 'red';
-                $return .= admin\AdminXhtml::StatusGet($color);
+                if (is_dir($extpath)) {
+                    $extmtime = filemtime($extpath);
+                    $color = 'green';
+                    $title = "Installed: " . date('Y-m-d H:i:s', $extmtime);
+                    if (!empty($inUrl)) {
+                        $url = self::__UrlGet($inType, $inId, $inUrl);
+                        $urlmtime = admin\AdminUtil::UrlMtime($url);
+                        if ($extmtime < $urlmtime) {
+                            $color = 'yellow';
+                            $title .= " / Updateable: " . date('Y-m-d H:i:s', $urlmtime);
+                        }
+                    }
+                }
+                $return .= admin\AdminXhtml::StatusGet($color, $title);
                 break;
             default:
                 doku\DokuXhtmlMsg::Echo('Warning', '', '', "Extension action unknown: $inAction $inType $inId");
@@ -69,13 +88,13 @@ class DokuadminExtension {
     /* -------------------------------------------------------------------- */
     public static function NoteGet($inType, $inId, $inUrl = '') {
         $return = '';
-        $url = self::__UrlGet($inType, $inId, $inUrl);
         $ar = [ //
             'workbook' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', '.deb' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', 'deb:' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', //
             'splitbrain' => '<span title="Andrea Gohr, Berlin, Germany">by Splitbrain</span>', //
             'cosmocode' => '<span title="CosmoCode GmbH, Berlin, Germany">by CosmoCode</span>', //
             'michitux' => '<span title="Michael Hamann, Karlsruhe, Germany">by Hamann</span>', //
         ];
+        $url = self::__UrlGet($inType, $inId, $inUrl);
         foreach ($ar as $id => $val) {
             if (strpos($url, $id) !== false) {
                 $return .= $val;
@@ -122,6 +141,7 @@ class DokuadminExtension {
                     if (substr($inode, 0, 1) == '.') continue;
                     self::__Remove($inType, $inId);
                     system("mv {$dirpath}{$inode} {$extpath} 2>&1");
+                    touch($extpath);
                     doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension copied: $inType-$inId");
                     break;
                 }
@@ -129,6 +149,7 @@ class DokuadminExtension {
             case '.deb':
                 self::__Remove($inType, $inId);
                 system("mv {$dirpath}{$inTarpath} {$extpath} 2>&1");
+                touch($extpath);
                 doku\DokuXhtmlMsg::Echo('Info', '', '', "Extension copied: $inType-$inId");
                 break;
         }
@@ -148,7 +169,8 @@ class DokuadminExtension {
     /* -------------------------------------------------------------------- */
     private static function __UrlGet($inType, $inId, $inUrl) {
         $return = $inUrl;
-        if (empty($return)) $return = @self::$Extensions[$inType][$inId];
+        if (empty($return)) $return = @self::$Extensions['depends'][$inType][$inId];
+        if (empty($return)) $return = @self::$Extensions['recommends'][$inType][$inId];
         $return = strtr($return, ['$ID$' => $inId]);
         return $return;
     }

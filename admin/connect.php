@@ -19,7 +19,7 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
     protected function _Array1Get() {
         $attr = $this->__ConnectedCheck ? '' : 'disabled';
         $returns = [];
-        $returns[] = ['TH:BASIC', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
+        $returns[] = ['TH:DEPENDS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         // Marketplace
         $returns[] = ['TH:Marketplace'];
         $returns[] = ['Marketplace Conf', "Checks the marketplace configuration:<br>" . dokuadmin\DokuadminConnect::NoteGet(), admin\AdminCmd::ExecGet('dokuadmin\DokuadminConnect::Action action=status', 'status'), admin\AdminXhtml::ButtonGet('dokuadmin\DokuadminConnect::Action action=login', 'login', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=config#plugin____workbook____plugin_settings_name')];
@@ -78,7 +78,7 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
     /* -------------------------------------------------------------------- */
     protected function _Array3Get() {
         $returns = [];
-        $returns[] = ['TH:PLUS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
+        $returns[] = ['TH:RECOMMENDS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         // Webroots
         $returns[] = ['TH:Webroots (/)'];
         if ($this->__ConnectedCheck) {

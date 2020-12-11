@@ -22,6 +22,7 @@ $conf['acl_groups']                 = '';
 
 $conf['viewlist']                   = '';
 $conf['view_contentdefault']        = 1;
+$conf['view_httpconnection']        = 'message';
 $conf['view_currency']              = 'EUR';
 
 $conf['view_cookielaw_text']        = "

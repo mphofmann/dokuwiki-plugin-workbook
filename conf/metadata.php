@@ -22,6 +22,7 @@ $meta['acl_groups']                 = ['string'];
 
 $meta['viewlist']                   = ['string'];
 $meta['view_contentdefault']        = ['onoff'];
+$meta['view_httpconnection']        = ['multichoice', '_choices' => ['', 'message', 'message&link', 'forward']];
 $meta['view_currency']              = ['string', '_pattern' => '/[A-Z]{3}/'];
 
 $meta['view_cookielaw_text']        = [''];

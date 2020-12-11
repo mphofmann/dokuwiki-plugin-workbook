@@ -145,7 +145,7 @@ class AdmincoreWbTool {
         if (is_dir($pathsource)) {
             base\BaseXhtmlMsg::Echo('Info', __METHOD__, "$inWb:$inTool", "");
             $pathtarget = "data/$inType/$inWb/$inTool/";
-           AdminCmd::SystemEcho("cp -R {$pathsource}* {$pathtarget}");
+            admin\AdminCmd::SystemEcho("cp -R {$pathsource}* {$pathtarget}");
         }
     }
     /* -------------------------------------------------------------------- */

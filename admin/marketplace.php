@@ -1,5 +1,6 @@
 <?php
 use workbook\wbinc\admin;
+use workbookcore\wbinc\base;
 use workbookcore\wbinc\env;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\xhtml;
@@ -29,7 +30,7 @@ class admin_plugin_workbook_marketplace extends workbook\admin\a_adminpage {
                         if ($val == '1') $tools .= "{$id} ";
                     }
                 }
-                $dist = (!empty($ar2['*']['dist']) and @$ar2['*']['dist'] != 'prod') ? strtr("[{$ar2['*']['dist']}]", env\EnvGlobal::EntitiesAr()) : '';
+                $dist = (!empty($ar2['*']['dist']) and @$ar2['*']['dist'] != 'prod') ? strtr("[{$ar2['*']['dist']}]", base\BaseConf::EntitiesAr()) : '';
                 $status = xhtml\XhtmlUnicode::StatusGet($color);
                 if ($color == 'green') {
                     $button = admin\AdminXhtml::LinkGet('?do=admin&page=workbook_workbook');

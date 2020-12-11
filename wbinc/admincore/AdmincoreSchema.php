@@ -76,7 +76,7 @@ class AdmincoreSchema {
             $i++;
         }
         $return = json_encode($returns);
-        $return = strtr($return, ['$wb$' => $wb, '$table$' => $table, '$lang$' => env\EnvLang::Get('1'), '$currency$' => env\EnvGlobal::CurrencyGet()]);
+        $return = strtr($return, ['$wb$' => $wb, '$table$' => $table, '$lang$' => env\EnvLang::Get('1'), '$currency$' => base\BaseConf::ConfGet('plugin', 'workbook', 'curreny')]);
         return $return;
     }
     /* -------------------------------------------------------------------- */

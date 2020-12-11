@@ -1,10 +1,10 @@
 <?php
 namespace workbook\wbinc\admincore;
+use workbook\wbinc\admin;
 use workbookcore\wbinc\base;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\sys;
 use workbookcore\wbinc\util;
-use workbookcore\wbinc\xhtml;
 class AdmincoreWb {
     /* -------------------------------------------------------------------- */
     public static function ToolAr($inWb) {
@@ -99,7 +99,7 @@ class AdmincoreWb {
         $pathout = "data/pages/zworkbook/zarchive/" . date('Y');
         $dir = date('Y-m-d-His') . "-{$inWb}";
         util\UtilPath::MkdirCheck($pathout);
-        AdminCmd::SystemGet("mv {$pathin} {$pathout}{$dir}");
+        admin\AdminCmd::SystemGet("mv {$pathin} {$pathout}{$dir}");
         self::Syncclear($inWb);
     }
     /* -------------------------------------------------------------------- */

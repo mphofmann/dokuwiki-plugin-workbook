@@ -7,7 +7,7 @@ class admin_plugin_workbook_install extends workbook\admin\a_adminpage {
     /* -------------------------------------------------------------------- */
     protected function _Array1Get() {
         $returns = [];
-        $returns[] = ['TH:INSTALL', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
+        $returns[] = ['TH:DEPENDS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         $returns[] = ['TH:Infra'];
         foreach (dokuadmin\DokuadminInfra::$Infras as $id => $val) {
             $strbtn = '';
@@ -17,20 +17,34 @@ class admin_plugin_workbook_install extends workbook\admin\a_adminpage {
             $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminInfra::Action action=note id=$id"), admin\AdminCmd::ExecGet("dokuadmin\DokuadminInfra::Action action=status id=$id"), $strbtn, $strlink];
         }
         $returns[] = ['TH:Plugins'];
-        foreach (dokuadmin\DokuadminExtension::$Extensions['plugins'] as $id => $val) {
+        foreach (dokuadmin\DokuadminExtension::$Extensions['depends']['plugins'] as $id => $val) {
             $cmd = is_dir("lib/plugins/$id") ? 'replace' : 'install';
             $strbtn = admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminExtension::Action action=$cmd type=plugins id=$id", $cmd);
-            if (strpos(dokuadmin\DokuadminExtension::$Extensions['plugins'][$id], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=plugins');
-            if (strpos(dokuadmin\DokuadminExtension::$Extensions['plugins'][$id], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=workbook_connect');
+            if (strpos(dokuadmin\DokuadminExtension::$Extensions['depends']['plugins'][$id], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=plugins');
+            if (strpos(dokuadmin\DokuadminExtension::$Extensions['depends']['plugins'][$id], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=workbook_connect');
             $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=note type=plugins id=$id"), admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=status type=plugins id=$id"), $strbtn, admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=plugins')];
         };
         $returns[] = ['TH:Templates'];
-        foreach (dokuadmin\DokuadminExtension::$Extensions['templates'] as $id => $val) {
+        foreach (dokuadmin\DokuadminExtension::$Extensions['depends']['templates'] as $id => $val) {
             $cmd = is_dir("lib/tpl/$id") ? 'replace' : 'install';
             $strbtn = admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminExtension::Action action=$cmd type=templates id=$id", $cmd);
-            if (strpos(dokuadmin\DokuadminExtension::$Extensions['plugins'][$id], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=templates');
-            if (strpos(dokuadmin\DokuadminExtension::$Extensions['plugins'][$id], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=workbook_connect');
+            if (strpos(dokuadmin\DokuadminExtension::$Extensions['depends']['plugins'][$id], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=templates');
+            if (strpos(dokuadmin\DokuadminExtension::$Extensions['depends']['plugins'][$id], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=workbook_connect');
             $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=note type=templates id=$id"), admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=status type=templates id=$id"), $strbtn, admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=templates')];
+        };
+        return $returns;
+    }
+    /* -------------------------------------------------------------------- */
+    protected function _Array2Get() {
+        $returns = [];
+        $returns[] = ['TH:RECOMMENDS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
+        $returns[] = ['TH:Plugins'];
+        foreach (dokuadmin\DokuadminExtension::$Extensions['recommends']['plugins'] as $id => $val) {
+            $cmd = is_dir("lib/plugins/$id") ? 'replace' : 'install';
+            $strbtn = admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminExtension::Action action=$cmd type=plugins id=$id", $cmd);
+            if (strpos(dokuadmin\DokuadminExtension::$Extensions['recommends']['plugins'][$id], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=plugins');
+            if (strpos(dokuadmin\DokuadminExtension::$Extensions['recommends']['plugins'][$id], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=workbook_connect');
+            $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=note type=plugins id=$id"), admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=status type=plugins id=$id"), $strbtn, admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=plugins')];
         };
         return $returns;
     }
