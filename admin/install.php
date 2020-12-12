@@ -49,6 +49,20 @@ class admin_plugin_workbook_install extends workbook\admin\a_adminpage {
         return $returns;
     }
     /* -------------------------------------------------------------------- */
+    protected function _Array3Get() {
+        $returns = [];
+        $returns[] = ['TH:SUGGESTS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
+        $returns[] = ['TH:Plugins'];
+        foreach (dokuadmin\DokuadminExtension::$Extensions['suggests']['plugins'] as $id => $val) {
+            $cmd = is_dir("lib/plugins/$id") ? 'replace' : 'install';
+            $strbtn = admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminExtension::Action action=$cmd type=plugins id=$id", $cmd);
+            if (strpos(dokuadmin\DokuadminExtension::$Extensions['suggests']['plugins'][$id], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=plugins');
+            if (strpos(dokuadmin\DokuadminExtension::$Extensions['suggests']['plugins'][$id], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('?do=admin&page=workbook_connect');
+            $returns[] = [$id, admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=note type=plugins id=$id"), admin\AdminCmd::ExecGet("dokuadmin\DokuadminExtension::Action action=status type=plugins id=$id"), $strbtn, admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=plugins')];
+        };
+        return $returns;
+    }
+    /* -------------------------------------------------------------------- */
     public function forAdminOnly() {
         return true;
     }

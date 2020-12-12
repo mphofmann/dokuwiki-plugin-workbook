@@ -34,10 +34,10 @@ class DokuadminConnect {
     /* -------------------------------------------------------------------- */
     public static function NoteGet() {
         $return = '<table style="white-space:nowrap; border:1px solid #ccc; font-size:smaller;">';
-        $url = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_url');
-        $username = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_username');
-        $password = str_pad('', strlen(doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_password')), '*');
-        $mail = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_mail');
+        $url = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_url');
+        $username = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_username');
+        $password = str_pad('', strlen(doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_password')), '*');
+        $mail = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_mail');
         $myip = admin\AdminUtil::IpPublicGet();
         $return .= "<tr><td>Url:</td><td>{$url}</td></tr>";
         $return .= "<tr><td>Login:</td><td>{$username} {$password}</td></tr>";
@@ -49,10 +49,10 @@ class DokuadminConnect {
     /* -------------------------------------------------------------------- */
     public static function EnabledCheck($inType = '') {
         if (self::$__ClientLogin === true) return true;
-        $url = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_url');
-        $username = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_username');
-        $password = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_password');
-        $mail = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_mail');
+        $url = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_url');
+        $username = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_username');
+        $password = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_password');
+        $mail = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_mail');
         if (empty($url) or !filter_var($url, FILTER_VALIDATE_URL)) return false;
         if (empty($username) or $username == '!!not set!!') return false;
         if (empty($password) or $password == '!!not set!!') return false;
@@ -69,7 +69,7 @@ class DokuadminConnect {
         try {
             if (!self::EnabledCheck('login')) return false;
             $cmd = "plugin.workbookhub.SysDataIdContentsGet";
-            $version = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_version');
+            $version = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_version');
             $nsid = "zsync:sync:$version:conf:systems.ini";
             self::__ClientCall($cmd, $nsid);
             if (self::$__Status === true) {
@@ -112,8 +112,8 @@ class DokuadminConnect {
         self::$__Response = '';
         switch ($inCmd) {
             case 'dokuwiki.login': // username, password
-                $inPara1 = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_username');
-                $inPara2 = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_password');
+                $inPara1 = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_username');
+                $inPara2 = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_password');
                 break;
             case 'systems.ini';
                 break;
@@ -149,7 +149,7 @@ class DokuadminConnect {
     /* -------------------------------------------------------------------- */
     private static function __ClientUrlGet() {
         $return = '';
-        $url = doku\DokuGlobal::ConfGet('plugin', 'workbook', 'connect_url');
+        $url = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_url');
         if (!empty($url) and filter_var($url, FILTER_VALIDATE_URL)) {
             $return = $url;
             $return .= (substr($return, -1) == '/') ? '' : '/';

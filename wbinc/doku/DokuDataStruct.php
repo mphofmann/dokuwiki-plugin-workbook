@@ -24,7 +24,7 @@ class DokuDataStruct {
         $return = false;
         $builder = new meta\SchemaImporter($inSchema, $inJson);
         if ($builder->build()) {
-            touch(DokuGlobal::ConfGet('cachedir') . '/struct.schemarefresh'); // doesnt work: touch(action_plugin_struct_cache::getSchemaRefreshFile());
+            touch(DokuConf::ConfGet('cachedir') . '/struct.schemarefresh'); // doesnt work: touch(action_plugin_struct_cache::getSchemaRefreshFile());
             $return = true;
         }
         return $return;

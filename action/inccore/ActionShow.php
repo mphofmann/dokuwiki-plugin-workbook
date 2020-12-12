@@ -4,15 +4,6 @@ use Doku_Event;
 use workbookcore\wbinc\base;
 class ActionShow {
     /* -------------------------------------------------------------------- */
-    public static function EventAfter_DOKUWIKI_STARTED(Doku_Event $Event, $inPara) { // forward start to e.g. start_de
-        if (workbookclassnsget('base\Base') == '') return;
-        base\BaseActionShow::Before_DOKUWIKI_STARTED_Get('');
-    }
-    /* -------------------------------------------------------------------- */
-    public static function EventAfter_DOKUWIKI_DONE(Doku_Event $Event, $inPara) { //
-        // echo "<pre>".print_r($_SESSION,true)."</pre>";
-    }
-    /* -------------------------------------------------------------------- */
     public static function EventBefore_TPL_CONTENT_DISPLAY(Doku_Event $Event, $inPara) { //
         if (workbookclassnsget('base\Base') == '') return;
         $out = base\BaseActionShow::Before_TPL_CONTENT_DISPLAY_Get($Event->data);

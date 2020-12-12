@@ -24,21 +24,21 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
         $returns[] = ['TH:Marketplace'];
         $returns[] = ['Marketplace Conf', "Checks the marketplace configuration:<br>" . dokuadmin\DokuadminConnect::NoteGet(), admin\AdminCmd::ExecGet('dokuadmin\DokuadminConnect::Action action=status', 'status'), admin\AdminXhtml::ButtonGet('dokuadmin\DokuadminConnect::Action action=login', 'login', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=config#plugin____workbook____plugin_settings_name')];
         // Plugins
-        $returns[] = ["TH:Plugins (lib/plugins)"];
+        $returns[] = ["TH:Plugins"];
         if ($this->__ConnectedCheck) {
-            if (is_array($this->__SystemsAr['plugins'])) {
-                $returns = array_merge($returns, $this->__RowsExtensionGet($this->__SystemsAr['plugins'], 'plugin', $this->__SystemsAr['*']['deburl'], $this->__SystemsAr['*']['debprefix']));
+            if (is_array($this->__SystemsAr['depends-plugins'])) {
+                $returns = array_merge($returns, $this->__RowsExtensionGet($this->__SystemsAr['depends-plugins'], 'plugin', $this->__SystemsAr['*']['deburl'], $this->__SystemsAr['*']['debprefix']));
             }
         }
         // Templates
-        $returns[] = ["TH:Templates (lib/tpl)"];
+        $returns[] = ["TH:Templates"];
         if ($this->__ConnectedCheck) {
-            if (is_array($this->__SystemsAr['templates'])) {
-                $returns = array_merge($returns, $this->__RowsExtensionGet($this->__SystemsAr['templates'], 'template', $this->__SystemsAr['*']['deburl'], $this->__SystemsAr['*']['debprefix']));
+            if (is_array($this->__SystemsAr['depends-templates'])) {
+                $returns = array_merge($returns, $this->__RowsExtensionGet($this->__SystemsAr['depends-templates'], 'template', $this->__SystemsAr['*']['deburl'], $this->__SystemsAr['*']['debprefix']));
             }
         }
         // Confs
-        $returns[] = ['TH:Confs (conf)'];
+        $returns[] = ['TH:Confs'];
         if ($this->__ConnectedCheck) {
             $attr = $this->__ConnectedCheck * $this->__WorkbookcoreCheck ? '' : 'disabled';
             $returns[] = ['Confs-protected', 'Changes conf/local.protected.php.', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('admincore\AdmincoreConf::LocalProtected action=status', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreConf::LocalProtected action=replace', 'replace', $attr) . admin\AdminXhtml::ButtonGet('admincore\AdmincoreConf::LocalProtected action=append', 'append', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=config')];
@@ -65,7 +65,7 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
         $returns = [];
         $returns[] = ['TH:WORKBOOKS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         // Workbooks
-        $returns[] = ['TH:Workbooks (data/pages)'];
+        $returns[] = ['TH:Workbooks'];
         if ($this->__ConnectedCheck) {
             $count = 0;
             foreach (scandir('data/pages') as $inode) {
@@ -80,18 +80,32 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
         $returns = [];
         $returns[] = ['TH:RECOMMENDS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
         // Webroots
-        $returns[] = ['TH:Webroots (/)'];
+        $returns[] = ['TH:Webroots'];
         if ($this->__ConnectedCheck) {
             $attr = $this->__ConnectedCheck * $this->__WorkbookcoreCheck ? '' : 'disabled';
             $returns[] = ['index.php', 'Controller switcher', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('dokuadmin\DokuadminWebroot::Action action=status id=index.php', 'status'), admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminWebroot::Action action=link id=index.php", 'link', $attr) . admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminWebroot::Action action=restore id=index.php", 'restore', (file_exists("index.php.orig")) ? '' : 'disabled'), 'cli'];
             $returns[] = ['wb.php', 'Worbook controller', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet("dokuadmin\DokuadminWebroot::Action action=status id=wb.php"), admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminWebroot::Action action=link id=wb.php", 'link', $attr) . admin\AdminXhtml::ButtonGet("dokuadmin\DokuadminWebroot::Action action=remove id=wb.php", 'remove', (file_exists('wb.php')) ? '' : 'disabled'), 'cli'];
         }
-        // Plugins Premium
-        $returns[] = ["TH:Plugins (lib/plugins)"];
+        // Plugins
+        $returns[] = ["TH:Plugins"];
         if ($this->__ConnectedCheck * $this->__IoncubeCheck) {
             $attr = $this->__ConnectedCheck * $this->__WorkbookcoreCheck * $this->__IoncubeCheck ? '' : 'disabled';
-            if (is_array($this->__SystemsAr['plugins-premium'])) {
-                $returns = array_merge($returns, $this->__RowsExtensionGet($this->__SystemsAr['plugins-premium'], 'plugin', $this->__SystemsAr['*']['deburl'], $this->__SystemsAr['*']['debprefix'], $attr));
+            if (is_array($this->__SystemsAr['recommends-plugins'])) {
+                $returns = array_merge($returns, $this->__RowsExtensionGet($this->__SystemsAr['recommends-plugins'], 'plugin', $this->__SystemsAr['*']['deburl'], $this->__SystemsAr['*']['debprefix'], $attr));
+            }
+        }
+        return $returns;
+    }
+    /* -------------------------------------------------------------------- */
+    protected function _Array4Get() {
+        $returns = [];
+        $returns[] = ['TH:SUGGESTS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
+        // Plugins
+        $returns[] = ["TH:Plugins"];
+        if ($this->__ConnectedCheck * $this->__IoncubeCheck) {
+            $attr = $this->__ConnectedCheck * $this->__WorkbookcoreCheck * $this->__IoncubeCheck ? '' : 'disabled';
+            if (is_array($this->__SystemsAr['suggests-plugins'])) {
+                $returns = array_merge($returns, $this->__RowsExtensionGet($this->__SystemsAr['suggests-plugins'], 'plugin', $this->__SystemsAr['*']['deburl'], $this->__SystemsAr['*']['debprefix'], $attr));
             }
         }
         return $returns;

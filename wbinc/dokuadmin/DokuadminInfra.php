@@ -45,7 +45,7 @@ class DokuadminInfra {
                         $return .= PHP_VERSION;
                         break;
                     case 'Dokuwiki':
-                        $return .= doku\DokuGlobal::VersionGet();
+                        $return .= doku\DokuConf::VersionGet();
                         break;
                 }
                 break;

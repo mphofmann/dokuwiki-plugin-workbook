@@ -44,7 +44,7 @@ class DokuXhtmlMsg {
     /* -------------------------------------------------------------------- */
     private static function __FilterCheck($inType) {
         if (substr($inType, 0, 5) != 'Debug') return true; // no Debug-* message
-        if (DokuGlobal::ConfGet('allowdebug') != '1') return false; // Debug not enabled
+        if (DokuConf::ConfGet('allowdebug') != '1') return false; // Debug not enabled
         if (substr($inType, 0, strlen('Debug-Info')) == 'Debug-Info') return false; // skip Debug-Info messages ... too many
         return true;
     }

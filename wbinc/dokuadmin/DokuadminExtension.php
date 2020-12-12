@@ -12,16 +12,9 @@ class DokuadminExtension {
                 'workbookcore' => 'deb:', //
                 'workbookuseracl' => 'deb:', //
                 // CosmoCode
-                'cleanup' => 'https://github.com/cosmocode/dokuwiki-plugin-cleanup/archive/master.zip', //
-                'confmanager' => 'https://github.com/cosmocode/confmanager/archive/master.zip', //
                 'edittable' => 'https://github.com/cosmocode/edittable/archive/master.zip', //
                 'sqlite' => 'https://github.com/cosmocode/sqlite/archive/master.zip', //
                 'struct' => 'https://github.com/cosmocode/dokuwiki-plugin-struct/archive/master.zip', //
-                // Splitbrain
-                'captcha' => 'https://github.com/splitbrain/dokuwiki-plugin-captcha/archive/master.zip', //
-                'passpolicy' => 'https://github.com/splitbrain/dokuwiki-plugin-passpolicy/archive/master.zip', //
-                'searchindex' => 'https://github.com/splitbrain/dokuwiki-plugin-searchindex/archive/master.zip', //
-                'upgrade' => 'https://github.com/splitbrain/dokuwiki-plugin-upgrade/archive/master.zip', //
                 // Michitux
                 'move' => 'https://github.com/michitux/dokuwiki-plugin-move/archive/master.zip', //
             ], //
@@ -31,6 +24,16 @@ class DokuadminExtension {
             ], //
         ], //
         'recommends' => [ //
+            'plugins' => [ //
+                'captcha' => 'https://github.com/splitbrain/dokuwiki-plugin-captcha/archive/master.zip', //
+                'cleanup' => 'https://github.com/cosmocode/dokuwiki-plugin-cleanup/archive/master.zip', //
+                'confmanager' => 'https://github.com/cosmocode/confmanager/archive/master.zip', //
+                'passpolicy' => 'https://github.com/splitbrain/dokuwiki-plugin-passpolicy/archive/master.zip', //
+                'searchindex' => 'https://github.com/splitbrain/dokuwiki-plugin-searchindex/archive/master.zip', //
+                'upgrade' => 'https://github.com/splitbrain/dokuwiki-plugin-upgrade/archive/master.zip', //
+            ], //
+        ], //
+        'suggests' => [ //
             'plugins' => [ //
                 // 'dropfiles' => 'https://github.com/cosmocode/dokuwiki-plugin-dropfiles/archive/master.zip', //
                 'feedback' => 'https://github.com/cosmocode/dokuwiki-plugin-feedback/archive/master.zip', //
@@ -171,6 +174,7 @@ class DokuadminExtension {
         $return = $inUrl;
         if (empty($return)) $return = @self::$Extensions['depends'][$inType][$inId];
         if (empty($return)) $return = @self::$Extensions['recommends'][$inType][$inId];
+        if (empty($return)) $return = @self::$Extensions['suggests'][$inType][$inId];
         $return = strtr($return, ['$ID$' => $inId]);
         return $return;
     }
