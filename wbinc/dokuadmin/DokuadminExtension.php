@@ -8,7 +8,7 @@ class DokuadminExtension {
         'depends' => [ //
             'plugins' => [ //
                 // MPH
-                'workbook' => 'deb:', // 'https://github.com/mphofmann/dokuwiki-plugin-workbook/archive/main.zip', //
+                'workbook' => 'https://github.com/mphofmann/dokuwiki-plugin-workbook/archive/main.zip', // plus deb:
                 'workbookcore' => 'deb:', //
                 'workbookuseracl' => 'deb:', //
                 // CosmoCode
