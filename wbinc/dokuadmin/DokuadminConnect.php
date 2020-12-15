@@ -39,10 +39,12 @@ class DokuadminConnect {
         $password = str_pad('', strlen(doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_password')), '*');
         $mail = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_mail');
         $myip = admin\AdminUtil::IpPublicGet();
+        $terms = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_terms');
         $return .= "<tr><td>Url:</td><td>{$url}</td></tr>";
         $return .= "<tr><td>Login:</td><td>{$username} {$password}</td></tr>";
         $return .= "<tr><td>Mail:</td><td>{$mail}</td></tr>";
         $return .= "<tr><td>My IP:</td><td>{$myip}</td></tr>";
+        $return .= "<tr><td>Terms:</td><td>{$terms}</td></tr>";
         $return .= '</table>';
         return $return;
     }
@@ -50,13 +52,12 @@ class DokuadminConnect {
     public static function EnabledCheck($inType = '') {
         if (self::$__ClientLogin === true) return true;
         $url = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_url');
-        $username = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_username');
-        $password = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_password');
-        $mail = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_mail');
         if (empty($url) or !filter_var($url, FILTER_VALIDATE_URL)) return false;
-        if (empty($username) or $username == '!!not set!!') return false;
-        if (empty($password) or $password == '!!not set!!') return false;
-        if (empty($mail) or $mail == '!!not set!!') return false;
+        $ar = ['username', 'password', 'mail', 'terms'];
+        foreach ($ar as $val) {
+            $str = doku\DokuConf::ConfGet('plugin', 'workbook', "connect_$val");
+            if (empty($str) or $str == '!!not set!!') return false;
+        }
         $return = true;
         if ($inType == 'login') {
             $return = self::__ClientLogin();

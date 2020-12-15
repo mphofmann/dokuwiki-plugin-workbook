@@ -7,6 +7,7 @@ function __workbookconstantdefine() {
     if (!defined('WB_INC')) define('WB_INC', (defined('DOKU_INC') ? DOKU_INC : __DIR__ . '/../../../'));
     if (!defined('WB_RUNMODE')) {
         $adds = [];
+        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') $adds[] = 'infra-ok';
         if (version_compare(PHP_VERSION, '7.2', '>=')) $adds[] = 'php-ok';
         if (extension_loaded('ionCube Loader')) $adds[] = 'ioncube-ok';
         if (strcmp(substr(@file_get_contents('VERSION'), 0, 10), '2020-07-29') >= 0) $adds[] = 'dokuwiki-ok';

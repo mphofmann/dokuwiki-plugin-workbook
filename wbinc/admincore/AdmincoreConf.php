@@ -125,10 +125,10 @@ class AdmincoreConf {
         switch ($inAction) {
             case 'status':
                 $title = 'conf/lang, conf/plugin & conf/plugin_lang';
-                if (is_link('conf/lang') and is_link('conf/plugin') and is_link('conf/plugin_lang')) {
-                    $status = 'green';
-                } elseif (!file_exists('conf/lang') or !file_exists('conf/plugin') or !file_exists('conf/plugin_lang')) {
+                if (!file_exists('conf/lang') or !file_exists('conf/plugin') or !file_exists('conf/plugin_lang')) {
                     $status = 'orange';
+                } elseif (is_link('conf/lang') and is_link('conf/plugin') and is_link('conf/plugin_lang')) {
+                    $status = 'green';
                 } else {
                     $status = 'yellow';
                 }

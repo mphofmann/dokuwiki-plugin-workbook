@@ -56,7 +56,7 @@ class admin_plugin_workbook_connect extends workbook\admin\a_adminpage {
             $attr = $this->__ConnectedCheck * $this->__WorkbookcoreCheck ? '' : 'disabled';
             $returns[] = ['Plugins', 'Checks installed plugins.', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('admincore\AdmincoreConf::Plugins action=status', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreConf::Plugins action=check', 'check', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=plugins')];
             $returns[] = ['Templates', 'Checks installed templates.', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('admincore\AdmincoreConf::Tpls action=status', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreConf::Tpls action=check', 'check', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=extension&tab=templates')];
-            $returns[] = ['Confs', 'Checks the main configurations.', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('admincore\AdmincoreConf::Confs action=status', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreConf::Confs action=check', 'check', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=config#plugin____workbook____plugin_settings_name')];
+            $returns[] = ['Confs', 'Checks the main configurations.', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet('admincore\AdmincoreConf::Confs action=status', 'status'), admin\AdminXhtml::ButtonGet('admincore\AdmincoreConf::Confs action=check', 'check', $attr), admin\AdminXhtml::LinkGet('?do=admin&page=config')];
         }
         return $returns;
     }

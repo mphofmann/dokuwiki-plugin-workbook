@@ -5,6 +5,7 @@ use workbook\wbinc\doku;
 class DokuadminInfra {
     /* -------------------------------------------------------------------- */
     public static $Infras = [ //
+        'Infra' => '', //
         'PHP' => '', //
         'PHP-Ioncube' => '', //
         'Webroot' => '', //
@@ -18,12 +19,22 @@ class DokuadminInfra {
                 $return .= self::$Infras[$inId];
                 break;
             case 'status':
-                $ar = ['PHP' => 'php-ok', 'PHP-Ioncube' => 'ioncube-ok', 'Dokuwiki' => 'dokuwiki-ok', 'Webroot' => 'webroot-ok'];
+                $ar = ['Infra' => 'infra-ok', 'PHP' => 'php-ok', 'PHP-Ioncube' => 'ioncube-ok', 'Dokuwiki' => 'dokuwiki-ok', 'Webroot' => 'webroot-ok'];
                 $color = strpos(WB_RUNMODE, $ar[$inId]) === false ? 'red' : 'green';
                 $return .= admin\AdminXhtml::StatusGet($color);
                 break;
             case 'info':
                 switch ($inId) {
+                    case 'Infra':
+                        $return .= 'UNAME: ' . php_uname() . "\n";
+                        $return .= 'ARCH: ' . php_uname('m') . "\n";
+                        $return .= 'OS: ' . php_uname('s') . "\n"; // PHP_OS
+                        $return .= 'HOSTNAME: ' . gethostname() . "\n"; // php_uname('n')
+                        $return .= 'FREE-SPACE: ' . @round(disk_free_space('.') / 10 ** 9) . 'GB' . "\n";
+                        $return .= 'TIMEZONE: ' . date_default_timezone_get() . "\n";
+                        $return .= 'PHP-CWD: ' . getcwd() . "\n";
+                        $return .= 'PHP-SAPI: ' . php_sapi_name() . "\n";
+                        break;
                     case 'PHP':
                         phpinfo();
                         exit;
