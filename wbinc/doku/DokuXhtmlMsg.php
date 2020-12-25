@@ -32,7 +32,7 @@ class DokuXhtmlMsg {
     public static function Add($inType, $inMethod, $inPara, $inText) {
         if (!self::__FilterCheck($inType)) return false;
         if (is_numeric($inType)) $inType = in_array($inType, self::$__Types);
-        msg(self::Get($inType, $inMethod, $inPara, $inText), self::$__Types[$inType]);
+        msg(self::Get('', $inMethod, $inPara, $inText), self::$__Types[$inType]);
         return $inType == 1 ? true : false;
     }
     /* -------------------------------------------------------------------- */

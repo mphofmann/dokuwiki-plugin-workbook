@@ -6,9 +6,10 @@ class DokuConf {
     private static $__Consts = [ //  e.g.
         'DOKU_INC' => DOKU_INC, //   /home/sapp/data/home/workbook/
         'DOKU_URL' => DOKU_URL, //   http://domain.org/path/doku.php
-        //
-        'DOKU_BASE' => DOKU_BASE, // /path/ or http://domain.org/path/ (if cannonical is set)
         'DOKU_REL' => DOKU_REL, //   /path/
+        // not used: 'DOKU_BASE' => DOKU_BASE, // /path/ or http://domain.org/path/ (if cannonical is set)
+        // DOKU_COOKIE
+        // DOKU_PREFS
     ];
     /* -------------------------------------------------------------------- */
     public static function ConfGet($inVar1, $inVar2 = '', $inVar3 = '') {

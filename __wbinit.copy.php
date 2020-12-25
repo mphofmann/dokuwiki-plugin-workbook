@@ -1,8 +1,8 @@
 <?php
-__workbookconstantdefine();
-spl_autoload_register('__workbookautoload');
+wb_constantdefine();
+spl_autoload_register('wb_autoload');
 /* -------------------------------------------------------------------- */
-function __workbookconstantdefine() {
+function wb_constantdefine() {
     if (!defined('WB_CONTROLLER')) define('WB_CONTROLLER', 'wb.php');
     if (!defined('WB_INC')) define('WB_INC', (defined('DOKU_INC') ? DOKU_INC : __DIR__ . '/../../../'));
     if (!defined('WB_RUNMODE')) {
@@ -17,11 +17,9 @@ function __workbookconstantdefine() {
     }
 }
 /* -------------------------------------------------------------------- */
-function __workbookautoload($inClassNsGroupId) {
+function wb_autoload($inClassNsGroupId) {
     if (substr($inClassNsGroupId, 0, 8) != 'workbook') return false;
-    if (WB_CONTROLLER == 'wb.php' and strpos($inClassNsGroupId, '\doku') !== false) {
-        if (!__workbookhostallowedcheck()) return false;
-    }
+    if (!wb_classallowedcheck($inClassNsGroupId)) return false;
     $filepath = WB_INC . 'lib/plugins/' . strtr($inClassNsGroupId, ['\\' => '/']) . '.php';
     if (file_exists($filepath)) {
         include_once($filepath);
@@ -38,9 +36,26 @@ function __workbookautoload($inClassNsGroupId) {
     return false;
 }
 /* -------------------------------------------------------------------- */
-function __workbookhostallowedcheck() {
+function wb_classallowedcheck($inClassNsGroupId) {
+    if (!wb_hostallowedcheck()) {
+        if (WB_CONTROLLER == 'wb.php' and strpos($inClassNsGroupId, '\doku') !== false) {
+            return false;
+        } elseif (WB_CONTROLLER == 'doku.php') {
+            if (!wb_pluginopencheck($inClassNsGroupId)) return false;
+        }
+    }
+    return true;
+}
+/* -------------------------------------------------------------------- */
+function wb_pluginopencheck($inClassNsGroupId) {
+    $plugin = substr($inClassNsGroupId, 0, strpos($inClassNsGroupId, '\\'));
+    $ar = ['workbook', 'workbookcore', 'workbookuseracl'];
+    return (in_array($plugin, $ar)) ? true : false;
+}
+/* -------------------------------------------------------------------- */
+function wb_hostallowedcheck() {
     $return = false;
-    $ar = ['.manageopedia.com', '.mphofmann.com', 'localhost',];
+    $ar = ['.manageopedia.com', '.manageopedia.net', '.mphofmann.com', 'localhost'];
     $server = empty($_SERVER['HTTP_HOST']) ? @$_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
     foreach ($ar as $val) {
         if (substr($server, -strlen($val)) == $val) {
@@ -51,8 +66,8 @@ function __workbookhostallowedcheck() {
     return $return;
 }
 /* -------------------------------------------------------------------- */
-function workbookclassnsget($inClass) {
-    $return = false;
+function wb_classnsget($inClass) {
+    $return = '';
     $pos = strpos($inClass, '\\');
     if ($pos !== false) {
         $classgroup = substr($inClass, 0, $pos);
@@ -61,10 +76,14 @@ function workbookclassnsget($inClass) {
             if (substr($plugin, 0, 8) != 'workbook') continue;
             foreach (['wbtpl', 'wbdef', 'wbtag', 'wbinc',] as $dir) {
                 if (file_exists(WB_INC . "lib/plugins/{$plugin}/{$dir}/{$classgroup}/{$classid}.php")) {
-                    return "{$plugin}\\{$dir}\\";
+                    $return = "{$plugin}\\{$dir}\\";
+                    break 2;
                 }
             }
         }
+    }
+    if (!empty($return)) {
+        if (!wb_classallowedcheck($return)) $return = '';
     }
     return $return;
 }

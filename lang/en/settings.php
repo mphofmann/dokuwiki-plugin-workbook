@@ -25,6 +25,7 @@ $lang['viewlist']                   = 'View: Default';
 $lang['view_contentdefault']        = 'View: Content default';
 $lang['view_httpconnection']        = 'View: HTTP connection';
 $lang['view_currency']              = 'View: Currency (ISO)';
+$lang['view_timezone']              = 'View: Timezone';
 
 $lang['view_cookielaw_text']        = 'Cookie-Law: Text (.ini)';
 $lang['view_mot']                   = 'Message (.ini)';

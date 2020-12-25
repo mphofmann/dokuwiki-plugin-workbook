@@ -8,7 +8,7 @@ use workbookcore\wbinc\util;
 class ActionAjax {
     /* -------------------------------------------------------------------- */
     public static function EventAfter_TOOLBAR_DEFINE(Doku_Event $Event, $inPara) {
-        if (workbookclassnsget('base\Base')=='') return;
+        if (wb_classnsget('base\Base')=='') return;
         // Plugins
         $adds = [];
         foreach (scandir(DOKU_INC . 'lib/plugins/') as $plugin) {
@@ -45,7 +45,7 @@ class ActionAjax {
     }
     /* -------------------------------------------------------------------- */
     public static function EventBefore_AJAX_CALL_UNKNOWN(Doku_Event $Event, $inPara) {
-        if (workbookclassnsget('base\Base')=='') return;
+        if (wb_classnsget('base\Base')=='') return;
         global $ID, $conf, $lang;
         if ($Event->data !== 'plugin_workbook_do') {
             return;
@@ -119,7 +119,7 @@ class ActionAjax {
     }
     /* -------------------------------------------------------------------- */
     public static function EventAfter_PLUGIN_MOVE_PAGE_RENAME(Doku_Event $Event, $inPara) {
-        if (workbookclassnsget('base\Base')=='') return;
+        if (wb_classnsget('base\Base')=='') return;
         if (is_array($Event->data['affected_pages'])) {
             foreach ($Event->data['affected_pages'] as $val) {
                 base\BaseNsid::LinksRewrite($val, $Event->data['src_id'], $Event->data['dst_id']);
