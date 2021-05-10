@@ -8,7 +8,7 @@ class Adminitem extends a_Adminitem {
     protected static $_Note = '';
     /* -------------------------------------------------------------------- */
     protected static function _XhtmlGet(): string {
-        $return = "<table class='inline'>";
+        $return = "<table class='inline' style='width:100%'>";
         foreach (admin\AdminXhtml::MenuAr() as $id => $ar) {
             $return .= "<tr><th colspan='2'>" . ucfirst($id) . "</th></tr>";
             foreach ($ar as $id2 => $val2) {

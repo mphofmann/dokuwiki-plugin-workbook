@@ -110,7 +110,7 @@ class AdminExtension {
                 AdminXhtmlMsg::Echo('Info', '', '', "Extension extracted: $inType-$inId");
                 break;
             case '.deb':
-                system("cd $dirpath; ar -x download data.tar.xz 2>&1");
+                system("cd $dirpath; ar -x $basename data.tar.xz 2>&1");
                 system("cd $dirpath; tar -xf data.tar.xz .{$path} 2>&1");
                 unlink($dirpath . $basename);
                 unlink($dirpath . 'data.tar.xz');
@@ -139,7 +139,7 @@ class AdminExtension {
         }
         // cleanup
         system("rm -R $dirpath 2>&1");
-        AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php'); // TODO only styles & scripts
+        AdminCache::ConfLocalTouch('css&js');
         AdminXhtmlMsg::Echo('Success', '', '', "Extension installed: $inType-$inId");
         return true;
     }
@@ -170,6 +170,7 @@ class AdminExtension {
             $str = file_get_contents($inSrc);
             if (strlen($str) > 0) {
                 AdminCache::Put(__NAMESPACE__, 'download', $basename, $str);
+                AdminXhtmlMsg::Echo('Info', '', '', "Source downloaded: $inSrc");
             }
         }
         $filepath = AdminCache::FilepathGet(__NAMESPACE__, 'download', $basename);

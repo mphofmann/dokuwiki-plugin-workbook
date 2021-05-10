@@ -4,6 +4,17 @@ class AdminCache {
     /* -------------------------------------------------------------------- */
     private static $__Path = WB_PATHCACHE;
     /* -------------------------------------------------------------------- */
+    public static function ConfLocalTouch($inType = ''): bool {
+        switch ($inType) {
+            case 'css&js':
+                AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php'); // TODO
+                break;
+            default:
+                AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php');
+                break;
+        }
+    }
+    /* -------------------------------------------------------------------- */
     public static function Exists($inNamespace, $inType, $inBasename): bool {
         $return = false;
         if (file_exists(self::__PathCheckGet($inNamespace) . "$inType/$inBasename")) {

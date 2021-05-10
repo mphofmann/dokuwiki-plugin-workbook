@@ -27,11 +27,11 @@ class AdminInfra {
                 echo date('Y-m-d His', filemtime(WB_DATACONF . 'local.php'));
                 break;
             case 'purge':
-                AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php');
+                AdminCache::ConfLocalTouch();
                 AdminXhtmlMsg::Echo('Success', '', '', 'Cache purged.');
                 break;
             case 'clear':
-                AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php');
+                AdminCache::ConfLocalTouch();
                 AdminInode::Clear('data/cache/'); // TODO
                 AdminXhtmlMsg::Echo('Success', '', '', 'All cache cleared.');
                 break;
