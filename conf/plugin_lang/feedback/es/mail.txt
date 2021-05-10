@@ -1,3 +1,0 @@
-Page: @PAGE@ / User: @USER@
-----
-@FEEDBACK@
