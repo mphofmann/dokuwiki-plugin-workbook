@@ -4,6 +4,7 @@ $conf['connect_username']           = '!!not set!!';
 $conf['connect_password']           = '!!not set!!';
 $conf['connect_mail']               = '!!not set!!';
 $conf['connect_terms']              = '!!not set!!';
+$conf['connect_dist']               = 'stable';
 $conf['connect_version']            = '2020-07-29';
 $conf['connect_refresh_days']       = '';
 

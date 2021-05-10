@@ -27,17 +27,15 @@ class AdminRemote {
     /* -------------------------------------------------------------------- */
     public static function NoteGet(): string {
         $return = '<table style="white-space:nowrap; border:1px solid #ccc; font-size:smaller;">';
-        $url = self::__ConfWorkbookGet('connect_url');
-        $username = self::__ConfWorkbookGet('connect_username');
-        $password = str_pad('', strlen(self::__ConfWorkbookGet('connect_password')), '*');
-        $mail = self::__ConfWorkbookGet('connect_mail');
-        $terms = self::__ConfWorkbookGet('connect_terms');
+        $ar = ['connect_url' => '', 'connect_username' => '', 'connect_password' => '', 'connect_mail' => '', 'connect_terms' => '', 'connect_dist' => '', 'connect_version' => ''];
+        foreach ($ar as $id => $val) $ar[$id] = AdminConf::Get('plugin', 'workbook', $id);
         $myip = self::IpMyGet();
         $myurl = self::UrlMyGet();
-        $return .= "<tr><td>URL:</td><td>{$url}</td></tr>";
-        $return .= "<tr><td>Login:</td><td>{$username} {$password}</td></tr>";
-        $return .= "<tr><td>Mail:</td><td>{$mail}</td></tr>";
-        $return .= "<tr><td>Terms:</td><td>{$terms}</td></tr>";
+        $return .= "<tr><td>URL:</td><td>{$ar['connect_url']}</td></tr>";
+        $return .= "<tr><td>Login:</td><td>{$ar['connect_username']} " . str_pad('', strlen($ar['connect_password']), '*') . "</td></tr>";
+        $return .= "<tr><td>Mail:</td><td>{$ar['connect_mail']}</td></tr>";
+        $return .= "<tr><td>Terms:</td><td>{$ar['connect_terms']}</td></tr>";
+        $return .= "<tr><td>Distribution:</td><td>{$ar['connect_dist']}</td></tr>";
         $return .= "<tr><td>My IP:</td><td>{$myip}</td></tr>";
         $return .= "<tr><td>My URL:</td><td>{$myurl}</td></tr>";
         $return .= '</table>';
@@ -80,7 +78,7 @@ class AdminRemote {
     }
     /* -------------------------------------------------------------------- */
     public static function UrlMtime($inUrl): ?int {
-        if (!isset(self::$__UrlMtimeAr[$inUrl])) {
+        if ( ! isset(self::$__UrlMtimeAr[$inUrl])) {
             $ar = get_headers($inUrl);
             if (is_array($ar)) {
                 foreach ($ar as $val) {
@@ -93,20 +91,6 @@ class AdminRemote {
             }
         }
         return self::$__UrlMtimeAr[$inUrl];
-    }
-    /* -------------------------------------------------------------------- */
-    private static function __ConfWorkbookGet($inVar): string {
-        if (empty(self::$__ConfAr)) {
-            $conf = [];
-            $ar = [WB_DATACONF . 'local.php', WB_DATACONF . 'local.protected.php'];
-            foreach ($ar as $file) {
-                if (file_exists($file)) {
-                    include($file); // TODO ?
-                }
-            }
-            self::$__ConfAr = $conf;
-        }
-        return self::$__ConfAr['plugin']['workbook'][$inVar];
     }
     /* -------------------------------------------------------------------- */
 }

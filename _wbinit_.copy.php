@@ -238,8 +238,7 @@ class _Wb_ {
         if (strpos(WB_ROOT, '/../') !== false) return true;
         $ar = [ //
             WB_DATAWORKBOOK => '', WB_DATAWORKBOOK . 'sync/' => '', //
-            WB_ROOT . 'workbook/' => '', WB_ROOT . 'workbook/module/' => '', //
-            WB_ROOT . 'workbook/moduleplugin/' => '', WB_ROOT . 'workbook/moduleplugin/workbook' => '../module/workbook', //
+            WB_ROOT . 'workbook/' => '', WB_ROOT . 'workbook/module/' => '', WB_ROOT . 'workbook/moduleplugin/' => '', WB_ROOT . 'workbook/moduleplugin/workbook' => WB_ROOT . 'workbok/module/workbook', //
             WB_PATHLOG => '', WB_PATHLOG . 'php/' . date('Y-m') => '', WB_PATHLOG . 'user/' . date('Y-m') => '', //
             WB_PATHTMP => '', //
         ];
@@ -248,7 +247,7 @@ class _Wb_ {
             if (empty($val)) {
                 mkdir($id, 02700, true);
             } else {
-                symlink($val, $id);
+                @symlink($val, $id);
             }
         }
         return true;

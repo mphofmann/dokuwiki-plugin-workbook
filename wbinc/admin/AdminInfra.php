@@ -28,10 +28,12 @@ class AdminInfra {
                 break;
             case 'purge':
                 AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php');
+                AdminXhtmlMsg::Echo('Success', '', '', 'Cache purged.');
                 break;
             case 'clear':
                 AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php');
                 AdminInode::Clear('data/cache/'); // TODO
+                AdminXhtmlMsg::Echo('Success', '', '', 'All cache cleared.');
                 break;
             default:
                 AdminXhtmlMsg::EchoFalse('Notice', __METHOD__, $inAction, "Unknown action.");
@@ -132,7 +134,7 @@ class AdminInfra {
                         $return .= "<pre>$add</pre>";
                         break;
                     case 'Dokuwiki':
-                        $add = 'Version: '.@substr(file_get_contents('VERSION'), 0, 10)."\n";
+                        $add = 'Version: ' . @substr(file_get_contents('VERSION'), 0, 10) . "\n";
                         $add .= "See <a href='http://www.dokuwiki.org' target='_blank'>Dokuwiki</a>";
                         $return .= "<pre>$add</pre>";
                         break;
