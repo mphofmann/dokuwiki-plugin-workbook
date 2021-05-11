@@ -58,7 +58,7 @@ class AdminCache {
     private static function __PathCheckGet($inNamespace): string {
         $return = self::$__Path . strtr($inNamespace, ['\\' => '-']) . '/';
         if ( ! is_dir($return)) AdminInode::MkdirCheck($return);
-        if (self::ConfLocalMtimeInt() > filemtime($return)) {
+        if (self::ConfLocalMtimeInt() > AdminInode::MtimeInt($return)) {
             AdminInode::RmR($return);
             AdminInode::MkdirCheck($return);
         }

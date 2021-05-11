@@ -146,10 +146,8 @@ class AdminExtension {
     /* -------------------------------------------------------------------- */
     private static function __Remove($inType, $inId): bool {
         $extpath = self::__PathGet($inType, $inId);
-        if (is_dir($extpath)) {
-            AdminInode::RmR($extpath);
-            AdminXhtmlMsg::Echo('Info', '', '', "Extension removed: $inType-$inId");
-        }
+        AdminInode::RmR($extpath);
+        AdminXhtmlMsg::Echo('Info', '', '', "Extension removed: $inType-$inId");
         return true;
     }
     /* -------------------------------------------------------------------- */
