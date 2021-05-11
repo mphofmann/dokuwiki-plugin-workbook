@@ -5,7 +5,7 @@ class AdminInode {
     public static function MkdirCheck($inPath): bool {
         $return = true;
         if (is_file($inPath)) return AdminXhtmlMsg::EchoFalse('Warning', __METHOD__, $inPath, 'File exists already.');
-        if (!is_dir($inPath)) {
+        if ( ! is_dir($inPath)) {
             $return = mkdir($inPath, 02700, true);
         }
         return $return;
@@ -51,9 +51,14 @@ class AdminInode {
         return trim($return);
     }
     /* -------------------------------------------------------------------- */
+    public static function MtimeInt($inPath): int {
+        $inPath = is_dir($inPath) and substr($inPath, -1) == '/' ? substr($inPath, 0, -1) : $inPath;
+        return (int)filemtime($inPath);
+    }
+    /* -------------------------------------------------------------------- */
     public static function DirExec($inAction, $inDirTarget, $inDirSource, $inSourceSuffix = ''): bool {
-        if (!is_dir($inDirSource)) return AdminXhtmlMsg::EchoFalse('Warning', __METHOD__, '', "Source directory doesn't exist: $inDirSource.");
-        if (!is_dir($inDirTarget)) return AdminXhtmlMsg::EchoFalse('Warning', __METHOD__, '', "Target directory doesn't exist: $inDirTarget.");
+        if ( ! is_dir($inDirSource)) return AdminXhtmlMsg::EchoFalse('Warning', __METHOD__, '', "Source directory doesn't exist: $inDirSource.");
+        if ( ! is_dir($inDirTarget)) return AdminXhtmlMsg::EchoFalse('Warning', __METHOD__, '', "Target directory doesn't exist: $inDirTarget.");
         switch ($inAction) {
             case 'copy':
                 self::__DirExec('copy', $inDirTarget, $inDirSource, $inSourceSuffix);
@@ -73,7 +78,7 @@ class AdminInode {
             echo AdminXhtml::StatusGet('red', "Content is empty [cache missing: $inFilepath]");
             return false;
         }
-        if (strpos("status status-contains status-equal equal contains", $inAction) !== false and !file_exists($inFilepath)) {
+        if (strpos("status status-contains status-equal equal contains", $inAction) !== false and ! file_exists($inFilepath)) {
             echo AdminXhtml::StatusGet('orange', "File does not exist: $inFilepath]");
             return false;
         }
@@ -125,7 +130,7 @@ class AdminInode {
                     self::__DirExec($inAction, "{$inDirTarget}{$inode}", "{$inDirSource}{$inode}", $inSourceSuffix);
                 } else {
                     $file = (substr($inode, -strlen($inSourceSuffix)) == $inSourceSuffix) ? substr($inode, 0, -strlen($inSourceSuffix)) : $inode;
-                    if ($inAction == 'replace' and !file_exists("{$inDirTarget}{$file}")) continue;
+                    if ($inAction == 'replace' and ! file_exists("{$inDirTarget}{$file}")) continue;
                     self::MkdirCheck($inDirTarget);
                     copy("{$inDirSource}{$inode}", "{$inDirTarget}{$file}");
                     AdminXhtmlMsg::Echo('Success', __METHOD__, "{$inDirTarget}{$file}", "File updated.");
