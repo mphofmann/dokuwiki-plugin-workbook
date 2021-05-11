@@ -5,20 +5,28 @@ class AdminCache {
     private static $__Path = WB_PATHCACHE;
     /* -------------------------------------------------------------------- */
     public static function ConfLocalTouch($inType = ''): bool {
+        $return = false;
         switch ($inType) {
             case 'css&js':
                 AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php'); // TODO
+                $return = true;
                 break;
             default:
                 AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php');
+                $return = true;
                 break;
         }
+        return $return;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function ConfLocalMtimeInt(): int {
+        return filemtime(WB_DATACONF . 'local.php');
     }
     /* -------------------------------------------------------------------- */
     public static function Exists($inNamespace, $inType, $inBasename): bool {
         $return = false;
         if (file_exists(self::__PathCheckGet($inNamespace) . "$inType/$inBasename")) {
-            $return = filemtime(self::__PathCheckGet($inNamespace) . "$inType/$inBasename") > self::__ConfLocalMtimeInt();
+            $return = filemtime(self::__PathCheckGet($inNamespace) . "$inType/$inBasename") > self::ConfLocalMtimeInt();
             if ($return == false) {
                 self::Unlink($inNamespace, $inType, $inBasename);
             }
@@ -50,15 +58,11 @@ class AdminCache {
     private static function __PathCheckGet($inNamespace): string {
         $return = self::$__Path . strtr($inNamespace, ['\\' => '-']) . '/';
         if ( ! is_dir($return)) AdminInode::MkdirCheck($return);
-        if (self::__ConfLocalMtimeInt() > filemtime($return)) {
+        if (self::ConfLocalMtimeInt() > filemtime($return)) {
             AdminInode::RmR($return);
             AdminInode::MkdirCheck($return);
         }
         return $return;
-    }
-    /* -------------------------------------------------------------------- */
-    private static function __ConfLocalMtimeInt(): int {
-        return filemtime(WB_DATACONF . 'local.php');
     }
     /* -------------------------------------------------------------------- */
 }

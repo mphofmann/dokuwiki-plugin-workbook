@@ -92,7 +92,7 @@ abstract class a_Adminitem {
         return [ //
             'width:130px; height:35px; white-space:nowrap;', //
             '', //
-            'width:130px; white-space:nowrap; text-align:center;', //
+            'width:130px; text-align:center;', //
             'width:130px; white-space:nowrap; text-align:center;', //
             'width:130px; white-space:nowrap; text-align:center;', //
         ];

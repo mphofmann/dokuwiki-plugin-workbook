@@ -153,12 +153,12 @@ class AdminExtension {
         return true;
     }
     /* -------------------------------------------------------------------- */
-    private static function __SrcGet($inType, $inExttype, $inId): string {
+    private static function __SrcGet($inField, $inExttype, $inId): string {
         $return = '';
         $ar = AdminRemote::SystemsAr();
-        if (empty($return)) $return = @$ar["depends-$inExttype"][$inId]['src'];
-        if (empty($return)) $return = @$ar["recommends-$inExttype"][$inId]['src'];
-        if (empty($return)) $return = @$ar["suggests-$inExttype"][$inId]['src'];
+        if (empty($return)) $return = @$ar["depends-$inExttype"][$inId][$inField];
+        if (empty($return)) $return = @$ar["recommends-$inExttype"][$inId][$inField];
+        if (empty($return)) $return = @$ar["suggests-$inExttype"][$inId][$inField];
         $artr = array_merge($ar['*'], ['@ID@' => $inId, '@EXTTYPE@' => $inExttype, '@DEBDIST@' => AdminConf::Get('plugin', 'workbook', 'connect_dist')]);
         $return = strtr($return, $artr);
         return $return;
