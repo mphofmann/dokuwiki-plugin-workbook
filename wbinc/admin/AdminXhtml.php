@@ -164,7 +164,13 @@ class AdminXhtml {
     public static function LinkGet($inUrl): string {
         if (substr($inUrl, 0, 6) == 'wb.php' and ! \_Wb_::RunarchCheck('wb')) return '';
         if (substr($inUrl, 0, 8) == 'doku.php' and ! \_Wb_::RunarchCheck('doku')) return '';
-        $text = substr($inUrl, 0, 8) == 'doku.php' ? '&gt;&gt;&gt;' : '&raquo;&raquo;&raquo;';
+        if (substr($inUrl, 0, 6) == 'wb.php') {
+            $text = '&raquo;&raquo;&raquo;';
+        } elseif (substr($inUrl, 0, 8) == 'doku.php') {
+            $text = '&gt;&gt;&gt;';
+        } else {
+            $text = (WB_CONTROLLER == 'doku.php') ? '&gt;&gt;&gt;' : '&raquo;&raquo;&raquo;';
+        }
         return "<a href='$inUrl'>$text</a>";
     }
     /* -------------------------------------------------------------------- */

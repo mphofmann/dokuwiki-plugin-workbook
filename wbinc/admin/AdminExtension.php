@@ -2,7 +2,7 @@
 namespace workbook\wbinc\admin;
 class AdminExtension {
     /* -------------------------------------------------------------------- */
-    public static function RowAr($inGroup, $inAr, $inExttype, $inDebSrc, $inDebDist, $inDebPrefix, $inAttr = ''): array {
+    public static function RowAr($inGroup, $inAr, $inExttype, $inAttr = ''): array {
         $returns = [];
         foreach ($inAr as $id => $ar) {
             $strstatus = $inAttr == 'disabled' ? AdminXhtml::StatusGet('white') : AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=info type=$inExttype id=$id", AdminCmd::ExecGet("admin\AdminExtension::Exec action=status type=$inExttype id=$id"));

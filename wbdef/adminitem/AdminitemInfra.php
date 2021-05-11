@@ -28,14 +28,14 @@ class AdminitemInfra extends a_Adminitem {
         $returns[] = admin\AdminInfra::RowAr('PHP-Ioncube');
         $returns[] = admin\AdminInfra::RowAr('Webroot');
         $returns[] = ['TH:Marketplace'];
-        $returns[] = ['Marketplace', admin\AdminRemote::NoteGet(), admin\AdminCmd::ExecGet('admin\AdminRemote::Exec action=status', 'status'), admin\AdminXhtml::ButtonGet('admin\AdminRemote::Exec action=login', '[Login]', $attr), admin\AdminXhtml::LinkGet('?do=admin&wb_item=config&page=config#plugin____workbook____plugin_settings_name')];
+        $returns[] = ['Marketplace', admin\AdminRemote::NoteGet(), admin\AdminCmd::ExecGet('admin\AdminRemote::Exec action=status', 'status'), admin\AdminXhtml::ButtonGet('admin\AdminRemote::Exec action=login', '[Login]', $attr), admin\AdminXhtml::LinkGet('?do=admin&wb_item=conf&page=config#plugin____workbook____plugin_settings_name')];
         $returns[] = ['Cache', 'Marks cache as purged.', admin\AdminCmd::ExecGet('admin\AdminInfra::ConfLocalExec action=status', 'status'), admin\AdminXhtml::ButtonGet('admin\AdminInfra::ConfLocalExec action=purge', '[Purge]'), ''];
         $returns[] = ['TH:Modules'];
         foreach (self::$__SystemsAr["depends-module"] ?? [] as $id => $ar) {
             $strstatus = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=info type=module id=$id", admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=status type=module id=$id"));
             $cmd = is_dir("workbook/module/$id") ? 'Replace' : 'Install';
             $strbtn = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=" . strtolower($cmd) . " type=module id=$id", "[$cmd]");
-            $returns[] = [$id, admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=note type=module id=$id"), $strstatus, $strbtn, admin\AdminXhtml::LinkGet('?do=admin&wb_item=module')];
+            $returns[] = [$id, admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=note type=module id=$id"), $strstatus, $strbtn, admin\AdminXhtml::LinkGet('wb.php?do=admin&wb_item=module')];
         }
         $returns[] = ['TH:Webroots'];
         if (self::$__ConnectedCheck) {

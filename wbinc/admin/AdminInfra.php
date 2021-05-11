@@ -17,7 +17,7 @@ class AdminInfra {
         $status = AdminCmd::ExecGet("admin\AdminInfra::Exec action=status id=$inId");
         $strbtninfo = AdminXhtml::ButtonGet("admin\AdminInfra::Exec action=info id=$inId", $status);
         if (strpos("Crontab", $inId) !== false) $strbtn .= AdminXhtml::ButtonGet("admin\AdminInfra::Exec action=reset id=$inId", '[Reset]') . AdminXhtml::ButtonGet("admin\AdminInfra::Exec action=remove id=$inId", '[Remove]');;
-        $strlink = $inId == 'Dokuwiki' ? AdminXhtml::LinkGet('?do=admin') : '';
+        $strlink = $inId == 'Dokuwiki' ? AdminXhtml::LinkGet('doku.php?do=admin') : '';
         return [$inId, AdminCmd::ExecGet("admin\AdminInfra::Exec action=note id=$inId"), $strbtninfo, $strbtn, $strlink];
     }
     /* -------------------------------------------------------------------- */
