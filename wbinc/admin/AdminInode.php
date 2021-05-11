@@ -52,7 +52,7 @@ class AdminInode {
     }
     /* -------------------------------------------------------------------- */
     public static function MtimeInt($inPath): int {
-        $inPath = is_dir($inPath) and substr($inPath, -1) == '/' ? substr($inPath, 0, -1) : $inPath;
+        $inPath = (is_dir($inPath) and (substr($inPath, -1) == '/')) ? substr($inPath, 0, -1) : $inPath;
         return (int)filemtime($inPath);
     }
     /* -------------------------------------------------------------------- */
