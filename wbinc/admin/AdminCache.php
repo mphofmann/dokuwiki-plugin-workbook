@@ -8,11 +8,11 @@ class AdminCache {
         $return = false;
         switch ($inType) {
             case 'css&js':
-                AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php'); // TODO
+                AdminCmd::SystemGet('touch ' . WB_DATACONF . 'local.php'); // TODO
                 $return = true;
                 break;
             default:
-                AdminCmd::SystemEcho('touch ' . WB_DATACONF . 'local.php');
+                AdminCmd::SystemGet('touch ' . WB_DATACONF . 'local.php');
                 $return = true;
                 break;
         }

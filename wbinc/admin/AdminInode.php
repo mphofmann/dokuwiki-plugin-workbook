@@ -30,7 +30,6 @@ class AdminInode {
         }
         if ($do) {
             system("rm -R $inpath");
-            AdminXhtmlMsg::Echo('Success', '', '', "Path removed: $inpath");
             $return = true;
         } else {
             AdminXhtmlMsg::Echo('Warning', __METHOD__, $inPath, 'Path not allowed.');

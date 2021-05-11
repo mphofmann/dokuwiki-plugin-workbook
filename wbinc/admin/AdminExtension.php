@@ -87,9 +87,9 @@ class AdminExtension {
     /* -------------------------------------------------------------------- */
     public static function Replace($inType, $inId): bool {
         $src = self::__SrcGet('src', $inType, $inId);
-        $path = self::__SrcGet('path', $inType, $inId);
         if (empty($src)) return AdminXhtmlMsg::EchoFalse('Warning', '', '', "Source is missing: $inType-$inId");
-        if (substr($src, -4) == '.deb' and empty($path)) return AdminXhtmlMsg::EchoFalse('Warning', '', '', "Path is empty: $inType-$inId");
+        $path = self::__SrcGet('path', $inType, $inId);
+        if (substr($src, -4) == '.deb' and empty($path)) return AdminXhtmlMsg::EchoFalse('Warning', '', '', "Path is missing: $inType-$inId");
         // download
         $filepath = self::__SrcDownloadFilepathGet($src);
         if (empty($filepath)) return AdminXhtmlMsg::EchoFalse('Warning', '', '', "Download failed: $inType-$inId");
@@ -107,14 +107,14 @@ class AdminExtension {
                 $zip->extractTo($dirpath);
                 $zip->close();
                 unlink($dirpath . $basename);
-                AdminXhtmlMsg::Echo('Info', '', '', "Extension extracted: $inType-$inId");
+                AdminXhtmlMsg::Echo('Info', '', '', "Extension new extracted: $inType-$inId");
                 break;
             case '.deb':
                 system("cd $dirpath; ar -x $basename data.tar.xz 2>&1");
                 system("cd $dirpath; tar -xf data.tar.xz .{$path} 2>&1");
                 unlink($dirpath . $basename);
                 unlink($dirpath . 'data.tar.xz');
-                AdminXhtmlMsg::Echo('Info', '', '', "Extension extracted: $inType-$inId");
+                AdminXhtmlMsg::Echo('Info', '', '', "Extension new extracted: $inType-$inId");
                 break;
         }
         // move
@@ -124,17 +124,19 @@ class AdminExtension {
                 foreach (scandir($dirpath) as $inode) {
                     if (substr($inode, 0, 1) == '.') continue;
                     self::__Remove($inType, $inId);
+                    AdminXhtmlMsg::Echo('Info', '', '', "Extension old removed: $inType-$inId");
                     system("mv {$dirpath}{$inode} {$extpath} 2>&1");
                     touch($extpath);
-                    AdminXhtmlMsg::Echo('Info', '', '', "Extension copied: $inType-$inId");
+                    AdminXhtmlMsg::Echo('Info', '', '', "Extension new installed: $inType-$inId");
                     break;
                 }
                 break;
             case '.deb':
                 self::__Remove($inType, $inId);
+                AdminXhtmlMsg::Echo('Info', '', '', "Extension old removed: $inType-$inId");
                 system("mv {$dirpath}{$path} {$extpath} 2>&1");
                 touch($extpath);
-                AdminXhtmlMsg::Echo('Info', '', '', "Extension copied: $inType-$inId");
+                AdminXhtmlMsg::Echo('Info', '', '', "Extension new installed: $inType-$inId");
                 break;
         }
         // cleanup
@@ -147,7 +149,6 @@ class AdminExtension {
     private static function __Remove($inType, $inId): bool {
         $extpath = self::__PathGet($inType, $inId);
         AdminInode::RmR($extpath);
-        AdminXhtmlMsg::Echo('Info', '', '', "Extension removed: $inType-$inId");
         return true;
     }
     /* -------------------------------------------------------------------- */

@@ -58,24 +58,8 @@ class AdminitemInfra extends a_Adminitem {
             $returns[] = ['doku.php', 'Doku controller', admin\AdminCmd::ExecGet("admin\AdminWebroot::Exec action=status id=doku.php"), '', ''];
             $returns[] = ['dokumodal.php', 'Dokumodal controller', $attr == 'disabled' ? admin\AdminXhtml::StatusGet('white') : admin\AdminCmd::ExecGet("admin\AdminWebroot::Exec action=status id=dokumodal.php"), admin\AdminXhtml::ButtonGet("admin\AdminWebroot::Exec action=link id=dokumodal.php", '[Link]', $attr) . admin\AdminXhtml::ButtonGet("admin\AdminWebroot::Exec action=unlink id=dokumodal.php", '[Unlink]', (file_exists('dokumodal.php')) ? '' : 'disabled'), ''];
         }
-        $returns[] = ['TH:Plugins'];
-        foreach (self::$__SystemsAr["recommends-plugin"] ?? [] as $id => $ar) {
-            $strstatus = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=info type=plugin id=$id", admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=status type=plugin id=$id"));
-            $cmd = is_dir("lib/plugins/$id") ? 'Replace' : 'Install';
-            $strbtn = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=" . strtolower($cmd) . " type=plugin id=$id", "[$cmd]");
-            if (strpos($ar['src'], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('doku.php?do=admin&page=extension&tab=plugins');
-            if (strpos($ar['src'], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('doku.php?do=admin&page=workbook_connect');
-            $returns[] = [$id, admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=note type=plugin id=$id"), $strstatus, $strbtn, admin\AdminXhtml::LinkGet('doku.php?do=admin&page=extension&tab=plugins')];
-        };
-        $returns[] = ['TH:Templates'];
-        foreach (self::$__SystemsAr["recommends-template"] ?? [] as $id => $val) {
-            $strstatus = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=info type=template id=$id", admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=status type=template id=$id"));
-            $cmd = is_dir("lib/tpl/$id") ? 'Replace' : 'Install';
-            $strbtn = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=" . strtolower($cmd) . " type=plugin id=$id", "[$cmd]");
-            if (strpos($ar['src'], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('doku.php?do=admin&page=extension&tab=templates');
-            if (strpos($ar['src'], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('doku.php?do=admin&page=workbook_connect');
-            $returns[] = [$id, admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=note type=template id=$id"), $strstatus, $strbtn, admin\AdminXhtml::LinkGet('doku.php?do=admin&page=extension&tab=templates')];
-        };
+        $returns = array_merge($returns, self::__RowsAr('recommends', 'plugin'));
+        $returns = array_merge($returns, self::__RowsAr('recommends', 'template'));
         return $returns;
     }
     /* -------------------------------------------------------------------- */
@@ -83,14 +67,20 @@ class AdminitemInfra extends a_Adminitem {
         if ( ! \_Wb_::RunarchCheck('doku')) return [];
         $returns = [];
         $returns[] = ['TH:SUGGESTS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
-        $returns[] = ['TH:Plugins'];
-        foreach (self::$__SystemsAr["suggests-plugin"] ?? [] as $id => $ar) {
-            $strstatus = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=info type=plugin id=$id", admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=status type=plugin id=$id"));
-            $cmd = is_dir("lib/plugins/$id") ? 'Replace' : 'Install';
-            $strbtn = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=" . strtolower($cmd) . " type=plugin id=$id", "[$cmd]");
-            if (strpos($ar['src'], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet('doku.php?do=admin&page=extension&tab=plugins');
+        $returns = array_merge($returns, self::__RowsAr('suggests', 'plugin'));
+        return $returns;
+    }
+    /* -------------------------------------------------------------------- */
+    private static function __RowsAr($inGroup, $inExttype): array {
+        $returns = [];
+        $returns[] = ['TH:' . ucfirst($inExttype) . 's'];
+        foreach (self::$__SystemsAr["$inGroup-$inExttype"] ?? [] as $id => $ar) {
+            $strstatus = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=info type=$inExttype id=$id", admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=status type=$inExttype id=$id"));
+            $cmd = (($inExttype == 'plugin' and is_dir("lib/plugins/$id")) or ($inExttype == 'template' and is_dir("lib/tpl/$id"))) ? 'Replace' : 'Install';
+            $strbtn = admin\AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=" . strtolower($cmd) . " type=$inExttype id=$id", "[$cmd]");
+            if (strpos($ar['src'], 'manual:') === 0) $strbtn = admin\AdminXhtml::LinkGet("doku.php?do=admin&page=extension&tab={$inExttype}s");
             if (strpos($ar['src'], 'deb:') === 0) $strbtn = admin\AdminXhtml::LinkGet('doku.php?do=admin&page=workbook_connect');
-            $returns[] = [$id, admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=note type=plugin id=$id"), $strstatus, $strbtn, admin\AdminXhtml::LinkGet('doku.php?do=admin&page=extension&tab=plugins')];
+            $returns[] = [$id, admin\AdminCmd::ExecGet("admin\AdminExtension::Exec action=note type=$inExttype id=$id"), $strstatus, $strbtn, admin\AdminXhtml::LinkGet("doku.php?do=admin&page=extension&tab={$inExttype}s")];
         };
         return $returns;
     }
