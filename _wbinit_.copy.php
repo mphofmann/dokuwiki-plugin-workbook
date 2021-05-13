@@ -141,11 +141,11 @@ class _Wb_ {
     }
     /* -------------------------------------------------------------------- */
     public static function RunarchCheck($inValue): bool {
-        return (bool)strpos(' ' . WB_RUNARCHLIST . ' ', " $inValue ");
+        return ! (strpos(' ' . WB_RUNARCHLIST . ' ', " $inValue ") === false);
     }
     /* -------------------------------------------------------------------- */
     public static function RunmodeCheck($inValue): bool {
-        return (bool)strpos(' ' . WB_RUNMODELIST . ' ', " $inValue ");
+        return ! (strpos(' ' . WB_RUNMODELIST . ' ', " $inValue ") === false);
     }
     /* -------------------------------------------------------------------- */
     private static function __AutoloadPathsAr(): array {
