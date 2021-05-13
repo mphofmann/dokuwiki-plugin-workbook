@@ -143,7 +143,7 @@ class AdminExtension {
         system("rm -R $dirpath 2>&1");
         // AdminCache::ConfLocalTouch('css&js');
         AdminXhtmlMsg::Echo('Success', '', '', "Extension installed: $inType-$inId");
-        AdminXhtmlMsg::Echo('Notice', '', '', 'Purge the cache once your are done to refresh CSS and JS.');
+        AdminXhtmlMsg::Echo('Notice', '', '', 'Once you are done: Purge the cache to refresh CSS and JS.');
         return true;
     }
     /* -------------------------------------------------------------------- */
