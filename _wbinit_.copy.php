@@ -141,11 +141,11 @@ class _Wb_ {
     }
     /* -------------------------------------------------------------------- */
     public static function RunarchCheck($inValue): bool {
-        return (bool)strpos(' ' . WB_RUNARCHLIST . ' ', $inValue);
+        return (bool)strpos(' ' . WB_RUNARCHLIST . ' ', " $inValue ");
     }
     /* -------------------------------------------------------------------- */
     public static function RunmodeCheck($inValue): bool {
-        return (bool)strpos(' ' . WB_RUNMODELIST . ' ', $inValue);
+        return (bool)strpos(' ' . WB_RUNMODELIST . ' ', " $inValue ");
     }
     /* -------------------------------------------------------------------- */
     private static function __AutoloadPathsAr(): array {
@@ -205,6 +205,7 @@ class _Wb_ {
             if (version_compare(PHP_VERSION, '7.2', '>=')) $adds[] = 'infra-php';
             if (extension_loaded('ionCube Loader')) $adds[] = 'infra-ioncube';
             if (is_writable('.')) $adds[] = 'infra-webroot';
+            if (is_dir(WB_ROOT . "workbook/module/workbook")) $adds[] = 'module-workbook';
             if (is_dir(WB_ROOT . "workbook/module/workbookcore")) $adds[] = 'module-workbookcore';
             if (is_dir(WB_ROOT . "lib/tpl/workbookinternal")) $adds[] = 'template-workbookinternal';
             if (file_exists(WB_ROOT . 'wb.php')) $adds[] = 'controller-wb';
@@ -218,7 +219,7 @@ class _Wb_ {
         // WB_RUNARCHLIST (wb internal doku)
         if ( ! defined('WB_RUNARCHLIST')) {
             $adds = [];
-            if (\_WB_::RunmodeCheck('controller-wb') and \_WB_::RunmodeCheck('module-workbookcore')) $adds[] = 'wb';
+            if (\_WB_::RunmodeCheck('controller-wb') and \_WB_::RunmodeCheck('module-workbook') and \_WB_::RunmodeCheck('module-workbookcore')) $adds[] = 'wb';
             if (\_WB_::RunmodeCheck('host-internal') and \_WB_::RunmodeCheck('template-workbookinternal')) $adds[] = 'internal';
             if (\_WB_::RunmodeCheck('controller-doku')) $adds[] = 'doku';
             define('WB_RUNARCHLIST', implode(' ', $adds));
