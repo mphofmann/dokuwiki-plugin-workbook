@@ -1,7 +1,7 @@
 <?php
-namespace workbook\wbdef\adminitem;
+namespace workbook\wbdef\jobadmin;
 use workbook\wbinc\admin;
-abstract class a_Adminitem {
+abstract class a_Jobadmin {
     /* -------------------------------------------------------------------- */
     protected static $_Item = '';
     protected static $_Icon = '';

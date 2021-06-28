@@ -2,9 +2,10 @@
 namespace workbook\wbincdoku\doku;
 class DokuGlobal {
     /* -------------------------------------------------------------------- */
-    public static function ActionGet(): string {
+    public static function ActGet(): string {
         global $ACT;
-        return (string)$ACT; // is sometimes a string
+        $return = (is_array($ACT)) ? key($ACT) : $ACT;
+        return (string)$return;
     }
     /* -------------------------------------------------------------------- */
     public static function BrowserIdGet(): string {

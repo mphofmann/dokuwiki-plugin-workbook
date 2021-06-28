@@ -10,7 +10,7 @@ class DokuDataSqlite {
         return $rows ?? [];
     }
     /* -------------------------------------------------------------------- */
-    public static function ArInsertObj($inTable, $inAr, $inDb = 'struct'): ?object {
+    public static function ArInsertObj($inTable, array $inAr, $inDb = 'struct'): ?object {
         $returnobj = null;
         $sqlite = self::__NewObj($inDb);
         if (!empty($sqlite)) {
@@ -22,11 +22,11 @@ class DokuDataSqlite {
     private static function __NewObj($inDb): ?object {
         $returnobj = DokuPlugin::LoadObj('helper', 'sqlite');
         if (!$returnobj) {
-            DokuXhtmlMsg::Echo('Error', __METHOD__, '', 'Plugin "sqlite" required.');
+            DokuAreaMsg::Echo('Error', __METHOD__, '', 'Plugin "sqlite" required.');
             return null;
         }
         if (!$returnobj->init($inDb, WB_DATAMETA)) {
-            DokuXhtmlMsg::Echo('Error', __METHOD__, $inDb, 'Database not initialized.');
+            DokuAreaMsg::Echo('Error', __METHOD__, $inDb, 'Database not initialized.');
             return null;
         }
         return $returnobj;

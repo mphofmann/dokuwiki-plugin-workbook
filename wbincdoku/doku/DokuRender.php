@@ -7,7 +7,7 @@ class DokuRender {
     private static $__MapWb = ['<wb/>' => '', '<wb />' => '', '{{wb}}' => '',];
     /* -------------------------------------------------------------------- */
     public static function XhtmlGet($inMarkup, &$outInfo = [], $inDateAt = ''): string {
-        DokuXhtmlMsg::Add('Debug-Notice', __METHOD__, '', $inMarkup);
+        DokuAreaMsg::Add('Debug-Notice', __METHOD__, '', $inMarkup);
         $return = '';
         $string = trim(strtr($inMarkup, self::$__MapWb)); // otherwise perpetual loop
         if (!empty($string)) {

@@ -1,14 +1,23 @@
 <?php
 namespace workbook\wbincdoku\doku;
+use Throwable;
 use function html_msgarea;
 use function msg;
-class DokuXhtmlMsg {
+class DokuAreaMsg {
     /* -------------------------------------------------------------------- */
     private static $__Types = ['Debug-Info' => 0, 'Debug-Notice' => 2, 'Info' => 0, 'Success' => 1, 'Notice' => 2, 'Warning' => -1, 'Error' => -1,];
     /* -------------------------------------------------------------------- */
-    public static function EchoFalse($inType, $inMethod, $inPara, $inText = ''): bool {
-        self::Echo($inType, $inMethod, $inPara, $inText);
-        return false;
+    public static function Add($inType, $inMethod, $inPara, $inText): bool {
+        if ( ! self::__FilterCheck($inType)) return false;
+        if (is_numeric($inType)) $inType = in_array($inType, self::$__Types);
+        msg(self::Get('', $inMethod, $inPara, $inText), self::$__Types[$inType]);
+        return true;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function AreaGet(): string {
+        ob_start();
+        html_msgarea();
+        return ob_get_clean();
     }
     /* -------------------------------------------------------------------- */
     public static function Echo($inType, $inMethod, $inPara, $inText = ''): void {
@@ -17,6 +26,11 @@ class DokuXhtmlMsg {
         if (self::__FilterCheck($inType)) {
             echo self::Get($inType, $inMethod, $inPara, $inText);
         }
+    }
+    /* -------------------------------------------------------------------- */
+    public static function EchoFalse($inType, $inMethod, $inPara, $inText = ''): bool {
+        self::Echo($inType, $inMethod, $inPara, $inText);
+        return false;
     }
     /* -------------------------------------------------------------------- */
     public static function Get($inType, $inMethod, $inPara, $inText): string {
@@ -35,17 +49,8 @@ class DokuXhtmlMsg {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function Add($inType, $inMethod, $inPara, $inText): bool {
-        if ( ! self::__FilterCheck($inType)) return false;
-        if (is_numeric($inType)) $inType = in_array($inType, self::$__Types);
-        msg(self::Get('', $inMethod, $inPara, $inText), self::$__Types[$inType]);
-        return true;
-    }
-    /* -------------------------------------------------------------------- */
-    public static function AreaGet(): string {
-        ob_start();
-        html_msgarea();
-        return ob_get_clean();
+    public static function ThrowableAdd($inType, Throwable $inThrowable): bool {
+        return self::Add($inType, '', '', $inThrowable->getMessage() . ' (' . $inThrowable->getFile() . ' / line: ' . $inThrowable->getLine() . ')' . "\n");
     }
     /* -------------------------------------------------------------------- */
     private static function __FilterCheck($inType): bool {

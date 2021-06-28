@@ -2,11 +2,26 @@
 namespace workbook\wbincdoku\dokuaction;
 use Doku_Event;
 use workbook\wbinc\action;
-use workbook\wbinc\admin;
+use workbook\wbincdoku\doku;
 class DokuactionAjax {
     /* -------------------------------------------------------------------- */
-    public static function Event_After_TOOLBAR_DEFINE_Exec(Doku_Event $Event, $inPara): void {
-        if ( ! \_Wb_::ClassExists('action\ActionAction')) return;
+    public static function Event_PLUGIN_MOVE_PAGE_RENAME_AfterExec(Doku_Event $Event, $inPara): void {
+        if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
+        try {
+            if (is_array($Event->data['affected_pages'])) {
+                foreach ($Event->data['affected_pages'] as $val) {
+                    action\ActionNsid::LinksRewrite($val, $Event->data['src_id'], $Event->data['dst_id']);
+                }
+            }
+            action\ActionNsid::MetaReset($Event->data['src_id']);
+            action\ActionNsid::MetaReset($Event->data['dst_id']);
+        } catch (\Throwable $t) {
+            doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
+        }
+    }
+    /* -------------------------------------------------------------------- */
+    public static function Event_TOOLBAR_DEFINE_AfterExec(Doku_Event $Event, $inPara): void {
+        if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         // Do_
         if (file_exists(DOKU_INC . 'workbook/module/workbookdo/wbdef/wb/Wb_Do.php')) $Event->data['workbook-do'] = ['type' => 'format', 'title' => 'Do-item', 'icon' => '../../../workbook/module/workbook/wbasset/fontawesome/free-5.15.1-web/svgs/regular/check-square.svg', 'key' => 't', 'open' => "<wb do !? ?! ?h @?>", 'close' => '</wb>', 'block' => false,];
         /* Module
@@ -39,21 +54,6 @@ class DokuactionAjax {
                 'list' => $adds, //
             ];
         } */
-    }
-    /* -------------------------------------------------------------------- */
-    public static function Event_After_PLUGIN_MOVE_PAGE_RENAME_Exec(Doku_Event $Event, $inPara): void {
-        if ( ! \_Wb_::ClassExists('action\ActionAction')) return;
-        try {
-            if (is_array($Event->data['affected_pages'])) {
-                foreach ($Event->data['affected_pages'] as $val) {
-                    action\ActionNsid::LinksRewrite($val, $Event->data['src_id'], $Event->data['dst_id']);
-                }
-            }
-            action\ActionNsid::MetaReset($Event->data['src_id']);
-            action\ActionNsid::MetaReset($Event->data['dst_id']);
-        } catch (\Throwable $e) {
-            admin\AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
-        }
     }
     /* -------------------------------------------------------------------- */
 }

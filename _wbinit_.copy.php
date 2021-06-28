@@ -4,29 +4,19 @@ _Wb_::InitSet();
 class _Wb_ {
     /* -------------------------------------------------------------------- */
     public static $CwdPrefix = ''; // see InitSet
-    private static $__Prepend = '_wbinit_.prepend.php';
-    private static $__HostInternalList = '.manageopedia.com .manageopedia.net .mphofmann.com ';
     private static $__DirSearchAr = ['wbinc', 'wbtpl', 'wbdef', 'wbtag', 'wbincdoku'];
+    private static $__HostInternalList = '.manageopedia.com .manageopedia.net .mphofmann.com ';
+    private static $__Prepend = '_wbinit_.prepend.php';
     /* -------------------------------------------------------------------- */
-    public static function InitSet(): bool {
-        self::$CwdPrefix = substr(getcwd(), -strlen('/lib/exe')) == '/lib/exe' ? '../../' : '';
-        if (file_exists(self::$CwdPrefix . self::$__Prepend)) include(self::$CwdPrefix . self::$__Prepend);
-        $rc = self::__InitConstantSet();
-        $rc *= self::__InitPhpSet();
-        $rc *= self::__InitDirCheck();
-        spl_autoload_register('\_Wb_::Autoload');
-        return $rc;
-    }
-    /* -------------------------------------------------------------------- */
-    public static function Autoload($inClassNsGroupId): bool {
+    public static function Autoload(string $inClassNsGroupId): bool {
         if (substr($inClassNsGroupId, 0, 8) != 'workbook') return false;
         if ( ! self::__AutoloadCheck($inClassNsGroupId)) return false;
         foreach (self::__AutoloadPathsAr() as $extpath) {
             $filepath = WB_ROOT . $extpath . strtr($inClassNsGroupId, ['\\' => '/']) . '.php';
             if (file_exists($filepath)) {
                 include_once($filepath);
-                if (method_exists($inClassNsGroupId, '__constructStatic')) {
-                    $inClassNsGroupId::__constructStatic();
+                if (method_exists($inClassNsGroupId, 'A_Construct')) {
+                    $inClassNsGroupId::A_Construct();
                 }
                 return true;
             }
@@ -39,15 +29,15 @@ class _Wb_ {
         return false;
     }
     /* -------------------------------------------------------------------- */
-    public static function ClassExists($inClass): bool {
+    public static function ClassExists(string $inClass): bool {
         return class_exists(self::ClassNsGet($inClass) . $inClass);
     }
     /* -------------------------------------------------------------------- */
-    public static function ClassMethodExists($inClass, $inMethod): bool {
+    public static function ClassMethodExists(string $inClass, string $inMethod): bool {
         return method_exists(self::ClassNsGet($inClass) . $inClass, $inMethod);
     }
     /* -------------------------------------------------------------------- */
-    public static function ClassNsGet($inClass, $inDirs = []): string {
+    public static function ClassNsGet(string $inClass, array $inDirs = []): string {
         $return = '';
         $inDirs = empty($inDirs) ? self::$__DirSearchAr : $inDirs;
         $pos = strpos($inClass, '\\');
@@ -70,7 +60,7 @@ class _Wb_ {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function ClassNsGroupIdGet($inClass): string {
+    public static function ClassNsGroupIdGet(string $inClass): string {
         $class = $inClass;
         $ns = self::ClassNsGet($class);
         if (empty($ns)) {
@@ -80,7 +70,7 @@ class _Wb_ {
         return (empty($ns)) ? false : $ns . $class;
     }
     /* -------------------------------------------------------------------- */
-    public static function CmdExec($inCmd, $inValue = '') {
+    public static function CmdExec(string $inCmd, string $inValue = '') {
         $return = '';
         // Paras
         $paras = self::__ParaAr($inCmd);
@@ -134,18 +124,59 @@ class _Wb_ {
                     $return = $classpathclass::$method($var1, $var2, $var3, $var4, $var5);
                     break;
             }
-        } catch (\Throwable $e) {
-            return self::__ErrorEchoFalse("ERROR: " . $e->getMessage()); // AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
+        } catch (\Throwable $t) {
+            return self::__ErrorEchoFalse("ERROR: " . $t->getMessage() . ' (' . $t->getFile() . ' / line: ' . $t->getLine() . ')'); // AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
         }
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function RunarchCheck($inValue): bool {
+    public static function DebugEcho($inVar0 = '', $inVar1 = '', $inVar2 = '', $inVar3 = '', $inVar4 = '', $inVar5 = '', $inVar6 = '', $inVar7 = '', $inVar8 = '', $inVar9 = ''): void {
+        echo '<pre>';
+        foreach ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as $i) {
+            if ( ! empty(${"inVar$i"})) if (is_array(${"inVar$i"})) print_r(${"inVar$i"}); else echo ${"inVar$i"} . "\n";
+        }
+        echo '</pre>';
+    }
+    /* -------------------------------------------------------------------- */
+    public static function InitSet(): bool {
+        self::$CwdPrefix = substr(getcwd(), -strlen('/lib/exe')) == '/lib/exe' ? '../../' : '';
+        if (file_exists(self::$CwdPrefix . self::$__Prepend)) include(self::$CwdPrefix . self::$__Prepend);
+        $rc = self::__InitConstantSet();
+        $rc *= self::__InitPhpSet();
+        $rc *= self::__InitDirCheck();
+        spl_autoload_register('\_Wb_::Autoload');
+        return $rc;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function RunarchCheck(string $inValue): bool {
         return ! (strpos(' ' . WB_RUNARCHLIST . ' ', " $inValue ") === false);
     }
     /* -------------------------------------------------------------------- */
-    public static function RunmodeCheck($inValue): bool {
+    public static function RunmodeCheck(string $inValue): bool {
         return ! (strpos(' ' . WB_RUNMODELIST . ' ', " $inValue ") === false);
+    }
+    /* -------------------------------------------------------------------- */
+    public static function WbconfAr(string $inType) {
+        $returns = [];
+        if (is_dir(WB_ROOT . 'workbook/module')) {
+            foreach (scandir(WB_ROOT . 'workbook/module') as $module) {
+                if (file_exists(WB_ROOT . "workbook/module/$module/wbconf/conf-$inType.ini")) {
+                    $inis = parse_ini_file(WB_ROOT . "workbook/module/$module/wbconf/conf-$inType.ini", true);
+                    foreach ($inis as $id => $ar) {
+                        if (isset($ar['_choices'])) $inis[$id]['_choices'] = explode(',', $ar['_choices']);
+                    }
+                    $returns = array_merge($returns, $inis);
+                }
+            }
+        }
+        return $returns;
+    }
+    /* -------------------------------------------------------------------- */
+    private static function __AutoloadCheck(string $inClassNsGroupId): bool {
+        if ((self::RunarchCheck('internal'))) return true;
+        if (WB_CONTROLLER == 'wb.php' and strpos($inClassNsGroupId, '\\doku') === false) return true;
+        if (substr($inClassNsGroupId, 0, 9) === 'workbook\\') return true;
+        return false;
     }
     /* -------------------------------------------------------------------- */
     private static function __AutoloadPathsAr(): array {
@@ -156,28 +187,24 @@ class _Wb_ {
         return [];
     }
     /* -------------------------------------------------------------------- */
-    private static function __AutoloadCheck($inClassNsGroupId): bool {
-        if ((self::RunarchCheck('internal'))) return true;
-        if (WB_CONTROLLER == 'wb.php' and strpos($inClassNsGroupId, '\\doku') === false) return true;
-        if (substr($inClassNsGroupId, 0, 9) === 'workbook\\') return true;
+    private static function __ErrorEchoFalse(string $inString): bool {
+        if (error_reporting() == 0) return false;
+        echo "ERROR: $inString";
         return false;
     }
     /* -------------------------------------------------------------------- */
-    private static function __ParaAr($inString): array {
-        $returns = [];
-        $pieces = explode(' ', $inString);
-        if (strpos($inString, '::') === false) {
-            $returns['class'] = 'wbadmincmd_' . @array_shift($pieces);
-            $returns['method'] = @array_shift($pieces);
-        } else {
-            $str = @array_shift($pieces);
-            list($returns['class'], $returns['method']) = explode('::', $str);
+    private static function __HostInternalCheck() {
+        $return = false;
+        $list = defined('WB_HOSTINTERNALLIST') ? constant('WB_HOSTINTERNALLIST') : self::$__HostInternalList;
+        $ar = explode(' ', $list);
+        $server = empty($_SERVER['HTTP_HOST']) ? @$_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+        foreach ($ar as $val) {
+            if (substr($server, -strlen($val)) == $val) {
+                $return = true;
+                break;
+            }
         }
-        foreach ($pieces as $val) {
-            $p = explode('=', $val, 2);
-            $returns[$p[0]] = $p[1] ?? $p[0];
-        }
-        return $returns;
+        return $return;
     }
     /* -------------------------------------------------------------------- */
     private static function __InitConstantSet(): bool {
@@ -194,6 +221,9 @@ class _Wb_ {
         if ( ! defined('WB_DATAPAGE')) define('WB_DATAPAGE', WB_ROOT . 'data/pages/');
         if ( ! defined('WB_DATAPAGEATTIC')) define('WB_DATAPAGEATTIC', WB_ROOT . 'data/attic/');
         if ( ! defined('WB_DATAWORKBOOK')) define('WB_DATAWORKBOOK', WB_ROOT . 'data/workbook/');
+        // WB_DB
+        if ( ! defined('WB_DBTYPE')) define('WB_DBTYPE', 'sqlite3');
+        if ( ! defined('WB_DBPATH')) define('WB_DBPATH', WB_ROOT . 'data/meta/');
         // WB_PATH
         if ( ! defined('WB_PATHCACHE')) define('WB_PATHCACHE', WB_ROOT . 'workbook/cache/');
         if ( ! defined('WB_PATHLOG')) define('WB_PATHLOG', WB_ROOT . 'workbook/log/');
@@ -227,21 +257,16 @@ class _Wb_ {
         return true;
     }
     /* -------------------------------------------------------------------- */
-    private static function __InitPhpSet(): bool {
-        ini_set('log_errors', 1);
-        ini_set('error_log', WB_PATHLOG . 'php/' . date('Y-m') . '/error.log');
-        ini_set('display_errors', true);
-        if (WB_CONTROLLER == 'wb.php') ini_set('error_reporting', E_ALL);
-        return true;
-    }
-    /* -------------------------------------------------------------------- */
     private static function __InitDirCheck(): bool {
         if (strpos(WB_ROOT, '/../') !== false) return true;
         $ar = [ //
+            // dirs
             WB_DATAWORKBOOK => '', WB_DATAWORKBOOK . 'sync/' => '', //
-            WB_ROOT . 'workbook/' => '', WB_ROOT . 'workbook/module/' => '', WB_ROOT . 'workbook/moduleplugin/' => '', WB_ROOT . 'workbook/moduleplugin/workbook' => WB_ROOT . 'workbook/module/workbook', //
+            WB_ROOT . 'workbook/' => '', WB_ROOT . 'workbook/module/' => '', WB_ROOT . 'workbook/moduleplugin/' => '', //
             WB_PATHLOG => '', WB_PATHLOG . 'php/' . date('Y-m') => '', WB_PATHLOG . 'user/' . date('Y-m') => '', //
             WB_PATHTMP => '', //
+            // links
+            WB_ROOT . 'workbook/moduleplugin/workbook' => WB_ROOT . 'workbook/module/workbook', //
         ];
         foreach ($ar as $id => $val) {
             if (file_exists($id)) continue;
@@ -254,24 +279,29 @@ class _Wb_ {
         return true;
     }
     /* -------------------------------------------------------------------- */
-    private static function __HostInternalCheck() {
-        $return = false;
-        $list = defined('WB_HOSTINTERNALLIST') ? constant('WB_HOSTINTERNALLIST') : self::$__HostInternalList;
-        $ar = explode(' ', $list);
-        $server = empty($_SERVER['HTTP_HOST']) ? @$_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
-        foreach ($ar as $val) {
-            if (substr($server, -strlen($val)) == $val) {
-                $return = true;
-                break;
-            }
-        }
-        return $return;
+    private static function __InitPhpSet(): bool {
+        ini_set('log_errors', 1);
+        ini_set('error_log', WB_PATHLOG . 'php/' . date('Y-m') . '/error.log');
+        ini_set('display_errors', true);
+        if (WB_CONTROLLER == 'wb.php') ini_set('error_reporting', E_ALL);
+        return true;
     }
     /* -------------------------------------------------------------------- */
-    private static function __ErrorEchoFalse($inString): bool {
-        if (error_reporting() == 0) return false;
-        echo "ERROR: $inString";
-        return false;
+    private static function __ParaAr($inString): array {
+        $returns = [];
+        $pieces = explode(' ', $inString);
+        if (strpos($inString, '::') === false) {
+            $returns['class'] = 'wbadmincmd_' . @array_shift($pieces);
+            $returns['method'] = @array_shift($pieces);
+        } else {
+            $str = @array_shift($pieces);
+            list($returns['class'], $returns['method']) = explode('::', $str);
+        }
+        foreach ($pieces as $val) {
+            $p = explode('=', $val, 2);
+            $returns[$p[0]] = $p[1] ?? $p[0];
+        }
+        return $returns;
     }
     /* -------------------------------------------------------------------- */
 }

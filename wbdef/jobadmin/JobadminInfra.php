@@ -1,7 +1,7 @@
 <?php
-namespace workbook\wbdef\adminitem;
+namespace workbook\wbdef\jobadmin;
 use workbook\wbinc\admin;
-class AdminitemInfra extends a_Adminitem {
+class JobadminInfra extends a_Jobadmin {
     /* -------------------------------------------------------------------- */
     protected static $_Item = 'infra';
     protected static $_Icon = 'fas fa-server';
@@ -11,7 +11,7 @@ class AdminitemInfra extends a_Adminitem {
     private static $__WorkbookcoreCheck = false;
     private static $__SystemsAr = [];
     /* -------------------------------------------------------------------- */
-    public static function __constructStatic(): bool {
+    public static function A_Construct(): bool {
         self::$__ConnectedCheck = admin\AdminRemote::EnabledCheck();
         if (self::$__ConnectedCheck) self::$__SystemsAr = admin\AdminRemote::SystemsAr();
         self::$__WorkbookcoreCheck = is_dir('workbook/module/workbookcore');

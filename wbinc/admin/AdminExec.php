@@ -23,11 +23,11 @@ class AdminExec {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function OutputEcho($inOutput = '', $doFormat = true): void {
+    public static function OutputEcho($inOutput = '', bool $doFormat = true): void {
         echo self::OutputGet($inOutput, $doFormat);
     }
     /* -------------------------------------------------------------------- */
-    public static function OutputGet($inOutput = '', $doFormat = true): string {
+    public static function OutputGet($inOutput = '', bool $doFormat = true): string {
         $return = '';
         $inOutput = trim($inOutput);
         if (!empty($inOutput)) {
@@ -57,6 +57,18 @@ class AdminExec {
         $class = (stripos($inOutput, 'error')) ? 'error' : $class;
         return "<div class='$class' style='" . self::$__Style . " $inStyle'>$inOutput</div>";
     }
+    /* -------------------------------------------------------------------- */
+    public static function OutputLinesGet($inId, $inValues, $inPad=30): string {
+        $return = '';
+        $ar = explode("\n", $inValues);
+        $return .= self::OutputLineGet('- ' . str_pad($inId, $inPad, ' ') . ": " . array_shift($ar));
+        foreach ($ar as $val) {
+            if (empty($val)) continue;
+            $return .= self::OutputLineGet('- ' . str_pad('', $inPad, ' ') . ": $val");
+        }
+        return $return;
+    }
+
     /* -------------------------------------------------------------------- */
     public static function OutputHeadingGet($inString): string {
         $str = str_pad($inString, 180, '-');

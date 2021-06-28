@@ -5,13 +5,29 @@ use workbook\wbinc\admin;
 use workbook\wbincdoku\doku;
 class SysRemote {
     /* -------------------------------------------------------------------- */
+    private static $__Call = '';
     private static $__Client = '';
     private static $__ClientLoginCheck = false;
-    private static $__Call = '';
-    private static $__Status = '';
-    private static $__Response = '';
-    private static $__ErrorString = 'WB-EXCEPTION: ';
     private static $__ErrorMessage = '';
+    private static $__ErrorString = 'WB-EXCEPTION: ';
+    private static $__Response = '';
+    private static $__Status = '';
+    /* -------------------------------------------------------------------- */
+    public static function EnabledCheck($inType = ''): bool {
+        if (self::$__ClientLoginCheck) return true;
+        $url = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_url');
+        if (empty($url) or ! filter_var($url, FILTER_VALIDATE_URL)) return false;
+        $ar = ['username', 'password', 'mail', 'terms'];
+        foreach ($ar as $val) {
+            $str = doku\DokuConf::ConfGet('plugin', 'workbook', "connect_$val");
+            if (empty($str) or $str == '!!not set!!') return false;
+        }
+        $return = true;
+        if ($inType == 'login') {
+            $return = self::__ClientLoginCheck();
+        }
+        return $return;
+    }
     /* -------------------------------------------------------------------- */
     public static function Exec($inAction) {
         $status = (self::EnabledCheck()) ? 'green' : 'red';
@@ -32,26 +48,10 @@ class SysRemote {
         }
     }
     /* -------------------------------------------------------------------- */
-    public static function EnabledCheck($inType = ''): bool {
-        if (self::$__ClientLoginCheck) return true;
-        $url = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_url');
-        if (empty($url) or !filter_var($url, FILTER_VALIDATE_URL)) return false;
-        $ar = ['username', 'password', 'mail', 'terms'];
-        foreach ($ar as $val) {
-            $str = doku\DokuConf::ConfGet('plugin', 'workbook', "connect_$val");
-            if (empty($str) or $str == '!!not set!!') return false;
-        }
-        $return = true;
-        if ($inType == 'login') {
-            $return = self::__ClientLoginCheck();
-        }
-        return $return;
-    }
-    /* -------------------------------------------------------------------- */
     public static function SystemsAr(): array {
         $returns = [];
         try {
-            if (!self::EnabledCheck('login')) return [];
+            if ( ! self::EnabledCheck('login')) return [];
             $cmd = "plugin.workbookhub.SysDataIdContentsGet";
             $version = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_version');
             $nsid = "zsync:sync:$version:conf:systems.ini";
@@ -62,30 +62,10 @@ class SysRemote {
             } else {
                 admin\AdminXhtmlMsg::Echo('Warning', __METHOD__ . "->$cmd", "$nsid", self::$__ErrorMessage);
             }
-        } catch (\Throwable $e) {
-            admin\AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
+        } catch (\Throwable $t) {
+            doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }
         return $returns;
-    }
-    /* -------------------------------------------------------------------- */
-    private static function __ClientLoginCheck(): bool {
-        // New
-        if (self::$__Client === '') {
-            $url = self::__ClientUrlGet();
-            if (empty($url)) {
-                self::$__Status = false;
-            } else {
-                require_once('inc/init.php');
-                self::$__Client = new IXR_Client($url);
-                self::$__Status = true;
-            }
-        }
-        // Login
-        if (!self::$__ClientLoginCheck) {
-            self::__ClientExec('dokuwiki.login');
-            self::$__ClientLoginCheck = (self::$__Response == '1') ? true : false;
-        }
-        return self::$__ClientLoginCheck;
     }
     /* -------------------------------------------------------------------- */
     private static function __ClientExec($inCmd, $inPara1 = '', $inPara2 = '', $inPara3 = '', $inPara4 = ''): void {
@@ -131,10 +111,30 @@ class SysRemote {
         }
     }
     /* -------------------------------------------------------------------- */
+    private static function __ClientLoginCheck(): bool {
+        // New
+        if (self::$__Client === '') {
+            $url = self::__ClientUrlGet();
+            if (empty($url)) {
+                self::$__Status = false;
+            } else {
+                require_once('inc/init.php');
+                self::$__Client = new IXR_Client($url);
+                self::$__Status = true;
+            }
+        }
+        // Login
+        if ( ! self::$__ClientLoginCheck) {
+            self::__ClientExec('dokuwiki.login');
+            self::$__ClientLoginCheck = (self::$__Response == '1') ? true : false;
+        }
+        return self::$__ClientLoginCheck;
+    }
+    /* -------------------------------------------------------------------- */
     private static function __ClientUrlGet(): string {
         $return = '';
         $url = doku\DokuConf::ConfGet('plugin', 'workbook', 'connect_url');
-        if (!empty($url) and filter_var($url, FILTER_VALIDATE_URL)) {
+        if ( ! empty($url) and filter_var($url, FILTER_VALIDATE_URL)) {
             $return = $url;
             $return .= (substr($return, -1) == '/') ? '' : '/';
             $return .= 'lib/exe/xmlrpc.php';

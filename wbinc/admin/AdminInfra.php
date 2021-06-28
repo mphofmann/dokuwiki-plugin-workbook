@@ -64,44 +64,44 @@ class AdminInfra {
                     case 'Infra':
                         // Infra
                         $return .= AdminExec::OutputHeadingGet('INFRA');
-                        $return .= self::__OutputLinesGet('UNAME', php_uname());
-                        $return .= self::__OutputLinesGet('ARCH', php_uname('m'));
-                        $return .= self::__OutputLinesGet('OS', php_uname('s')); // PHP_OS
-                        $return .= self::__OutputLinesGet('HOSTNAME', gethostname()); // php_uname('n')
-                        $return .= self::__OutputLinesGet('HOSTNAMECTL', shell_exec('hostnamectl'));
+                        $return .= AdminExec::OutputLinesGet('UNAME', php_uname());
+                        $return .= AdminExec::OutputLinesGet('ARCH', php_uname('m'));
+                        $return .= AdminExec::OutputLinesGet('OS', php_uname('s')); // PHP_OS
+                        $return .= AdminExec::OutputLinesGet('HOSTNAME', gethostname()); // php_uname('n')
+                        $return .= AdminExec::OutputLinesGet('HOSTNAMECTL', shell_exec('hostnamectl'));
                         // Disk
                         $return .= AdminExec::OutputHeadingGet('DISK');
-                        $return .= self::__OutputLinesGet('FREE-SPACE', @round(disk_free_space('.') / 10 ** 9) . 'GB');
-                        $return .= self::__OutputLinesGet('LOCALE', setlocale(LC_ALL, 0));
+                        $return .= AdminExec::OutputLinesGet('FREE-SPACE', @round(disk_free_space('.') / 10 ** 9) . 'GB');
+                        $return .= AdminExec::OutputLinesGet('LOCALE', setlocale(LC_ALL, 0));
                         // PHP
                         $return .= AdminExec::OutputHeadingGet('PHP');
-                        $return .= self::__OutputLinesGet('PHP-SAPI', php_sapi_name());
-                        $return .= self::__OutputLinesGet('PHP-VERSION', phpversion());
-                        $return .= self::__OutputLinesGet('PHP-EXTENSIONS', implode(', ', get_loaded_extensions()));
-                        $return .= self::__OutputLinesGet('PHP-TIMEZONE', date_default_timezone_get() . " (now: " . date('Y-m-d-His') . ")");
-                        $return .= self::__OutputLinesGet('PHP-CWD', getcwd());
+                        $return .= AdminExec::OutputLinesGet('PHP-SAPI', php_sapi_name());
+                        $return .= AdminExec::OutputLinesGet('PHP-VERSION', phpversion());
+                        $return .= AdminExec::OutputLinesGet('PHP-EXTENSIONS', implode(', ', get_loaded_extensions()));
+                        $return .= AdminExec::OutputLinesGet('PHP-TIMEZONE', date_default_timezone_get() . " (now: " . date('Y-m-d-His') . ")");
+                        $return .= AdminExec::OutputLinesGet('PHP-CWD', getcwd());
                         // php.ini
                         $return .= AdminExec::OutputHeadingGet('PHP.INI');
-                        $return .= self::__OutputLinesGet('PHP.INI', php_ini_loaded_file());
+                        $return .= AdminExec::OutputLinesGet('PHP.INI', php_ini_loaded_file());
                         $ar = ['memory_limit' => '', 'max_execution_time' => '', 'safe_mode' => '', 'ignore_user_abort' => '', 'disable_functions' => '', 'sendmail_path' => ''];
                         foreach ($ar as $id => $val) {
-                            $return .= self::__OutputLinesGet("PHP.INI: {$id}", ini_get($id));
+                            $return .= AdminExec::OutputLinesGet("PHP.INI: {$id}", ini_get($id));
                         }
                         // Access
                         $return .= AdminExec::OutputHeadingGet('ACCESS');
-                        $return .= self::__OutputLinesGet('USER', get_current_user());
-                        $return .= self::__OutputLinesGet('ID', shell_exec('id'));
+                        $return .= AdminExec::OutputLinesGet('USER', get_current_user());
+                        $return .= AdminExec::OutputLinesGet('ID', shell_exec('id'));
                         $ar = [getcwd(), '/home', '/var/log/syslog', '/var/log/apache2', '/var/www'];
                         foreach ($ar as $val) {
                             $str = '';
                             if (@is_readable($val)) $str .= "readable ";
                             if (@is_writeable($val)) $str .= "writeable ";
                             if (@is_executable($val)) $str .= "executable ";
-                            $return .= self::__OutputLinesGet($val, $str);
+                            $return .= AdminExec::OutputLinesGet($val, $str);
                         }
                         // Cron
                         $return .= AdminExec::OutputHeadingGet('CRON');
-                        $return .= self::__OutputLinesGet('CRONTAB', shell_exec('crontab -l 2>&1'));
+                        $return .= AdminExec::OutputLinesGet('CRONTAB', shell_exec('crontab -l 2>&1'));
                         // Commands
                         $return .= AdminExec::OutputHeadingGet('COMMANDS');
                         $ars = [ //
@@ -116,8 +116,12 @@ class AdminInfra {
                             foreach ($ar as $val) {
                                 $str .= ($out = shell_exec("which $val")) == '' ? '' : "$val(" . trim($out) . ") ";
                             }
-                            $return .= self::__OutputLinesGet($id, $str);
+                            $return .= AdminExec::OutputLinesGet($id, $str);
                         }
+                        // Workbooks
+                        $return .= AdminExec::OutputHeadingGet('WORKBOOK');
+                        $return .= AdminExec::OutputLinesGet('WB_RUNARCHLIST', WB_RUNARCHLIST);
+                        $return .= AdminExec::OutputLinesGet('WB_RUNMODELIST', WB_RUNMODELIST);
                         break;
                     case 'PHP':
                         ob_start();
@@ -171,17 +175,6 @@ class AdminInfra {
             default:
                 AdminXhtmlMsg::Echo('Warning', '', '', "Infra action unknown: $inAction $inId");
                 break;
-        }
-        return $return;
-    }
-    /* -------------------------------------------------------------------- */
-    private static function __OutputLinesGet($inId, $inValues): string {
-        $return = '';
-        $ar = explode("\n", $inValues);
-        $return .= AdminExec::OutputLineGet('- ' . str_pad($inId, 30, ' ') . ": " . array_shift($ar));
-        foreach ($ar as $val) {
-            if (empty($val)) continue;
-            $return .= AdminExec::OutputLineGet('- ' . str_pad('', 30, ' ') . ": $val");
         }
         return $return;
     }

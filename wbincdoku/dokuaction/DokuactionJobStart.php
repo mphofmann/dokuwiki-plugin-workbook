@@ -2,70 +2,89 @@
 namespace workbook\wbincdoku\dokuaction;
 use Doku_Event;
 use workbook\wbinc\action;
-use workbook\wbinc\admin;
 use workbook\wbincdoku\doku;
 class DokuactionJobStart {
     /* -------------------------------------------------------------------- */
-    public static function Event_Before_AUTH_LOGIN_CHECK_Exec(Doku_Event $Event, $inPara): void {
-        if ( ! \_Wb_::ClassExists('action\ActionAction')) return;
-        try {
-            $Event->result = action\ActionJob::Refresh($Event->data['user'], $Event->data['password'], 'plain', $Event->data['sticky']);
-            $Event->preventDefault();
-            $Event->stopPropagation();
-        } catch (\Throwable $e) {
-            admin\AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
+    public static function Event_AUTH_ACL_CHECK_AfterExec(Doku_Event $Event, $inPara): void {
+        // TODO Dokuwiki Bug?
+        $act = doku\DokuGlobal::ActGet();
+        if (empty($act)) return; // AJAX
+        if (strpos('index recent save', $act) !== false) return;
+        if ($Event->result === 0 and $act != 'denied') {
+            send_redirect("doku.php?do=denied&id={$_REQUEST['id']}");
         }
     }
     /* -------------------------------------------------------------------- */
-    public static function Event_Before_AUTH_ACL_CHECK_Exec(Doku_Event $Event, $inPara): void {
-        if ( ! \_Wb_::ClassExists('action\ActionAction')) return;
+    public static function Event_AUTH_ACL_CHECK_BeforeExec(Doku_Event $Event, $inPara): void {
+        if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            $rc = action\ActionJob::AclNsidInt($Event->data['id'], $Event->data['user'], @implode(',', $Event->data['groups'])); // TODO groups might be empty
+            if (doku\DokuGlobal::ActGet() == '' and empty($Event->data['id'])) { // AJAX inline editor for Global-Table
+                $rc = AUTH_EDIT;
+            } else {
+                $rc = action\ActionJob::AclNsidInt($Event->data['id'], $Event->data['user'], @implode(',', $Event->data['groups'])); // TODO groups might be empty
+            }
             if ($rc !== -1) {
                 $Event->result = $rc;
                 $Event->preventDefault();
                 $Event->stopPropagation();
             }
-        } catch (\Throwable $e) {
-            admin\AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
+        } catch (\Throwable $t) {
+            doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }
     }
     /* -------------------------------------------------------------------- */
-    public static function Event_After_DOKUWIKI_STARTED_Exec(Doku_Event $Event, $inPara): void { // forward start to e.g. start_de
-        if ( ! \_Wb_::ClassExists('action\ActionAction')) return;
+    public static function Event_AUTH_LOGIN_CHECK_BeforeExec(Doku_Event $Event, $inPara): void {
+        if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
+        try {
+            $Event->result = action\ActionJob::Refresh($Event->data['user'], $Event->data['password'], 'plain', $Event->data['sticky']);
+            $Event->preventDefault();
+            $Event->stopPropagation();
+            global $USERINFO;
+            if (empty($USERINFO)) $USERINFO = $_SESSION[DOKU_COOKIE]['auth']['info'];
+        } catch (\Throwable $t) {
+            doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
+        }
+    }
+    /* -------------------------------------------------------------------- */
+    public static function Event_DOKUWIKI_STARTED_AfterExec(Doku_Event $Event, $inPara): void { // forward start to e.g. start_de
+        if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
             action\ActionJob::StartExec();
             self::__ActionJobStartExec();
-        } catch (\Throwable $e) {
-            admin\AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
+        } catch (\Throwable $t) {
+            doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }
     }
     /* -------------------------------------------------------------------- */
-    public static function Event_Before_ACTION_ACT_PREPROCESS_Exec(Doku_Event $Event, $inPara): void {
-        if ( ! \_Wb_::ClassExists('action\ActionAction')) return;
+    public static function Event_MAIL_MESSAGE_SEND_BeforeExec(Doku_Event $Event, $inPara): void {
+        if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            $Event->data = action\ActionAction::PreprocessGet($Event->data);
-        } catch (\Throwable $e) {
-            admin\AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
+            // $Event->data['from'] not, respectively set automatically
+            $Event->result = action\ActionJob::MailSend($Event->data['to'], $Event->data['subject'], $Event->data['body'], $Event->data['cc'], $Event->data['bcc'], '', $Event->data['headers'], $Event->data['params']);
+            $Event->preventDefault();
+            $Event->stopPropagation();
+        } catch (\Throwable $t) {
+            doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }
     }
     /* -------------------------------------------------------------------- */
-    public static function Event_Before_TPL_METAHEADER_OUTPUT_Exec(Doku_Event $Event, $inPara): void {
-        if ( ! \_Wb_::ClassExists('action\ActionAction')) return;
+    public static function Event_TPL_METAHEADER_OUTPUT_BeforeExec(Doku_Event $Event, $inPara): void {
+        if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
             foreach (action\ActionJob::HeadStyleHrefAr() as $href) {
                 $Event->data['link'][] = ['type' => 'text/css', 'rel' => 'stylesheet', 'href' => $href];
             }
-        } catch (\Throwable $e) {
-            admin\AdminXhtmlMsg::Echo('Warning', '', '', $e->getMessage());
+        } catch (\Throwable $t) {
+            doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }
     }
     /* -------------------------------------------------------------------- */
     private static function __ActionJobStartExec(): void {
-        if ( ! empty($_REQUEST['rev'] and @$_REQUEST['do'] != 'revert')) {
+        if ( ! empty($_REQUEST['do']) and @strpos('revert edit', @$_REQUEST['do']) !== false) return;
+        if ( ! empty($_REQUEST['rev'])) {
             $strdate = date('Y-m-d H:i:s', $_REQUEST['rev']);
             $href = "?id={$_REQUEST['id']}&do=revert&rev={$_REQUEST['rev']}&sectok=" . (doku\DokuXhtml::SectokGet());
-            doku\DokuXhtmlMsg::Add('Notice', '', '', "Old revision: $strdate. <a href='$href'>Revert?</a>");
+            doku\DokuAreaMsg::Add('Notice', '', '', "Old revision: $strdate. <a href='$href'>Revert?</a>");
         }
     }
     /* -------------------------------------------------------------------- */

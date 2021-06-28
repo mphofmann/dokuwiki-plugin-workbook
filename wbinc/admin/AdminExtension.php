@@ -2,7 +2,7 @@
 namespace workbook\wbinc\admin;
 class AdminExtension {
     /* -------------------------------------------------------------------- */
-    public static function RowAr($inGroup, $inAr, $inExttype, $inAttr = ''): array {
+    public static function RowAr($inGroup, array $inAr, $inExttype, $inAttr = ''): array {
         $returns = [];
         foreach ($inAr as $id => $ar) {
             $strstatus = $inAttr == 'disabled' ? AdminXhtml::StatusGet('white') : AdminXhtml::ButtonGet("admin\AdminExtension::Exec action=info type=$inExttype id=$id", AdminCmd::ExecGet("admin\AdminExtension::Exec action=status type=$inExttype id=$id"));
@@ -22,7 +22,7 @@ class AdminExtension {
                 $return .= self::NoteGet($inType, $inId);
                 break;
             case 'info':
-                $return .= self::__InfoGet($inType, $inId);
+                $return .= self::InfoGet($inType, $inId);
                 break;
             case 'install':
                 $extpath = self::__PathGet($inType, $inId);
@@ -39,29 +39,44 @@ class AdminExtension {
                 self::__Remove($inType, $inId);
                 break;
             case 'status':
-                $color = 'red';
-                $title = 'Not installed';
-                $extpath = self::__PathGet($inType, $inId);
-                if ( ! empty($extpath) and is_dir($extpath)) {
-                    $extmtime = filemtime($extpath);
-                    $color = 'green';
-                    $title = "Installed: " . date('Y-m-d H:i:s', $extmtime);
-                    if ( ! empty($inUrl)) {
-                        $src = self::__SrcGet('src', $inType, $inId);
-                        $srcmtime = AdminRemote::UrlMtime($src);
-                        if ($extmtime < $srcmtime) {
-                            $color = 'yellow';
-                            $title .= " / Updateable: " . date('Y-m-d H:i:s', $srcmtime);
-                        }
-                    }
-                }
-                $return .= AdminXhtml::StatusGet($color, $title);
+                $return .= self::StatusGet($inType, $inId);
                 break;
             default:
                 AdminXhtmlMsg::Echo('Warning', '', '', "Extension action unknown: $inAction $inType $inId");
                 break;
         }
         return $return;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function StatusGet($inType, $inId): string {
+        $color = 'red';
+        $title = 'Not installed';
+        $extpath = self::__PathGet($inType, $inId);
+        if ( ! empty($extpath) and is_dir($extpath)) {
+            $extmtime = filemtime($extpath);
+            $color = 'green';
+            $title = "Installed: " . date('Y-m-d H:i:s', $extmtime);
+            if (strpos($inId, 'workbook') !== false) {
+                $src = self::__SystemsArGet('src', $inType, $inId);
+                $srcmtime = AdminRemote::UrlMtime($src);
+                if ($srcmtime == 0) {
+                    if (AdminRemote::UrlExists($src)) {
+                        $color = 'yellow';
+                        $title .= " / Source modification date unknown: " . htmlspecialchars($src);
+                    } else {
+                        $color = 'red';
+                        $title .= " / Source not found: " . htmlspecialchars($src);
+                    }
+                } elseif ($extmtime < $srcmtime) {
+                    $color = 'yellow';
+                    $title .= " / Updateable: " . date('Y-m-d H:i:s', $srcmtime);
+                }
+            } else {
+                $color = 'white';
+                $title .= " / Use Dokuwiki extension manager.";
+            }
+        }
+        return AdminXhtml::StatusGet($color, $title);
     }
     /* -------------------------------------------------------------------- */
     public static function NoteGet($inType, $inId): string {
@@ -74,7 +89,7 @@ class AdminExtension {
             'cosmocode' => '<span title="CosmoCode GmbH, Berlin, Germany">by CosmoCode</span>', //
             'michitux' => '<span title="Michael Hamann, Karlsruhe, Germany">by Hamann</span>', //
         ];
-        $url = self::__SrcGet('src', $inType, $inId);
+        $url = self::__SystemsArGet('src', $inType, $inId);
         foreach ($ar as $id => $val) {
             if (strpos($url, $id) !== false) {
                 $return .= " ($val)";
@@ -86,9 +101,9 @@ class AdminExtension {
     }
     /* -------------------------------------------------------------------- */
     public static function Replace($inType, $inId): bool {
-        $src = self::__SrcGet('src', $inType, $inId);
+        $src = self::__SystemsArGet('src', $inType, $inId);
         if (empty($src)) return AdminXhtmlMsg::EchoFalse('Warning', '', '', "Source is missing: $inType-$inId");
-        $path = self::__SrcGet('path', $inType, $inId);
+        $path = self::__SystemsArGet('path', $inType, $inId);
         if (substr($src, -4) == '.deb' and empty($path)) return AdminXhtmlMsg::EchoFalse('Warning', '', '', "Path is missing: $inType-$inId");
         // download
         $filepath = self::__SrcDownloadFilepathGet($src);
@@ -147,19 +162,37 @@ class AdminExtension {
         return true;
     }
     /* -------------------------------------------------------------------- */
+    public static function InfoGet($inType, $inId): string {
+        $return = '';
+        // TYPE ID
+        $return .= AdminExec::OutputHeadingGet(strtoupper("$inType $inId"));
+        $filepath = self::__PathGet($inType, $inId);
+        $return .= AdminExec::OutputLinesGet('Path', $filepath);
+        $return .= AdminExec::OutputLinesGet('MTime', date('Y-m-d His', filemtime($filepath)));
+        $return .= AdminExec::OutputLinesGet('Size', shell_exec("du -bsh $filepath | cut -f1"));
+        // Remote
+        $return .= AdminExec::OutputHeadingGet(strtoupper("Remote"));
+        $src = self::__SystemsArGet('src', $inType, $inId);
+        $return .= AdminExec::OutputLinesGet('Source', $src);
+        $return .= AdminExec::OutputLinesGet('Note', self::__SystemsArGet('note', $inType, $inId));
+        $str = (($mtime = AdminRemote::UrlMtime($src)) == 0) ? '' : date('Y-m-d His', $mtime);
+        $return .= AdminExec::OutputLinesGet('MTime', $str);
+        return $return;
+    }
+    /* -------------------------------------------------------------------- */
     private static function __Remove($inType, $inId): bool {
         $extpath = self::__PathGet($inType, $inId);
         AdminInode::RmR($extpath);
         return true;
     }
     /* -------------------------------------------------------------------- */
-    private static function __SrcGet($inField, $inExttype, $inId): string {
+    private static function __SystemsArGet($inField, $inType, $inId): string {
         $return = '';
         $ar = AdminRemote::SystemsAr();
-        if (empty($return)) $return = @$ar["depends-$inExttype"][$inId][$inField];
-        if (empty($return)) $return = @$ar["recommends-$inExttype"][$inId][$inField];
-        if (empty($return)) $return = @$ar["suggests-$inExttype"][$inId][$inField];
-        $artr = array_merge($ar['*'], ['@ID@' => $inId, '@EXTTYPE@' => $inExttype, '@DEBDIST@' => AdminConf::Get('plugin', 'workbook', 'connect_dist')]);
+        if (empty($return)) $return = @$ar["depends-$inType"][$inId][$inField];
+        if (empty($return)) $return = @$ar["recommends-$inType"][$inId][$inField];
+        if (empty($return)) $return = @$ar["suggests-$inType"][$inId][$inField];
+        $artr = array_merge($ar['*'], ['@ID@' => $inId, '@EXTTYPE@' => $inType, '@DEBDIST@' => AdminConf::Get('plugin', 'workbook', 'connect_dist')]);
         $return = strtr($return, $artr);
         return $return;
     }
@@ -170,7 +203,7 @@ class AdminExtension {
             $str = file_get_contents($inSrc);
             if (strlen($str) > 0) {
                 AdminCache::Put(__NAMESPACE__, 'download', $basename, $str);
-                AdminXhtmlMsg::Echo('Info', '', '', "Source downloaded: $inSrc");
+                AdminXhtmlMsg::Echo('Notice', '', '', "Source downloaded: $inSrc");
             }
         }
         $filepath = AdminCache::FilepathGet(__NAMESPACE__, 'download', $basename);
@@ -180,12 +213,6 @@ class AdminExtension {
     private static function __PathGet($inType, $inId): string {
         $ar = ['module' => "workbook/module/$inId", 'plugin' => "lib/plugins/$inId", 'template' => "lib/tpl/$inId"];
         return $ar[$inType];
-    }
-    /* -------------------------------------------------------------------- */
-    private static function __InfoGet($inType, $inId): string {
-        $return = '';
-        $return .= "[Info $inType $inId] not implemented yet"; // TODO
-        return $return;
     }
     /* -------------------------------------------------------------------- */
 }

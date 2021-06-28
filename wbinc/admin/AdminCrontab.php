@@ -8,7 +8,7 @@ class AdminCrontab {
     private static $__Cron_D_Line = '*/5 * * * * @USER@ cd @GETCWD@; php -f @CRONPHP@';
     private static $__CronCmd = 'cd @GETCWD@; php -f @CRONPHP@';
     /* -------------------------------------------------------------------- */
-    public static function __constructStatic(): bool {
+    public static function A_Construct(): bool {
         $strtr = ['@GETCWD@' => getcwd(), '@CRONPHP@' => self::$__CronPhp, '@USER@' => get_current_user(),];
         self::$__CrontabLine = strtr(self::$__CrontabLine, $strtr);
         self::$__Cron_D_Line = strtr(self::$__Cron_D_Line, $strtr);

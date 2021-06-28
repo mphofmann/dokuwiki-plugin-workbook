@@ -20,7 +20,7 @@ class DokuSyntax {
                 $R->doc .= self::__WidgetGet($inData);
                 break;
             default:
-                DokuXhtmlMsg::Add('Warning', $inMode, '', 'Mode not defined.');
+                DokuAreaMsg::Add('Warning', $inMode, '', 'Mode not defined.');
                 break;
         }
     }

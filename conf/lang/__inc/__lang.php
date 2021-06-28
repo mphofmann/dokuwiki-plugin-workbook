@@ -59,6 +59,13 @@ $lang['regpwmail']                 = ''; // original: 'Your DokuWiki password'
 
 $lang['upperns']                   = 'up';
 
+// Admin
+$lang['disableactions_check']       = '[Check]';
+$lang['disableactions_subscription']= '[SubscribeUnsubscribe]';
+$lang['disableactions_wikicode']    = '[ViewSource]';
+$lang['disableactions_profile_delete'] = '[DeleteOwnAccount]';
+$lang['disableactions_rss']         = '[RSS]';
+
 // Email
 $lang['email_signature_text']      = '@DOKUWIKIURL@';
 $lang['email_signature_html']      = '';

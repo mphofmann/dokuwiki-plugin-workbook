@@ -2,7 +2,6 @@
 namespace workbook\wbinc\admin;
 class AdminRemote {
     /* -------------------------------------------------------------------- */
-    private static $__ConfAr = [];
     private static $__UrlMtimeAr = [];
     private static $__SystemsAr = [];
     /* -------------------------------------------------------------------- */
@@ -48,12 +47,17 @@ class AdminRemote {
     }
     /* -------------------------------------------------------------------- */
     public static function SystemsAr($inExtension = ''): array {
-        if (empty(self::$__SystemsAr)) self::$__SystemsAr = \_Wb_::CmdExec("sys\SysRemote::SystemsAr") ?? [];
+        if (empty(self::$__SystemsAr)) {
+            if (@filemtime('workbook/cache/systems.ini') < filemtime('conf/local.php')) {
+                $ar = \_Wb_::CmdExec("sys\SysRemote::SystemsAr") ?? [];
+                file_put_contents('workbook/cache/systems.ini', serialize($ar));
+            }
+            self::$__SystemsAr = (array)unserialize(file_get_contents('workbook/cache/systems.ini'));
+        }
         return self::$__SystemsAr;
     }
     /* -------------------------------------------------------------------- */
     public static function ExtensionAr($inType, $inExtension): array {
-        if (empty(self::$__SystemsAr)) self::$__SystemsAr = \_Wb_::CmdExec("sys\SysRemote::SystemsAr") ?? [];
         $returns = [];
         foreach (self::$__SystemsAr as $id => $ar) {
             if (strpos($id, $inType) === false) continue;
@@ -77,7 +81,14 @@ class AdminRemote {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    public static function UrlMtime($inUrl): ?int {
+    public static function UrlExists($inUrl): bool {
+        if (filter_var($inUrl, FILTER_VALIDATE_URL) === false) return 0;
+        $headers = @get_headers($inUrl);
+        return ( ! $headers or strpos($headers[0], '404') !== false) ? false : true;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function UrlMtime($inUrl): int {
+        if (filter_var($inUrl, FILTER_VALIDATE_URL) === false) return 0;
         if ( ! isset(self::$__UrlMtimeAr[$inUrl])) {
             $ar = get_headers($inUrl);
             if (is_array($ar)) {
@@ -90,7 +101,7 @@ class AdminRemote {
                 }
             }
         }
-        return self::$__UrlMtimeAr[$inUrl];
+        return self::$__UrlMtimeAr[$inUrl] ?? 0;
     }
     /* -------------------------------------------------------------------- */
 }
