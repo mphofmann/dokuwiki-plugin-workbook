@@ -262,7 +262,7 @@ class _Wb_ {
         $ar = [ //
             // dirs
             WB_DATAWORKBOOK => '', WB_DATAWORKBOOK . 'sync/' => '', //
-            WB_ROOT . 'workbook/' => '', WB_ROOT . 'workbook/module/' => '', WB_ROOT . 'workbook/moduleplugin/' => '', //
+            WB_ROOT . 'workbook/' => '', WB_ROOT . 'workbook/cache/' => '', WB_ROOT . 'workbook/module/' => '', WB_ROOT . 'workbook/moduleplugin/' => '', //
             WB_PATHLOG => '', WB_PATHLOG . 'php/' . date('Y-m') => '', WB_PATHLOG . 'user/' . date('Y-m') => '', //
             WB_PATHTMP => '', //
             // links
