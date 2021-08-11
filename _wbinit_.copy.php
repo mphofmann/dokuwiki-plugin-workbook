@@ -4,22 +4,34 @@ _Wb_::InitSet();
 class _Wb_ {
     /* -------------------------------------------------------------------- */
     public static $CwdPrefix = ''; // see InitSet
-    private static $__DirSearchAr = ['wbinc', 'wbtpl', 'wbdef', 'wbtag', 'wbincdoku'];
+    private static $__DirSearchAr = ['wbinc', 'wbtpl', 'wbdef', 'wbtag', 'wbincdoku', 'wbzdep'];
     private static $__HostInternalList = '.manageopedia.com .manageopedia.net .mphofmann.com ';
     private static $__Prepend = '_wbinit_.prepend.php';
     /* -------------------------------------------------------------------- */
     public static function Autoload(string $inClassNsGroupId): bool {
         if (substr($inClassNsGroupId, 0, 8) != 'workbook') return false;
         if ( ! self::__AutoloadCheck($inClassNsGroupId)) return false;
+        $filepath = '';
         foreach (self::__AutoloadPathsAr() as $extpath) {
-            $filepath = WB_ROOT . $extpath . strtr($inClassNsGroupId, ['\\' => '/']) . '.php';
-            if (file_exists($filepath)) {
-                include_once($filepath);
-                if (method_exists($inClassNsGroupId, 'A_Construct')) {
-                    $inClassNsGroupId::A_Construct();
-                }
-                return true;
+            $str = WB_ROOT . $extpath . strtr($inClassNsGroupId, ['\\' => '/']) . '.php';
+            if (file_exists($str)) {
+                $filepath = $str;
+                break;
             }
+        }
+        $p = explode('\\', $inClassNsGroupId);
+        $p[0] = 'workbook';
+        $p[1] = 'wbzdep';
+        $str = WB_ROOT . 'workbook/module/' . strtr(implode('\\', $p), ['\\' => '/']) . '.php';
+        if (file_exists($str)) {
+            $filepath = $str;
+        }
+        if ( ! empty($filepath)) {
+            include_once($filepath);
+            if (method_exists($inClassNsGroupId, 'A_Construct')) {
+                $inClassNsGroupId::A_Construct();
+            }
+            return true;
         }
         // $ar = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
         // echo "<pre>";

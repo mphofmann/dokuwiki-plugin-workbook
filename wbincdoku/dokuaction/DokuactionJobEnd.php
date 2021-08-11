@@ -8,7 +8,7 @@ class DokuactionJobEnd {
     public static function Event_DOKUWIKI_DONE_AfterExec(Doku_Event $Event, $inPara): void { //
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            action\ActionJob::EndExec();
+            action\ActionJob::JobEndExec();
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }
@@ -20,9 +20,9 @@ class DokuactionJobEnd {
             $Event->preventDefault();
             $Event->stopPropagation();
             $Event->result = false; // no caching
-            $out = action\ActionContent::BodyAreaGet($Event->data);
+            $out = action\ActionBody::AreaGet($Event->data);
             // TODO
-            echo action\ActionContent::AdjustGet($out);
+            echo action\ActionXhtml::AdjustGet($out);
             $Event->data = '';
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);

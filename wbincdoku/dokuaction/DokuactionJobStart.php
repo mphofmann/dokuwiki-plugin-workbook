@@ -49,7 +49,7 @@ class DokuactionJobStart {
     public static function Event_DOKUWIKI_STARTED_AfterExec(Doku_Event $Event, $inPara): void { // forward start to e.g. start_de
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            action\ActionJob::StartExec();
+            action\ActionJob::JobStartExec();
             self::__ActionJobStartExec();
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);

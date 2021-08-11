@@ -50,9 +50,9 @@ class AdminRemote {
         if (empty(self::$__SystemsAr)) {
             if (@filemtime('workbook/cache/systems.ini') < filemtime('conf/local.php')) {
                 $ar = \_Wb_::CmdExec("sys\SysRemote::SystemsAr") ?? [];
-                file_put_contents('workbook/cache/systems.ini', serialize($ar));
+                @file_put_contents('workbook/cache/systems.ini', serialize($ar));
             }
-            self::$__SystemsAr = (array)unserialize(file_get_contents('workbook/cache/systems.ini'));
+            self::$__SystemsAr = (array)unserialize(@file_get_contents('workbook/cache/systems.ini'));
         }
         return self::$__SystemsAr;
     }
