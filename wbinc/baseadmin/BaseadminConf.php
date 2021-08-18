@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminConf {
+namespace workbook\wbinc\baseadmin;
+class BaseadminConf {
     /* -------------------------------------------------------------------- */
     private static $__Ar = [];
     private static $__DefaultAr = ['plugin' => ['workbook' => ['connect_dist' => 'stable', 'connect_version' => 'stable']]];

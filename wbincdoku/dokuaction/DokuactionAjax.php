@@ -1,7 +1,7 @@
 <?php
 namespace workbook\wbincdoku\dokuaction;
 use Doku_Event;
-use workbook\wbinc\action;
+use workbook\wbinc\baseaction;
 use workbook\wbincdoku\doku;
 class DokuactionAjax {
     /* -------------------------------------------------------------------- */
@@ -10,11 +10,11 @@ class DokuactionAjax {
         try {
             if (is_array($Event->data['affected_pages'])) {
                 foreach ($Event->data['affected_pages'] as $val) {
-                    action\ActionNsid::LinksRewrite($val, $Event->data['src_id'], $Event->data['dst_id']);
+                    baseaction\BaseactionNsid::LinksRewrite($val, $Event->data['src_id'], $Event->data['dst_id']);
                 }
             }
-            action\ActionNsid::MetaReset($Event->data['src_id']);
-            action\ActionNsid::MetaReset($Event->data['dst_id']);
+            baseaction\BaseactionNsid::MetaReset($Event->data['src_id']);
+            baseaction\BaseactionNsid::MetaReset($Event->data['dst_id']);
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }

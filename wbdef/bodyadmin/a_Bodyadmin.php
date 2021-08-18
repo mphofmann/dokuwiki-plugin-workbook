@@ -1,7 +1,7 @@
 <?php
-namespace workbook\wbdef\jobadmin;
-use workbook\wbinc\admin;
-abstract class a_Jobadmin {
+namespace workbook\wbdef\bodyadmin;
+use workbook\wbinc\baseadmin;
+abstract class a_Bodyadmin {
     /* -------------------------------------------------------------------- */
     protected static $_Item = '';
     protected static $_Icon = '';
@@ -30,7 +30,7 @@ abstract class a_Jobadmin {
     public static function Get(): string {
         $return = '';
         if (static::$_AdminOnly and $_SERVER['REMOTE_USER'] !== 'admin') {
-            $return .= admin\AdminXhtmlMsg::Get('Info', '', '', 'No access');
+            $return .= baseadmin\BaseadminXhtmlMsg::Get('Info', '', '', 'No access');
         } else {
             self::HandleExec();
             $return .= self::XhtmlGet();
@@ -39,7 +39,7 @@ abstract class a_Jobadmin {
     }
     /* -------------------------------------------------------------------- */
     public static function HandleExec(): void {
-        $str = admin\AdminExec::HandleGet(static::$_Cmds);
+        $str = baseadmin\BaseadminExec::HandleGet(static::$_Cmds);
         if ($str === false) return;
         static::$_Out = $str;
     }
@@ -47,7 +47,7 @@ abstract class a_Jobadmin {
     public static function XhtmlGet(): string {
         $return = '';
         // Output
-        $return .= admin\AdminExec::OutputGet(static::$_Out);
+        $return .= baseadmin\BaseadminExec::OutputGet(static::$_Out);
         // Heading
         $return .= "<h2><i class='" . static::$_Icon . "'></i> " . ucfirst(static::$_Item) . '</h2>';
         // Xhtml
@@ -61,22 +61,22 @@ abstract class a_Jobadmin {
         // Table
         $ar = static::_Array1Get();
         if (!empty($ar)) {
-            $return .= admin\AdminXhtml::TableGet($ar, static::_StylesAr());
+            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
             $return .= '<br/>';
         }
         $ar = static::_Array2Get();
         if (!empty($ar)) {
-            $return .= admin\AdminXhtml::TableGet($ar, static::_StylesAr());
+            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
             $return .= '<br/>';
         }
         $ar = static::_Array3Get();
         if (!empty($ar)) {
-            $return .= admin\AdminXhtml::TableGet($ar, static::_StylesAr());
+            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
             $return .= '<br/>';
         }
         $ar = static::_Array4Get();
         if (!empty($ar)) {
-            $return .= admin\AdminXhtml::TableGet($ar, static::_StylesAr());
+            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
             $return .= '<br/>';
         }
         // Form

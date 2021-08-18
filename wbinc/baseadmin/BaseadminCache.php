@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminCache {
+namespace workbook\wbinc\baseadmin;
+class BaseadminCache {
     /* -------------------------------------------------------------------- */
     private static $__Path = WB_PATHCACHE;
     /* -------------------------------------------------------------------- */
@@ -8,11 +8,11 @@ class AdminCache {
         $return = false;
         switch ($inType) {
             case 'css&js':
-                AdminCmd::SystemGet('touch ' . WB_DATACONF . 'local.php'); // TODO
+                BaseadminCmd::SystemGet('touch ' . WB_DATACONF . 'local.php'); // TODO
                 $return = true;
                 break;
             default:
-                AdminCmd::SystemGet('touch ' . WB_DATACONF . 'local.php');
+                BaseadminCmd::SystemGet('touch ' . WB_DATACONF . 'local.php');
                 $return = true;
                 break;
         }
@@ -47,7 +47,7 @@ class AdminCache {
     }
     /* -------------------------------------------------------------------- */
     public static function Put($inNamespace, $inType, $inBasename, $inString): bool {
-        AdminInode::MkdirCheck(self::__PathCheckGet($inNamespace) . $inType);
+        BaseadminInode::MkdirCheck(self::__PathCheckGet($inNamespace) . $inType);
         return file_put_contents(self::__PathCheckGet($inNamespace) . "$inType/$inBasename", $inString);
     }
     /* -------------------------------------------------------------------- */
@@ -57,10 +57,10 @@ class AdminCache {
     /* -------------------------------------------------------------------- */
     private static function __PathCheckGet($inNamespace): string {
         $return = self::$__Path . strtr($inNamespace, ['\\' => '-']) . '/';
-        if ( ! is_dir($return)) AdminInode::MkdirCheck($return);
-        if (self::ConfLocalMtimeInt() > AdminInode::MtimeInt($return)) {
-            AdminInode::RmR($return);
-            AdminInode::MkdirCheck($return);
+        if ( ! is_dir($return)) BaseadminInode::MkdirCheck($return);
+        if (self::ConfLocalMtimeInt() > BaseadminInode::MtimeInt($return)) {
+            BaseadminInode::RmR($return);
+            BaseadminInode::MkdirCheck($return);
         }
         return $return;
     }

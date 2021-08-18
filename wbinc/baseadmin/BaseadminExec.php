@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminExec {
+namespace workbook\wbinc\baseadmin;
+class BaseadminExec {
     /* -------------------------------------------------------------------- */
     private static $__Style = 'overflow:visible;max-height:inherit;background-image:none;display:block;margin:0;border:0;border-radius:0;padding:3px;font-family:monospace;font-size:100%;white-space:pre;';
     /* -------------------------------------------------------------------- */
@@ -18,7 +18,7 @@ class AdminExec {
             if ($val == 'notempty' and empty($_REQUEST[$id][$cmd])) continue;
             $strval = (empty($value)) ? '' : "[$value]";
             $return .= "<div style='" . self::$__Style . "padding:5px;font-size:larger;font-weight:bold;'>Command: \"{$cmd}{$strval}\"</div>\n";
-            $return .= AdminCmd::ExecGet($cmd, $value);
+            $return .= BaseadminCmd::ExecGet($cmd, $value);
         }
         return $return;
     }

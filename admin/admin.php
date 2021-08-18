@@ -1,5 +1,5 @@
 <?php
-use workbook\wbinc\admin;
+use workbook\wbinc\baseadmin;
 use workbook\wbincdoku\doku;
 class admin_plugin_workbook_admin extends \DokuWiki_Admin_Plugin {
     /* -------------------------------------------------------------------- */
@@ -17,8 +17,8 @@ class admin_plugin_workbook_admin extends \DokuWiki_Admin_Plugin {
     /* -------------------------------------------------------------------- */
     public function html() {
         echo '<h1>Administration</h1>';
-        echo admin\AdminXhtml::MenuGet();
-        $class = "jobadmin\\Jobadmin" . ucfirst(@$_REQUEST['wb_item']);
+        echo baseadmin\BaseadminXhtml::MenuGet();
+        $class = "bodyadmin\\Bodyadmin" . ucfirst(@$_REQUEST['wb_item']);
         $classns = \_Wb_::ClassNsGet($class);
         try {
             $classpath = $classns . $class;

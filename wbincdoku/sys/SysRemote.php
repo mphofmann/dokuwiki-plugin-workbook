@@ -1,7 +1,7 @@
 <?php
 namespace workbook\wbincdoku\sys;
 use IXR_Client;
-use workbook\wbinc\admin;
+use workbook\wbinc\baseadmin;
 use workbook\wbincdoku\doku;
 class SysRemote {
     /* -------------------------------------------------------------------- */
@@ -33,17 +33,17 @@ class SysRemote {
         $status = (self::EnabledCheck()) ? 'green' : 'red';
         switch ($inAction) {
             case 'status':
-                echo admin\AdminXhtml::StatusGet($status);
+                echo baseadmin\BaseadminXhtml::StatusGet($status);
                 break;
             case 'login':
                 if (self::EnabledCheck('login')) {
-                    admin\AdminXhtmlMsg::Echo('Success', __METHOD__, '', 'Remote login successful.');
+                    baseadmin\BaseadminXhtmlMsg::Echo('Success', __METHOD__, '', 'Remote login successful.');
                 } else {
-                    admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, '', 'Remote login failed.');
+                    baseadmin\BaseadminXhtmlMsg::Echo('Warning', __METHOD__, '', 'Remote login failed.');
                 }
                 break;
             default:
-                admin\AdminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
+                baseadmin\BaseadminXhtmlMsg::Echo('Warning', __METHOD__, $inAction, 'Parameter unknown.');
                 break;
         }
     }
@@ -60,7 +60,7 @@ class SysRemote {
                 $out = self::$__Response;
                 $returns = parse_ini_string($out, true);
             } else {
-                admin\AdminXhtmlMsg::Echo('Warning', __METHOD__ . "->$cmd", "$nsid", self::$__ErrorMessage);
+                baseadmin\BaseadminXhtmlMsg::Echo('Warning', __METHOD__ . "->$cmd", "$nsid", self::$__ErrorMessage);
             }
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);

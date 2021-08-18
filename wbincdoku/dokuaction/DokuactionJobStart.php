@@ -1,7 +1,7 @@
 <?php
 namespace workbook\wbincdoku\dokuaction;
 use Doku_Event;
-use workbook\wbinc\action;
+use workbook\wbinc\baseaction;
 use workbook\wbincdoku\doku;
 class DokuactionJobStart {
     /* -------------------------------------------------------------------- */
@@ -21,7 +21,7 @@ class DokuactionJobStart {
             if (doku\DokuGlobal::ActGet() == '' and empty($Event->data['id'])) { // AJAX inline editor for Global-Table
                 $rc = AUTH_EDIT;
             } else {
-                $rc = action\ActionJob::AclNsidInt($Event->data['id'], $Event->data['user'], @implode(',', $Event->data['groups'])); // TODO groups might be empty
+                $rc = baseaction\BaseactionJob::AclNsidInt($Event->data['id'], $Event->data['user'], @implode(',', $Event->data['groups'])); // TODO groups might be empty
             }
             if ($rc !== -1) {
                 $Event->result = $rc;
@@ -36,7 +36,7 @@ class DokuactionJobStart {
     public static function Event_AUTH_LOGIN_CHECK_BeforeExec(Doku_Event $Event, $inPara): void {
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            $Event->result = action\ActionJob::Refresh($Event->data['user'], $Event->data['password'], 'plain', $Event->data['sticky']);
+            $Event->result = baseaction\BaseactionJob::Refresh($Event->data['user'], $Event->data['password'], 'plain', $Event->data['sticky']);
             $Event->preventDefault();
             $Event->stopPropagation();
             global $USERINFO;
@@ -49,7 +49,7 @@ class DokuactionJobStart {
     public static function Event_DOKUWIKI_STARTED_AfterExec(Doku_Event $Event, $inPara): void { // forward start to e.g. start_de
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            action\ActionJob::JobStartExec();
+            baseaction\BaseactionJob::JobStartExec();
             self::__ActionJobStartExec();
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
@@ -60,7 +60,7 @@ class DokuactionJobStart {
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
             // $Event->data['from'] not, respectively set automatically
-            $Event->result = action\ActionJob::MailSend($Event->data['to'], $Event->data['subject'], $Event->data['body'], $Event->data['cc'], $Event->data['bcc'], '', $Event->data['headers'], $Event->data['params']);
+            $Event->result = baseaction\BaseactionJob::MailSend($Event->data['to'], $Event->data['subject'], $Event->data['body'], $Event->data['cc'], $Event->data['bcc'], '', $Event->data['headers'], $Event->data['params']);
             $Event->preventDefault();
             $Event->stopPropagation();
         } catch (\Throwable $t) {
@@ -71,7 +71,7 @@ class DokuactionJobStart {
     public static function Event_TPL_METAHEADER_OUTPUT_BeforeExec(Doku_Event $Event, $inPara): void {
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            foreach (action\ActionJob::HeadStyleHrefAr() as $href) {
+            foreach (baseaction\BaseactionJob::HeadStyleHrefAr() as $href) {
                 $Event->data['link'][] = ['type' => 'text/css', 'rel' => 'stylesheet', 'href' => $href];
             }
         } catch (\Throwable $t) {

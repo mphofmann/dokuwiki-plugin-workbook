@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminCrontab {
+namespace workbook\wbinc\baseadmin;
+class BaseadminCrontab {
     /* -------------------------------------------------------------------- */
     private static $__CronPhp = 'workbook/module/workbookcore/bin/wbjobclicron.php';
     //                               m   h d m w user   command
@@ -24,7 +24,7 @@ class AdminCrontab {
         $status = 'green';
         if (!file_exists(self::$__CronPhp)) $status = 'red';
         if (!self::Check()) $status = 'yellow';
-        return AdminXhtml::StatusGet($status, 'Crontab');
+        return BaseadminXhtml::StatusGet($status, 'Crontab');
     }
     /* -------------------------------------------------------------------- */
     public static function InfoGet(): string {

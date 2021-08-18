@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminWebroot {
+namespace workbook\wbinc\baseadmin;
+class BaseadminWebroot {
     /* -------------------------------------------------------------------- */
     public static $Webroots = [ //
         'wb.php' => 'Workbook controller', //
@@ -20,7 +20,7 @@ class AdminWebroot {
                     }
                     copy($filepath, $inFilepath);
                 } else {
-                    AdminXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
+                    BaseadminXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
                 }
                 break;
             case 'link':
@@ -32,7 +32,7 @@ class AdminWebroot {
                     if (file_exists($inFilepath)) unlink($inFilepath);
                     symlink($filepath, $inFilepath);
                 } else {
-                    AdminXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
+                    BaseadminXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
                 }
                 break;
             case 'unlink':
@@ -45,10 +45,10 @@ class AdminWebroot {
             case 'status':
                 $rc = (strpos("index.php wb.php", $inFilepath) === false) ? file_exists($inFilepath) : is_link($inFilepath);
                 $color = $rc ? 'green' : 'red';
-                $return .= AdminXhtml::StatusGet($color);
+                $return .= BaseadminXhtml::StatusGet($color);
                 break;
             default:
-                AdminXhtmlMsg::Echo('Warning', '', '', "Action unknown: $inAction $inFilepath");
+                BaseadminXhtmlMsg::Echo('Warning', '', '', "Action unknown: $inAction $inFilepath");
                 break;
         }
         return $return;

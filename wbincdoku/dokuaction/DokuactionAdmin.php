@@ -1,7 +1,7 @@
 <?php
 namespace workbook\wbincdoku\dokuaction;
 use Doku_Event;
-use workbook\wbinc\admin;
+use workbook\wbinc\baseadmin;
 class DokuactionAdmin {
     /* -------------------------------------------------------------------- */
     public static function Event_PLUGIN_CONFIG_PLUGINLIST_AfterExec(Doku_Event $Event, $inPara): void {
@@ -9,7 +9,7 @@ class DokuactionAdmin {
         sort($Event->data);
         // Updates lib/plugin/workbook/conf/defaults.php
         if (substr($_REQUEST['page'], 0, 6) == 'config') {
-            admin\AdminConf::ConfDefaultUpdate();
+            baseadmin\BaseadminConf::ConfDefaultUpdate();
         }
     }
     /* -------------------------------------------------------------------- */

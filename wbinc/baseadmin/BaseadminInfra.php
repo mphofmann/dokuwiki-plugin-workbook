@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminInfra {
+namespace workbook\wbinc\baseadmin;
+class BaseadminInfra {
     /* -------------------------------------------------------------------- */
     public static $Infras = [ //
         'Infra' => '', //
@@ -13,12 +13,12 @@ class AdminInfra {
     /* -------------------------------------------------------------------- */
     public static function RowAr($inId): array {
         $strbtn = '';
-        // if (strpos("PHP Dokuwiki", $inId) !== false) $strbtn .= AdminXhtml::ButtonGet("admin\AdminInfra::Exec action=version id=$inId", '[Info]');
-        $status = AdminCmd::ExecGet("admin\AdminInfra::Exec action=status id=$inId");
-        $strbtninfo = AdminXhtml::ButtonGet("admin\AdminInfra::Exec action=info id=$inId", $status);
-        if (strpos("Crontab", $inId) !== false) $strbtn .= AdminXhtml::ButtonGet("admin\AdminInfra::Exec action=reset id=$inId", '[Reset]') . AdminXhtml::ButtonGet("admin\AdminInfra::Exec action=remove id=$inId", '[Remove]');;
-        $strlink = $inId == 'Dokuwiki' ? AdminXhtml::LinkGet('doku.php?do=admin') : '';
-        return [$inId, AdminCmd::ExecGet("admin\AdminInfra::Exec action=note id=$inId"), $strbtninfo, $strbtn, $strlink];
+        // if (strpos("PHP Dokuwiki", $inId) !== false) $strbtn .= AdminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=version id=$inId", '[Info]');
+        $status = BaseadminCmd::ExecGet("baseadmin\BaseadminInfra::Exec action=status id=$inId");
+        $strbtninfo = BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=info id=$inId", $status);
+        if (strpos("Crontab", $inId) !== false) $strbtn .= BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=reset id=$inId", '[Reset]') . BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=remove id=$inId", '[Remove]');;
+        $strlink = $inId == 'Dokuwiki' ? BaseadminXhtml::LinkGet('doku.php?do=admin') : '';
+        return [$inId, BaseadminCmd::ExecGet("baseadmin\BaseadminInfra::Exec action=note id=$inId"), $strbtninfo, $strbtn, $strlink];
     }
     /* -------------------------------------------------------------------- */
     public static function ConfLocalExec($inAction = 'status'): void {
@@ -27,16 +27,16 @@ class AdminInfra {
                 echo date('Y-m-d His', filemtime(WB_DATACONF . 'local.php'));
                 break;
             case 'purge':
-                AdminCache::ConfLocalTouch();
-                AdminXhtmlMsg::Echo('Success', '', '', 'Cache purged.');
+                BaseadminCache::ConfLocalTouch();
+                BaseadminXhtmlMsg::Echo('Success', '', '', 'Cache purged.');
                 break;
             case 'clear':
-                AdminCache::ConfLocalTouch();
-                AdminInode::Clear('data/cache/'); // TODO
-                AdminXhtmlMsg::Echo('Success', '', '', 'All cache cleared.');
+                BaseadminCache::ConfLocalTouch();
+                BaseadminInode::Clear('data/cache/'); // TODO
+                BaseadminXhtmlMsg::Echo('Success', '', '', 'All cache cleared.');
                 break;
             default:
-                AdminXhtmlMsg::EchoFalse('Notice', __METHOD__, $inAction, "Unknown action.");
+                BaseadminXhtmlMsg::EchoFalse('Notice', __METHOD__, $inAction, "Unknown action.");
                 break;
         }
     }
@@ -50,12 +50,12 @@ class AdminInfra {
             case 'status':
                 switch ($inId) {
                     case 'Crontab':
-                        $return .= AdminCrontab::StatusGet();
+                        $return .= BaseadminCrontab::StatusGet();
                         break;
                     default:
                         $ar = ['Infra' => 'infra-linux', 'PHP' => 'infra-php', 'PHP-Ioncube' => 'infra-ioncube', 'Webroot' => 'infra-webroot', 'Dokuwiki' => 'controller-doku',];
                         $color = \_Wb_::RunmodeCheck($ar[$inId]) ? 'green' : 'red';
-                        $return .= AdminXhtml::StatusGet($color);
+                        $return .= BaseadminXhtml::StatusGet($color);
                         break;
                 }
                 break;
@@ -63,47 +63,47 @@ class AdminInfra {
                 switch ($inId) {
                     case 'Infra':
                         // Infra
-                        $return .= AdminExec::OutputHeadingGet('INFRA');
-                        $return .= AdminExec::OutputLinesGet('UNAME', php_uname());
-                        $return .= AdminExec::OutputLinesGet('ARCH', php_uname('m'));
-                        $return .= AdminExec::OutputLinesGet('OS', php_uname('s')); // PHP_OS
-                        $return .= AdminExec::OutputLinesGet('HOSTNAME', gethostname()); // php_uname('n')
-                        $return .= AdminExec::OutputLinesGet('HOSTNAMECTL', shell_exec('hostnamectl'));
+                        $return .= BaseadminExec::OutputHeadingGet('INFRA');
+                        $return .= BaseadminExec::OutputLinesGet('UNAME', php_uname());
+                        $return .= BaseadminExec::OutputLinesGet('ARCH', php_uname('m'));
+                        $return .= BaseadminExec::OutputLinesGet('OS', php_uname('s')); // PHP_OS
+                        $return .= BaseadminExec::OutputLinesGet('HOSTNAME', gethostname()); // php_uname('n')
+                        $return .= BaseadminExec::OutputLinesGet('HOSTNAMECTL', shell_exec('hostnamectl'));
                         // Disk
-                        $return .= AdminExec::OutputHeadingGet('DISK');
-                        $return .= AdminExec::OutputLinesGet('FREE-SPACE', @round(disk_free_space('.') / 10 ** 9) . 'GB');
-                        $return .= AdminExec::OutputLinesGet('LOCALE', setlocale(LC_ALL, 0));
+                        $return .= BaseadminExec::OutputHeadingGet('DISK');
+                        $return .= BaseadminExec::OutputLinesGet('FREE-SPACE', @round(disk_free_space('.') / 10 ** 9) . 'GB');
+                        $return .= BaseadminExec::OutputLinesGet('LOCALE', setlocale(LC_ALL, 0));
                         // PHP
-                        $return .= AdminExec::OutputHeadingGet('PHP');
-                        $return .= AdminExec::OutputLinesGet('PHP-SAPI', php_sapi_name());
-                        $return .= AdminExec::OutputLinesGet('PHP-VERSION', phpversion());
-                        $return .= AdminExec::OutputLinesGet('PHP-EXTENSIONS', implode(', ', get_loaded_extensions()));
-                        $return .= AdminExec::OutputLinesGet('PHP-TIMEZONE', date_default_timezone_get() . " (now: " . date('Y-m-d-His') . ")");
-                        $return .= AdminExec::OutputLinesGet('PHP-CWD', getcwd());
+                        $return .= BaseadminExec::OutputHeadingGet('PHP');
+                        $return .= BaseadminExec::OutputLinesGet('PHP-SAPI', php_sapi_name());
+                        $return .= BaseadminExec::OutputLinesGet('PHP-VERSION', phpversion());
+                        $return .= BaseadminExec::OutputLinesGet('PHP-EXTENSIONS', implode(', ', get_loaded_extensions()));
+                        $return .= BaseadminExec::OutputLinesGet('PHP-TIMEZONE', date_default_timezone_get() . " (now: " . date('Y-m-d-His') . ")");
+                        $return .= BaseadminExec::OutputLinesGet('PHP-CWD', getcwd());
                         // php.ini
-                        $return .= AdminExec::OutputHeadingGet('PHP.INI');
-                        $return .= AdminExec::OutputLinesGet('PHP.INI', php_ini_loaded_file());
+                        $return .= BaseadminExec::OutputHeadingGet('PHP.INI');
+                        $return .= BaseadminExec::OutputLinesGet('PHP.INI', php_ini_loaded_file());
                         $ar = ['memory_limit' => '', 'max_execution_time' => '', 'safe_mode' => '', 'ignore_user_abort' => '', 'disable_functions' => '', 'sendmail_path' => ''];
                         foreach ($ar as $id => $val) {
-                            $return .= AdminExec::OutputLinesGet("PHP.INI: {$id}", ini_get($id));
+                            $return .= BaseadminExec::OutputLinesGet("PHP.INI: {$id}", ini_get($id));
                         }
                         // Access
-                        $return .= AdminExec::OutputHeadingGet('ACCESS');
-                        $return .= AdminExec::OutputLinesGet('USER', get_current_user());
-                        $return .= AdminExec::OutputLinesGet('ID', shell_exec('id'));
+                        $return .= BaseadminExec::OutputHeadingGet('ACCESS');
+                        $return .= BaseadminExec::OutputLinesGet('USER', get_current_user());
+                        $return .= BaseadminExec::OutputLinesGet('ID', shell_exec('id'));
                         $ar = [getcwd(), '/home', '/var/log/syslog', '/var/log/apache2', '/var/www'];
                         foreach ($ar as $val) {
                             $str = '';
                             if (@is_readable($val)) $str .= "readable ";
                             if (@is_writeable($val)) $str .= "writeable ";
                             if (@is_executable($val)) $str .= "executable ";
-                            $return .= AdminExec::OutputLinesGet($val, $str);
+                            $return .= BaseadminExec::OutputLinesGet($val, $str);
                         }
                         // Cron
-                        $return .= AdminExec::OutputHeadingGet('CRON');
-                        $return .= AdminExec::OutputLinesGet('CRONTAB', shell_exec('crontab -l 2>&1'));
+                        $return .= BaseadminExec::OutputHeadingGet('CRON');
+                        $return .= BaseadminExec::OutputLinesGet('CRONTAB', shell_exec('crontab -l 2>&1'));
                         // Commands
-                        $return .= AdminExec::OutputHeadingGet('COMMANDS');
+                        $return .= BaseadminExec::OutputHeadingGet('COMMANDS');
                         $ars = [ //
                             'Mails' => ['sendmail', 'postfix', 'exim'], //
                             'Convert' => ['pandoc', 'unoconv'], //
@@ -116,12 +116,12 @@ class AdminInfra {
                             foreach ($ar as $val) {
                                 $str .= ($out = shell_exec("which $val")) == '' ? '' : "$val(" . trim($out) . ") ";
                             }
-                            $return .= AdminExec::OutputLinesGet($id, $str);
+                            $return .= BaseadminExec::OutputLinesGet($id, $str);
                         }
                         // Workbooks
-                        $return .= AdminExec::OutputHeadingGet('WORKBOOK');
-                        $return .= AdminExec::OutputLinesGet('WB_RUNARCHLIST', WB_RUNARCHLIST);
-                        $return .= AdminExec::OutputLinesGet('WB_RUNMODELIST', WB_RUNMODELIST);
+                        $return .= BaseadminExec::OutputHeadingGet('WORKBOOK');
+                        $return .= BaseadminExec::OutputLinesGet('WB_RUNARCHLIST', WB_RUNARCHLIST);
+                        $return .= BaseadminExec::OutputLinesGet('WB_RUNMODELIST', WB_RUNMODELIST);
                         break;
                     case 'PHP':
                         ob_start();
@@ -143,7 +143,7 @@ class AdminInfra {
                         $return .= "<pre>$add</pre>";
                         break;
                     case 'Crontab':
-                        $add = AdminCrontab::InfoGet();
+                        $add = BaseadminCrontab::InfoGet();
                         $return .= "<pre>$add</pre>";
                         break;
                 }
@@ -151,14 +151,14 @@ class AdminInfra {
             case 'remove':
                 switch ($inId) {
                     case 'Crontab':
-                        AdminCrontab::Remove();
+                        BaseadminCrontab::Remove();
                         break;
                 }
                 break;
             case 'reset':
                 switch ($inId) {
                     case 'Crontab':
-                        AdminCrontab::Reset();
+                        BaseadminCrontab::Reset();
                         break;
                 }
                 break;
@@ -173,7 +173,7 @@ class AdminInfra {
                 }
                 break;
             default:
-                AdminXhtmlMsg::Echo('Warning', '', '', "Infra action unknown: $inAction $inId");
+                BaseadminXhtmlMsg::Echo('Warning', '', '', "Infra action unknown: $inAction $inId");
                 break;
         }
         return $return;

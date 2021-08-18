@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminXhtml {
+namespace workbook\wbinc\baseadmin;
+class BaseadminXhtml {
     /* -------------------------------------------------------------------- */
     private static $__Ar = [ //
         'admin' => ['Infra' => '', 'Module' => '', 'Conf' => '', 'Config' => '',], //
@@ -86,14 +86,14 @@ class AdminXhtml {
         if (is_dir($path)) {
             foreach (scandir($path) as $val) {
                 if (substr($val, 0, 1) == '.') continue;
-                $dir = "{$path}{$val}/wbdef/jobadmin/";
+                $dir = "{$path}{$val}/wbdef/bodyadmin/";
                 if ( ! is_dir($dir)) continue;
                 foreach (scandir($dir) as $val2) {
                     if (substr($val2, 0, 1) == '.') continue;
                     if (substr($val2, 0, 2) == 'a_') continue;
-                    $item = strtr($val2, ['Jobadmin' => '', '.php' => '']);
+                    $item = strtr($val2, ['Bodyadmin' => '', '.php' => '']);
                     if (empty($item)) continue;
-                    if (\_Wb_::CmdExec("jobadmin\\Jobadmin{$item}::AdminOnlyCheck") == true and $_SERVER['REMOTE_USER'] != 'admin') continue;
+                    if (\_Wb_::CmdExec("bodyadmin\\Bodyadmin{$item}::AdminOnlyCheck") == true and $_SERVER['REMOTE_USER'] != 'admin') continue;
                     if (isset($returns['admin'][$item])) {
                         $returns['admin'][$item] = 'exists';
                     } elseif (isset($returns['workbook'][$item])) {

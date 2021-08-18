@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminCmd {
+namespace workbook\wbinc\baseadmin;
+class BaseadminCmd {
     /* -------------------------------------------------------------------- */
     public static function SystemEcho($inCmd, $showCmd = true): void {
         if ($showCmd) echo "$inCmd\n";

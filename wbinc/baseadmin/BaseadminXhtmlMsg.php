@@ -1,6 +1,6 @@
 <?php
-namespace workbook\wbinc\admin;
-class AdminXhtmlMsg {
+namespace workbook\wbinc\baseadmin;
+class BaseadminXhtmlMsg {
     /* -------------------------------------------------------------------- */
     public static function EchoFalse($inType, $inMethod, $inPara, $inText = ''): bool {
         self::Echo($inType, $inMethod, $inPara, $inText);

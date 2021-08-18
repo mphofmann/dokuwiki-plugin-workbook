@@ -1,12 +1,12 @@
 <?php
-namespace workbook\wbdef\jobadmin;
-use workbook\wbdef\jobadmin;
-use workbook\wbinc\admin;
-use workbookadmin\wbinc\admincore;
+namespace workbook\wbdef\bodyadmin;
+use workbook\wbdef\bodyadmin;
+use workbook\wbinc\baseadmin;
+use workbookadmin\wbinc\admin;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\sys;
-use workbook\wbinc\xhtml;
-class JobadminWorkbook extends jobadmin\a_Jobadmin { // TODO delete
+use workbook\wbinc\basexhtml;
+class BodyadminWorkbook extends bodyadmin\a_Bodyadmin { // TODO delete
     /* -------------------------------------------------------------------- */
     protected static $_Item = 'workbook';
     protected static $_Icon = 'fas fa-cube';
@@ -22,16 +22,16 @@ class JobadminWorkbook extends jobadmin\a_Jobadmin { // TODO delete
             // workbook
             $cmd = 'reset';
             $attr = mod\ModWb::CommandEnabledCheck($wb, $cmd) ? '' : 'disabled';
-            $strwb = admin\AdminXhtml::ButtonGet("admincore\AdmincoreWb::{$cmd} wb={$wb}", "[".ucfirst($cmd)."]", $attr);
+            $strwb = baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWb::{$cmd} wb={$wb}", "[".ucfirst($cmd)."]", $attr);
             ob_start();
-            admincore\AdmincoreOperating::WbSyncExec('size', $wb);
+            admin\AdminOperating::WbSyncExec('size', $wb);
             $strsize = ob_get_clean();
-            if (!empty($strsize)) $strwb .= admin\AdminXhtml::ButtonGet("admincore\AdmincoreWb::Syncclear wb={$wb}", xhtml\XhtmlIcon::Get('fa-undo-alt'), " title='Clear sync ($strsize)'", 'xsmall', 'Clear sync?');
-            $strwb .= admin\AdminXhtml::ButtonGet("admincore\AdmincoreWb::Zarchive wb={$wb}", xhtml\XhtmlIcon::Get('fa-archive'), ' title="Archive"', 'xsmall', 'Move to zarchive?');
+            if (!empty($strsize)) $strwb .= baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWb::Syncclear wb={$wb}", basexhtml\BasexhtmlIcon::Get('fa-undo-alt'), " title='Clear sync ($strsize)'", 'xsmall', 'Clear sync?');
+            $strwb .= baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWb::Zarchive wb={$wb}", basexhtml\BasexhtmlIcon::Get('fa-archive'), ' title="Archive"', 'xsmall', 'Move to zarchive?');
             // tools
             $adds = ['1-mandatory' => '', '1-optional' => '', '1-additional' => '', '0-mandatory' => '', '0-optional' => ''];
             $dirs = sys\SysNs::ScandirAr($wb, 'local', 'pages', 'dirs');
-            $ar = admincore\AdmincoreWb::ToolAr($wb);
+            $ar = admin\AdminWb::ToolAr($wb);
             ksort($ar, SORT_NATURAL);
             foreach ($ar as $tool => $modes) {
                 unset($dirs[array_search("$tool:", $dirs)]);
@@ -55,7 +55,7 @@ class JobadminWorkbook extends jobadmin\a_Jobadmin { // TODO delete
             $strtools = $adds['1-mandatory'] . $adds['1-optional'] . $adds['1-additional'] . $adds['0-mandatory'] . $adds['0-optional'];
             // database
             $strdb = '';
-            foreach (admincore\AdmincoreWb::TableAr($wb, 'database') as $table => $fields) {
+            foreach (admin\AdminWb::TableAr($wb, 'database') as $table => $fields) {
                 $add = "<a style='font-weight:bold;' href='?do=admin&page=struct_schemas&table={$wb}_{$table}'>" . ucfirst($table) . "</a> ";
                 $btn = self::__ButtonsGet('table', $wb, $table);
                 $type = (sys\SysTable::Exists($wb, $table)) ? '1-mandatory' : '0-mandatory';
@@ -63,7 +63,7 @@ class JobadminWorkbook extends jobadmin\a_Jobadmin { // TODO delete
             }
             // datapages
             $strdp = '';
-            foreach (admincore\AdmincoreWb::TableAr($wb, 'datapage') as $table => $fields) {
+            foreach (admin\AdminWb::TableAr($wb, 'datapage') as $table => $fields) {
                 $add = "<a style='font-weight:bold;' href='?do=admin&page=struct_schemas&table={$wb}_{$table}'>" . ucfirst($table) . "</a> ";
                 $btn = self::__ButtonsGet('table', $wb, $table);
                 $type = (sys\SysTable::Exists($wb, $table)) ? '1-mandatory' : '0-mandatory';
@@ -73,7 +73,7 @@ class JobadminWorkbook extends jobadmin\a_Jobadmin { // TODO delete
             $returns[] = [$strid, $strwb, $strtools, $strdb . $strdp];
         }
         if (count($returns) > 1) {
-            $returns[] = ['ALL', admin\AdminXhtml::ButtonGet("admincore\AdmincoreWb::Resets", '[Reset]'), '', ''];
+            $returns[] = ['ALL', baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWb::Resets", '[Reset]'), '', ''];
         }
         return $returns;
     }
@@ -100,11 +100,11 @@ class JobadminWorkbook extends jobadmin\a_Jobadmin { // TODO delete
             switch ($inType) {
                 case 'tool':
                     $attr = mod\ModWbTool::CommandEnabledCheck($inWb, $tooltable, $cmd) ? '' : 'disabled';
-                    $return .= admin\AdminXhtml::ButtonGet("admincore\AdmincoreWbTool::{$cmd} wb={$inWb} tool={$inToolTable}", "[".ucfirst($cmd)."]", $attr, 'small');
+                    $return .= baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWbTool::{$cmd} wb={$inWb} tool={$inToolTable}", "[".ucfirst($cmd)."]", $attr, 'small');
                     break;
                 case 'table':
                     $attr = mod\ModWbSheet::CommandEnabledCheck($inWb, $tooltable, $cmd) ? '' : 'disabled';
-                    $return .= admin\AdminXhtml::ButtonGet("admincore\AdmincoreWbSheet::{$cmd} wb={$inWb} table={$inToolTable}", "[".ucfirst($cmd)."]", $attr, 'small');
+                    $return .= baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWbSheet::{$cmd} wb={$inWb} table={$inToolTable}", "[".ucfirst($cmd)."]", $attr, 'small');
                     break;
             }
         }
@@ -112,10 +112,10 @@ class JobadminWorkbook extends jobadmin\a_Jobadmin { // TODO delete
             switch ($inType) {
                 case 'tool';
                     ob_start();
-                    admincore\AdmincoreOperating::WbSyncExec('size', "$inWb:$inToolTable");
+                    admin\AdminOperating::WbSyncExec('size', "$inWb:$inToolTable");
                     $strsize = ob_get_clean();
-                    if (!empty($strsize)) $return .= admin\AdminXhtml::ButtonGet("admincore\AdmincoreWbTool::Syncclear wb={$inWb} tool={$inToolTable}", xhtml\XhtmlIcon::Get('fa-undo-alt'), " title='Clear sync ($strsize)'", 'xsmall', 'Clear sync?');
-                    $return .= admin\AdminXhtml::ButtonGet("admincore\AdmincoreWbTool::Zarchive wb={$inWb} tool={$inToolTable}", xhtml\XhtmlIcon::Get('fa-archive'), ' title="Archive"', 'xsmall', 'Move to zarchive?');
+                    if (!empty($strsize)) $return .= baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWbTool::Syncclear wb={$inWb} tool={$inToolTable}", basexhtml\BasexhtmlIcon::Get('fa-undo-alt'), " title='Clear sync ($strsize)'", 'xsmall', 'Clear sync?');
+                    $return .= baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWbTool::Zarchive wb={$inWb} tool={$inToolTable}", basexhtml\BasexhtmlIcon::Get('fa-archive'), ' title="Archive"', 'xsmall', 'Move to zarchive?');
                     break;
             }
         }

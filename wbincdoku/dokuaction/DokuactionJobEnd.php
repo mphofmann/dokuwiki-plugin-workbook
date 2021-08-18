@@ -1,14 +1,14 @@
 <?php
 namespace workbook\wbincdoku\dokuaction;
 use Doku_Event;
-use workbook\wbinc\action;
+use workbook\wbinc\baseaction;
 use workbook\wbincdoku\doku;
 class DokuactionJobEnd {
     /* -------------------------------------------------------------------- */
     public static function Event_DOKUWIKI_DONE_AfterExec(Doku_Event $Event, $inPara): void { //
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            action\ActionJob::JobEndExec();
+            baseaction\BaseactionJob::JobEndExec();
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }
@@ -20,9 +20,9 @@ class DokuactionJobEnd {
             $Event->preventDefault();
             $Event->stopPropagation();
             $Event->result = false; // no caching
-            $out = action\ActionBody::AreaGet($Event->data);
+            $out = baseaction\BaseactionBody::AreaGet($Event->data);
             // TODO
-            echo action\ActionXhtml::AdjustGet($out);
+            echo baseaction\BaseactionXhtml::AdjustGet($out);
             $Event->data = '';
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);

@@ -1,7 +1,7 @@
 <?php
 namespace workbook\wbincdoku\doku;
 use Doku_Renderer;
-use workbook\wbinc\util;
+use workbook\wbinc\baseutil;
 use workbookcore\wbdef\wb;
 class DokuSyntax {
     /* -------------------------------------------------------------------- */
@@ -28,8 +28,8 @@ class DokuSyntax {
     public static function HandleAr($inMatch): array {
         $returns = ['match' => '', 'pattern' => '', 'class' => '', 'method' => '', 'mode' => '', 'attrs' => [], 'block' => ''];
         $returns['match'] = $inMatch;
-        if (\_Wb_::ClassExists('util\UtilSyntax')) {
-            $returns = util\UtilSyntax::HandleAr($inMatch);
+        if (\_Wb_::ClassExists('baseutil\BaseutilSyntax')) {
+            $returns = baseutil\BaseutilSyntax::HandleAr($inMatch);
         }
         return $returns;
     }

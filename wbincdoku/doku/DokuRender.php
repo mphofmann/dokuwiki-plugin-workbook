@@ -19,7 +19,7 @@ class DokuRender {
     /* public static function WikiXhtmlGet($inId, $inRev = '', $inExcuse = true, $inDateAt = ''): string {
         doku\DokuXhtmlMsg::Add('Debug-Notice', __METHOD__, $inId);
         $return = '';
-        if (util\UtilSyntax::WbTagCheck(sys\SysNsid::ContentsGet($inId)) === false) { // otherwise perpetual loop
+        if (baseutil\BaseutilSyntax::WbTagCheck(sys\SysNsid::ContentsGet($inId)) === false) { // otherwise perpetual loop
             $return = \p_wiki_xhtml($inId, $inRev, $inExcuse, $inDateAt);
         }
         return $return;
