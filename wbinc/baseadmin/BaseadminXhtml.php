@@ -86,14 +86,14 @@ class BaseadminXhtml {
         if (is_dir($path)) {
             foreach (scandir($path) as $val) {
                 if (substr($val, 0, 1) == '.') continue;
-                $dir = "{$path}{$val}/wbdef/bodyadmin/";
+                $dir = "{$path}{$val}/wbdef/mainadmin/";
                 if ( ! is_dir($dir)) continue;
                 foreach (scandir($dir) as $val2) {
                     if (substr($val2, 0, 1) == '.') continue;
                     if (substr($val2, 0, 2) == 'a_') continue;
-                    $item = strtr($val2, ['Bodyadmin' => '', '.php' => '']);
+                    $item = strtr($val2, ['Mainadmin' => '', '.php' => '']);
                     if (empty($item)) continue;
-                    if (\_Wb_::CmdExec("bodyadmin\\Bodyadmin{$item}::AdminOnlyCheck") == true and $_SERVER['REMOTE_USER'] != 'admin') continue;
+                    if (\_Wb_::CmdExec("mainadmin\\Mainadmin{$item}::AdminOnlyCheck") == true and $_SERVER['REMOTE_USER'] != 'admin') continue;
                     if (isset($returns['admin'][$item])) {
                         $returns['admin'][$item] = 'exists';
                     } elseif (isset($returns['workbook'][$item])) {

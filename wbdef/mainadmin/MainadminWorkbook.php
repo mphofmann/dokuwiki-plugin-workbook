@@ -1,12 +1,12 @@
 <?php
-namespace workbook\wbdef\bodyadmin;
-use workbook\wbdef\bodyadmin;
+namespace workbook\wbdef\mainadmin;
+use workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
 use workbookadmin\wbinc\admin;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\sys;
 use workbook\wbinc\basexhtml;
-class BodyadminWorkbook extends bodyadmin\a_Bodyadmin { // TODO delete
+class MainadminWorkbook extends mainadmin\a_Mainadmin { // TODO delete
     /* -------------------------------------------------------------------- */
     protected static $_Item = 'workbook';
     protected static $_Icon = 'fas fa-cube';

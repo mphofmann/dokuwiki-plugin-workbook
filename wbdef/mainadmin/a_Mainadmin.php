@@ -1,7 +1,7 @@
 <?php
-namespace workbook\wbdef\bodyadmin;
+namespace workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
-abstract class a_Bodyadmin {
+abstract class a_Mainadmin {
     /* -------------------------------------------------------------------- */
     protected static $_Item = '';
     protected static $_Icon = '';

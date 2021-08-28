@@ -18,7 +18,7 @@ class admin_plugin_workbook_admin extends \DokuWiki_Admin_Plugin {
     public function html() {
         echo '<h1>Administration</h1>';
         echo baseadmin\BaseadminXhtml::MenuGet();
-        $class = "bodyadmin\\Bodyadmin" . ucfirst(@$_REQUEST['wb_item']);
+        $class = "mainadmin\\Mainadmin" . ucfirst(@$_REQUEST['wb_item']);
         $classns = \_Wb_::ClassNsGet($class);
         try {
             $classpath = $classns . $class;

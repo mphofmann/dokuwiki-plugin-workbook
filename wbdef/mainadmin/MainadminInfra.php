@@ -1,7 +1,7 @@
 <?php
-namespace workbook\wbdef\bodyadmin;
+namespace workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
-class BodyadminInfra extends a_Bodyadmin {
+class MainadminInfra extends a_Mainadmin {
     /* -------------------------------------------------------------------- */
     protected static $_Item = 'infra';
     protected static $_Icon = 'fas fa-server';

@@ -1,7 +1,7 @@
 <?php
-namespace workbook\wbdef\bodyadmin;
+namespace workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
-class Bodyadmin extends a_Bodyadmin {
+class Mainadmin extends a_Mainadmin {
     /* -------------------------------------------------------------------- */
     protected static $_Item = '';
     protected static $_Icon = '';
@@ -14,10 +14,10 @@ class Bodyadmin extends a_Bodyadmin {
             foreach ($ar as $id2 => $val2) {
                 $icon_ = '';
                 if(!empty($id2)){
-                    $icon = \_Wb_::CmdExec("bodyadmin\\Bodyadmin{$id2}::FieldGet field=icon");
+                    $icon = \_Wb_::CmdExec("mainadmin\\Mainadmin{$id2}::FieldGet field=icon");
                     $icon_ = "<i class='$icon'></i>"." ";
                 }
-                $note = \_Wb_::CmdExec("bodyadmin\\Bodyadmin{$id2}::FieldGet field=note");
+                $note = \_Wb_::CmdExec("mainadmin\\Mainadmin{$id2}::FieldGet field=note");
                 $return .= "<tr><td>{$icon_}$val2</td><td>$note</td></tr>";
             }
         }
