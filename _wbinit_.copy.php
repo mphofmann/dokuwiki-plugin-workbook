@@ -4,7 +4,7 @@ _Wb_::InitSet();
 class _Wb_ {
     /* -------------------------------------------------------------------- */
     public static $CwdPrefix = ''; // see InitSet
-    private static $__DirSearchAr = ['wbinc', 'wbtpl', 'wbdef', 'wbtag', 'wbincdoku', 'wbzdep'];
+    private static $__DirSearchAr = ['wbinc', 'wbtpl', 'wbdef', 'wbele', 'wbincdoku', 'wbzdep'];
     private static $__HostInternalList = '.manageopedia.com .manageopedia.net .mphofmann.com ';
     private static $__Prepend = '_wbinit_.prepend.php';
     /* -------------------------------------------------------------------- */
