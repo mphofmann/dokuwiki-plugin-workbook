@@ -56,7 +56,7 @@ abstract class a_Mainadmin {
         $return .= '<form action="?" method="post">';
         $return .= '<input type="hidden" name="do"   value="admin" />';
         $return .= '<input type="hidden" name="page" value="workbook_admin" />';
-        $return .= '<input type="hidden" name="wb_item" value="' . static::$_Item . '" />';
+        $return .= '<input type="hidden" name="wb_main" value="' . static::$_Item . '" />';
         // doku\DokuXhtml::SecTokenEcho();
         // Table
         $ar = static::_Array1Get();

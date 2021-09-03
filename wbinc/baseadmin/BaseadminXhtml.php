@@ -113,7 +113,7 @@ class BaseadminXhtml {
         foreach ($returns as $id1 => $ar1) {
             foreach ($ar1 as $id2 => $val2) {
                 if ($val2 == 'exists') {
-                    $returns[$id1][$id2] = "<a href='?do=admin&page=workbook_admin&wb_item=" . strtolower($id2) . "'>$id2</a>";
+                    $returns[$id1][$id2] = "<a href='?do=admin&page=workbook_admin&wb_main=" . strtolower($id2) . "'>$id2</a>";
                 } else {
                     unset($returns[$id1][$id2]);
                 }

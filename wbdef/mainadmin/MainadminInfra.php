@@ -28,14 +28,14 @@ class MainadminInfra extends a_Mainadmin {
         $returns[] = baseadmin\BaseadminInfra::RowAr('PHP-Ioncube');
         $returns[] = baseadmin\BaseadminInfra::RowAr('Webroot');
         $returns[] = ['TH:Marketplace'];
-        $returns[] = ['Marketplace', baseadmin\BaseadminRemote::NoteGet(), baseadmin\BaseadminCmd::ExecGet('baseadmin\BaseadminRemote::Exec action=status', 'status'), baseadmin\BaseadminXhtml::ButtonGet('baseadmin\BaseadminRemote::Exec action=login', '[Login]', $attr), baseadmin\BaseadminXhtml::LinkGet('?do=admin&wb_item=conf&page=config#plugin____workbook____plugin_settings_name')];
+        $returns[] = ['Marketplace', baseadmin\BaseadminRemote::NoteGet(), baseadmin\BaseadminCmd::ExecGet('baseadmin\BaseadminRemote::Exec action=status', 'status'), baseadmin\BaseadminXhtml::ButtonGet('baseadmin\BaseadminRemote::Exec action=login', '[Login]', $attr), baseadmin\BaseadminXhtml::LinkGet('?do=admin&wb_main=conf&page=config#plugin____workbook____plugin_settings_name')];
         $returns[] = ['Cache', 'Marks cache as purged.', baseadmin\BaseadminCmd::ExecGet('baseadmin\BaseadminInfra::ConfLocalExec action=status', 'status'), baseadmin\BaseadminXhtml::ButtonGet('baseadmin\BaseadminInfra::ConfLocalExec action=purge', '[Purge]'), ''];
         $returns[] = ['TH:Modules'];
         foreach (self::$__SystemsAr["depends-module"] ?? [] as $id => $ar) {
             $strstatus = baseadmin\BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=info type=module id=$id", baseadmin\BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=status type=module id=$id"));
             $cmd = is_dir("workbook/module/$id") ? 'Replace' : 'Install';
             $strbtn = baseadmin\BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=" . strtolower($cmd) . " type=module id=$id", "[$cmd]");
-            $returns[] = [$id, baseadmin\BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=note type=module id=$id"), $strstatus, $strbtn, baseadmin\BaseadminXhtml::LinkGet('wb.php?do=admin&wb_item=module')];
+            $returns[] = [$id, baseadmin\BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=note type=module id=$id"), $strstatus, $strbtn, baseadmin\BaseadminXhtml::LinkGet('wb.php?do=admin&wb_main=module')];
         }
         $returns[] = ['TH:Webroots'];
         if (self::$__ConnectedCheck) {
