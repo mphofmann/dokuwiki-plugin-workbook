@@ -1,6 +1,24 @@
 <?php
 namespace workbook\wbinc\baseadmin;
+use workbook\wbinc\baseutil\BaseutilPath;
 class BaseadminExtension {
+    /* -------------------------------------------------------------------- */
+    public static function AllReplace($inType): bool {
+        $ar = [];
+        switch ($inType) {
+            case 'module':
+                $ar = BaseutilPath::ScandirAr('workbook/module/');
+                break;
+        }
+        foreach ($ar as $inode) {
+            $id = trim($inode, '/');
+            $status = self::StatusGet($inType, $id, false);
+            if ($status == 'yellow') {
+                self::Replace($inType, $id);
+            }
+        }
+        return true;
+    }
     /* -------------------------------------------------------------------- */
     public static function Exec($inAction, $inType, $inId) {
         $return = '';
@@ -58,7 +76,7 @@ class BaseadminExtension {
         $systems = BaseadminRemote::ExtensionAr($inType, $inId);
         $return .= @$systems['note'];
         $ar = [ //
-            'workbook' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', '.deb' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', 'deb:' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', //
+            // 'workbook' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', '.deb' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', 'deb:' => '<span title="Michael P. Hofmann AG, Rapperswil, Switzerland">by Manageopedia</span>', //
             'splitbrain' => '<span title="Andrea Gohr, Berlin, Germany">by Splitbrain</span>', //
             'cosmocode' => '<span title="CosmoCode GmbH, Berlin, Germany">by CosmoCode</span>', //
             'michitux' => '<span title="Michael Hamann, Karlsruhe, Germany">by Hamann</span>', //
@@ -149,7 +167,7 @@ class BaseadminExtension {
         return $returns;
     }
     /* -------------------------------------------------------------------- */
-    public static function StatusGet($inType, $inId): string {
+    public static function StatusGet($inType, $inId, bool $doFormat = true): string {
         $color = 'red';
         $title = 'Not installed';
         $extpath = self::__PathGet($inType, $inId);
@@ -177,7 +195,7 @@ class BaseadminExtension {
                 $title .= " / Use Dokuwiki extension manager.";
             }
         }
-        return BaseadminXhtml::StatusGet($color, $title);
+        return ($doFormat) ? BaseadminXhtml::StatusGet($color, $title) : $color;
     }
     /* -------------------------------------------------------------------- */
     private static function __PathGet($inType, $inId): string {

@@ -59,7 +59,6 @@ class MainadminInfra extends a_Mainadmin {
             $returns[] = ['dokumodal.php', 'Dokumodal controller', $attr == 'disabled' ? baseadmin\BaseadminXhtml::StatusGet('white') : baseadmin\BaseadminCmd::ExecGet("baseadmin\BaseadminWebroot::Exec action=status id=dokumodal.php"), baseadmin\BaseadminXhtml::ButtonGet("baseadmin\BaseadminWebroot::Exec action=link id=dokumodal.php", '[Link]', $attr) . baseadmin\BaseadminXhtml::ButtonGet("baseadmin\BaseadminWebroot::Exec action=unlink id=dokumodal.php", '[Unlink]', (file_exists('dokumodal.php')) ? '' : 'disabled'), ''];
         }
         $returns = array_merge($returns, self::__RowsAr('recommends', 'plugin'));
-        $returns = array_merge($returns, self::__RowsAr('recommends', 'template'));
         return $returns;
     }
     /* -------------------------------------------------------------------- */
@@ -67,6 +66,7 @@ class MainadminInfra extends a_Mainadmin {
         if ( ! \_Wb_::RunarchCheck('doku')) return [];
         $returns = [];
         $returns[] = ['TH:SUGGESTS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
+        $returns = array_merge($returns, self::__RowsAr('suggests', 'template'));
         $returns = array_merge($returns, self::__RowsAr('suggests', 'plugin'));
         return $returns;
     }

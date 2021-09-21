@@ -143,11 +143,16 @@ class _Wb_ {
     }
     /* -------------------------------------------------------------------- */
     public static function DebugEcho($inVar0 = '', $inVar1 = '', $inVar2 = '', $inVar3 = '', $inVar4 = '', $inVar5 = '', $inVar6 = '', $inVar7 = '', $inVar8 = '', $inVar9 = ''): void {
-        echo '<pre>';
+        echo self::DebugGet($inVar0, $inVar1, $inVar2, $inVar3, $inVar4, $inVar5, $inVar6, $inVar7, $inVar8, $inVar9);
+    }
+    /* -------------------------------------------------------------------- */
+    public static function DebugGet($inVar0 = '', $inVar1 = '', $inVar2 = '', $inVar3 = '', $inVar4 = '', $inVar5 = '', $inVar6 = '', $inVar7 = '', $inVar8 = '', $inVar9 = ''): string {
+        $return = '<pre>';
         foreach ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as $i) {
-            if ( ! empty(${"inVar$i"})) if (is_array(${"inVar$i"})) print_r(${"inVar$i"}); else echo ${"inVar$i"} . "\n";
+            if ( ! empty(${"inVar$i"})) if (is_array(${"inVar$i"})) $return .= print_r(${"inVar$i"}, true); else $return .= ${"inVar$i"} . "\n";
         }
-        echo '</pre>';
+        $return .= '</pre>';
+        return $return;
     }
     /* -------------------------------------------------------------------- */
     public static function InitSet(): bool {

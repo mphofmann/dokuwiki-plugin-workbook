@@ -79,6 +79,16 @@ abstract class a_Mainadmin {
             $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
             $return .= '<br/>';
         }
+        $ar = static::_Array5Get();
+        if (!empty($ar)) {
+            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
+            $return .= '<br/>';
+        }
+        $ar = static::_Array6Get();
+        if (!empty($ar)) {
+            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
+            $return .= '<br/>';
+        }
         // Form
         $return .= '</form>';
         return $return;
@@ -111,6 +121,14 @@ abstract class a_Mainadmin {
     }
     /* -------------------------------------------------------------------- */
     protected static function _Array4Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array5Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array6Get(): array {
         return [];
     }
     /* -------------------------------------------------------------------- */

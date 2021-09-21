@@ -11,16 +11,6 @@ class BaseadminInfra {
         'Crontab' => '<a href="https://en.wikipedia.org/wiki/Cron" target="_blank" class="urlextern">www.wikipedia.org/wiki/Cron</a>', //
     ];
     /* -------------------------------------------------------------------- */
-    public static function RowAr($inId): array {
-        $strbtn = '';
-        // if (strpos("PHP Dokuwiki", $inId) !== false) $strbtn .= AdminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=version id=$inId", '[Info]');
-        $status = BaseadminCmd::ExecGet("baseadmin\BaseadminInfra::Exec action=status id=$inId");
-        $strbtninfo = BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=info id=$inId", $status);
-        if (strpos("Crontab", $inId) !== false) $strbtn .= BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=reset id=$inId", '[Reset]') . BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=remove id=$inId", '[Remove]');;
-        $strlink = $inId == 'Dokuwiki' ? BaseadminXhtml::LinkGet('doku.php?do=admin') : '';
-        return [$inId, BaseadminCmd::ExecGet("baseadmin\BaseadminInfra::Exec action=note id=$inId"), $strbtninfo, $strbtn, $strlink];
-    }
-    /* -------------------------------------------------------------------- */
     public static function ConfLocalExec($inAction = 'status'): void {
         switch ($inAction) {
             case 'status':
@@ -29,6 +19,7 @@ class BaseadminInfra {
             case 'purge':
                 BaseadminCache::ConfLocalTouch();
                 BaseadminXhtmlMsg::Echo('Success', '', '', 'Cache purged.');
+                sleep(1); // required
                 break;
             case 'clear':
                 BaseadminCache::ConfLocalTouch();
@@ -177,6 +168,16 @@ class BaseadminInfra {
                 break;
         }
         return $return;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function RowAr($inId): array {
+        $strbtn = '';
+        // if (strpos("PHP Dokuwiki", $inId) !== false) $strbtn .= AdminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=version id=$inId", '[Info]');
+        $status = BaseadminCmd::ExecGet("baseadmin\BaseadminInfra::Exec action=status id=$inId");
+        $strbtninfo = BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=info id=$inId", $status);
+        if (strpos("Crontab", $inId) !== false) $strbtn .= BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=reset id=$inId", '[Reset]') . BaseadminXhtml::ButtonGet("baseadmin\BaseadminInfra::Exec action=remove id=$inId", '[Remove]');;
+        $strlink = $inId == 'Dokuwiki' ? BaseadminXhtml::LinkGet('doku.php?do=admin') : '';
+        return [$inId, BaseadminCmd::ExecGet("baseadmin\BaseadminInfra::Exec action=note id=$inId"), $strbtninfo, $strbtn, $strlink];
     }
     /* -------------------------------------------------------------------- */
 }
