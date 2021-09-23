@@ -59,7 +59,7 @@ class BaseadminExtension {
         $return .= BaseadminExec::OutputHeadingGet(strtoupper("$inType $inId"));
         $filepath = self::__PathGet($inType, $inId);
         $return .= BaseadminExec::OutputLinesGet('Path', $filepath);
-        $return .= BaseadminExec::OutputLinesGet('MTime', date('Y-m-d His', filemtime($filepath)));
+        $return .= BaseadminExec::OutputLinesGet('MTime', date('Y-m-d His', @filemtime($filepath)));
         $return .= BaseadminExec::OutputLinesGet('Size', shell_exec("du -bsh $filepath | cut -f1"));
         // Remote
         $return .= BaseadminExec::OutputHeadingGet(strtoupper("Remote"));
@@ -154,14 +154,14 @@ class BaseadminExtension {
         return true;
     }
     /* -------------------------------------------------------------------- */
-    public static function RowAr($inGroup, array $inAr, $inExttype, $inAttr = ''): array {
+    public static function RowAr($inExttype, $inGroup, array $inAr, $inAttr = ''): array {
         $returns = [];
         foreach ($inAr as $id => $ar) {
-            $strstatus = $inAttr == 'disabled' ? BaseadminXhtml::StatusGet('white') : BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=info type=$inExttype id=$id", BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=status type=$inExttype id=$id"));
+            $strstatus = ($inAttr == 'disabled') ? BaseadminXhtml::StatusGet('white') : BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=info type=$inExttype id=$id", BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=status type=$inExttype id=$id"));
             $cmd = is_dir(self::__PathGet($inExttype, $id)) ? 'Replace' : 'Install';
             $strexec = BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=" . strtolower($cmd) . " type=$inExttype id=$id", "[$cmd]", $inAttr);
             if ($inGroup != 'depends' and $cmd == 'Replace') $strexec .= BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=remove type=$inExttype id=$id", "[Remove]", $inAttr, 'xsmall', 'OK?');
-            $strlink = $inExttype == 'module' ? '' : BaseadminXhtml::LinkGet("doku.php?do=admin&page=extension&tab=$inExttype");
+            $strlink = ($inExttype == 'module') ? '' : BaseadminXhtml::LinkGet("doku.php?do=admin&page=extension&tab=$inExttype");
             $returns[] = [$id, BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=note type=$inExttype id=$id"), $strstatus, $strexec, $strlink];
         }
         return $returns;
@@ -224,11 +224,15 @@ class BaseadminExtension {
     /* -------------------------------------------------------------------- */
     private static function __SystemsArGet($inField, $inType, $inId): string {
         $return = '';
-        $ar = BaseadminRemote::SystemsAr();
-        if (empty($return)) $return = @$ar["depends-$inType"][$inId][$inField];
-        if (empty($return)) $return = @$ar["recommends-$inType"][$inId][$inField];
-        if (empty($return)) $return = @$ar["suggests-$inType"][$inId][$inField];
-        $artr = array_merge($ar['*'], ['@ID@' => $inId, '@EXTTYPE@' => $inType, '@DEBDIST@' => BaseadminConf::Get('plugin', 'workbook', 'connect_dist')]);
+        $sysar = BaseadminRemote::SystemsAr();
+        foreach ($sysar as $group => $ar) {
+            if (strpos($group, $inType) === false) continue;
+            if (isset($ar[$inId][$inField])) {
+                $return = $ar[$inId][$inField];
+                break;
+            }
+        }
+        $artr = array_merge($sysar['*'], ['@ID@' => $inId, '@EXTTYPE@' => $inType, '@DEBDIST@' => BaseadminConf::Get('plugin', 'workbook', 'connect_dist')]);
         $return = strtr($return, $artr);
         return $return;
     }

@@ -2,6 +2,7 @@
 namespace workbook\wbdef\mainadmin;
 use workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
+use workbook\wbinc\baseutil;
 use workbookadmin\wbinc\admin;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\sys;
@@ -32,7 +33,7 @@ class MainadminWorkbook extends mainadmin\a_Mainadmin { // TODO delete
             $adds = ['1-mandatory' => '', '1-optional' => '', '1-additional' => '', '0-mandatory' => '', '0-optional' => ''];
             $dirs = sys\SysNs::ScandirAr($wb, 'local', 'pages', 'dirs');
             $ar = admin\AdminWb::ToolAr($wb);
-            ksort($ar, SORT_NATURAL);
+            $ar = baseutil\BaseutilSort::KsortAr($ar);
             foreach ($ar as $tool => $modes) {
                 unset($dirs[array_search("$tool:", $dirs)]);
                 $add = "<a style='font-weight:bold;' href='?id={$wb}:{$tool}:start'>" . ucfirst($tool) . "</a> ";

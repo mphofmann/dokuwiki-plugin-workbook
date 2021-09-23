@@ -3,13 +3,13 @@ namespace workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
 class MainadminInfra extends a_Mainadmin {
     /* -------------------------------------------------------------------- */
-    protected static $_Item = 'infra';
-    protected static $_Icon = 'fas fa-server';
-    protected static $_Note = 'Verifies and installs infrastructure components.';
     protected static $_AdminOnly = true;
+    protected static $_Icon = 'fas fa-server';
+    protected static $_Item = 'infra';
+    protected static $_Note = 'Verifies and installs infrastructure components.';
     private static $__ConnectedCheck = false;
-    private static $__WorkbookcoreCheck = false;
     private static $__SystemsAr = [];
+    private static $__WorkbookcoreCheck = false;
     /* -------------------------------------------------------------------- */
     public static function A_Construct(): bool {
         self::$__ConnectedCheck = baseadmin\BaseadminRemote::EnabledCheck();
@@ -58,7 +58,7 @@ class MainadminInfra extends a_Mainadmin {
             $returns[] = ['doku.php', 'Doku controller', baseadmin\BaseadminCmd::ExecGet("baseadmin\BaseadminWebroot::Exec action=status id=doku.php"), '', ''];
             $returns[] = ['dokumodal.php', 'Dokumodal controller', $attr == 'disabled' ? baseadmin\BaseadminXhtml::StatusGet('white') : baseadmin\BaseadminCmd::ExecGet("baseadmin\BaseadminWebroot::Exec action=status id=dokumodal.php"), baseadmin\BaseadminXhtml::ButtonGet("baseadmin\BaseadminWebroot::Exec action=link id=dokumodal.php", '[Link]', $attr) . baseadmin\BaseadminXhtml::ButtonGet("baseadmin\BaseadminWebroot::Exec action=unlink id=dokumodal.php", '[Unlink]', (file_exists('dokumodal.php')) ? '' : 'disabled'), ''];
         }
-        $returns = array_merge($returns, self::__RowsAr('recommends', 'plugin'));
+        $returns = array_merge($returns, self::__RowsAr('plugin', 'recommends'));
         return $returns;
     }
     /* -------------------------------------------------------------------- */
@@ -66,12 +66,12 @@ class MainadminInfra extends a_Mainadmin {
         if ( ! \_Wb_::RunarchCheck('doku')) return [];
         $returns = [];
         $returns[] = ['TH:SUGGESTS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
-        $returns = array_merge($returns, self::__RowsAr('suggests', 'template'));
-        $returns = array_merge($returns, self::__RowsAr('suggests', 'plugin'));
+        $returns = array_merge($returns, self::__RowsAr('template', 'suggests'));
+        $returns = array_merge($returns, self::__RowsAr('plugin', 'suggests'));
         return $returns;
     }
     /* -------------------------------------------------------------------- */
-    private static function __RowsAr($inGroup, $inExttype): array {
+    private static function __RowsAr($inExttype, $inGroup): array {
         $returns = [];
         $returns[] = ['TH:' . ucfirst($inExttype) . 's'];
         foreach (self::$__SystemsAr["$inGroup-$inExttype"] ?? [] as $id => $ar) {
