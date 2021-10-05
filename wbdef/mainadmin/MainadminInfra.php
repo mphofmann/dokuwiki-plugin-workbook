@@ -18,7 +18,7 @@ class MainadminInfra extends a_Mainadmin {
         return true;
     }
     /* -------------------------------------------------------------------- */
-    protected static function _Array1Get(): array {
+    protected static function _Array01Get(): array {
         $returns = [];
         $attr = self::$__ConnectedCheck ? '' : 'disabled';
         $returns[] = ['TH:DEPENDS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
@@ -46,7 +46,7 @@ class MainadminInfra extends a_Mainadmin {
         return $returns;
     }
     /* -------------------------------------------------------------------- */
-    protected static function _Array2Get(): array {
+    protected static function _Array02Get(): array {
         if ( ! \_Wb_::RunarchCheck('doku')) return [];
         $returns = [];
         $returns[] = ['TH:RECOMMENDS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
@@ -62,7 +62,7 @@ class MainadminInfra extends a_Mainadmin {
         return $returns;
     }
     /* -------------------------------------------------------------------- */
-    protected static function _Array3Get(): array {
+    protected static function _Array03Get(): array {
         if ( ! \_Wb_::RunarchCheck('doku')) return [];
         $returns = [];
         $returns[] = ['TH:SUGGESTS', 'TH:Note', 'TH:Status', 'TH:Exec', 'TH:Manage'];
@@ -74,7 +74,7 @@ class MainadminInfra extends a_Mainadmin {
     private static function __RowsAr($inExttype, $inGroup): array {
         $returns = [];
         $returns[] = ['TH:' . ucfirst($inExttype) . 's'];
-        foreach (self::$__SystemsAr["$inGroup-$inExttype"] ?? [] as $id => $ar) {
+        foreach (self::$__SystemsAr["$inExttype-$inGroup"] ?? [] as $id => $ar) {
             $strstatus = baseadmin\BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=info type=$inExttype id=$id", baseadmin\BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=status type=$inExttype id=$id"));
             $cmd = (($inExttype == 'plugin' and is_dir("lib/plugins/$id")) or ($inExttype == 'template' and is_dir("lib/tpl/$id"))) ? 'Replace' : 'Install';
             $strbtn = baseadmin\BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=" . strtolower($cmd) . " type=$inExttype id=$id", "[$cmd]");

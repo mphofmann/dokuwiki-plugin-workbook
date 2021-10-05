@@ -1,5 +1,5 @@
 <?php
-namespace workbook\wbdef\mainadmin;
+namespace workbookadmin\wbdef\mainadmin;
 use workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
 use workbook\wbinc\baseutil;
@@ -7,13 +7,13 @@ use workbookadmin\wbinc\admin;
 use workbookcore\wbinc\mod;
 use workbookcore\wbinc\sys;
 use workbook\wbinc\basexhtml;
-class MainadminWorkbook extends mainadmin\a_Mainadmin { // TODO delete
+class MainadminWorkbook extends mainadmin\a_Mainadmin {
     /* -------------------------------------------------------------------- */
     protected static $_Item = 'workbook';
     protected static $_Icon = 'fas fa-cube';
     protected static $_Note = 'Configures a workbook in detail.';
     /* -------------------------------------------------------------------- */
-    protected static function _Array1Get(): array {
+    protected static function _Array01Get(): array {
         $returns = [];
         $returns[] = ['TH:WORKBOOK', 'TH:Action', 'TH:Tools', 'TH:Database & Datapages'];
         foreach (sys\SysNs::ScandirAr(':', 'local', 'pages', 'dirs hidepages') as $wb) {
@@ -74,7 +74,7 @@ class MainadminWorkbook extends mainadmin\a_Mainadmin { // TODO delete
             $returns[] = [$strid, $strwb, $strtools, $strdb . $strdp];
         }
         if (count($returns) > 1) {
-            $returns[] = ['ALL', baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWb::Resets", '[Reset]'), '', ''];
+            $returns[] = ['TH:ALL', 'TH:'.baseadmin\BaseadminXhtml::ButtonGet("admin\AdminWb::Resets", '[Reset]'), 'TH:', 'TH:'];
         }
         return $returns;
     }

@@ -3,12 +3,16 @@ namespace workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
 abstract class a_Mainadmin {
     /* -------------------------------------------------------------------- */
-    protected static $_Item = '';
-    protected static $_Icon = '';
-    protected static $_Note = '';
     protected static $_AdminOnly = false;
-    protected static $_Out = '';
     protected static $_Cmds = ['cmd' => ''];
+    protected static $_Icon = '';
+    protected static $_Item = '';
+    protected static $_Note = '';
+    protected static $_Out = '';
+    /* -------------------------------------------------------------------- */
+    public static function AdminOnlyCheck(): bool {
+        return static::$_AdminOnly;
+    }
     /* -------------------------------------------------------------------- */
     public static function FieldGet($inField): string {
         $return = '';
@@ -21,10 +25,6 @@ abstract class a_Mainadmin {
                 break;
         }
         return $return;
-    }
-    /* -------------------------------------------------------------------- */
-    public static function AdminOnlyCheck(): bool {
-        return static::$_AdminOnly;
     }
     /* -------------------------------------------------------------------- */
     public static function Get(): string {
@@ -59,33 +59,8 @@ abstract class a_Mainadmin {
         $return .= '<input type="hidden" name="wb_main" value="' . static::$_Item . '" />';
         // doku\DokuXhtml::SecTokenEcho();
         // Table
-        $ar = static::_Array1Get();
-        if (!empty($ar)) {
-            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
-            $return .= '<br/>';
-        }
-        $ar = static::_Array2Get();
-        if (!empty($ar)) {
-            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
-            $return .= '<br/>';
-        }
-        $ar = static::_Array3Get();
-        if (!empty($ar)) {
-            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
-            $return .= '<br/>';
-        }
-        $ar = static::_Array4Get();
-        if (!empty($ar)) {
-            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
-            $return .= '<br/>';
-        }
-        $ar = static::_Array5Get();
-        if (!empty($ar)) {
-            $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
-            $return .= '<br/>';
-        }
-        $ar = static::_Array6Get();
-        if (!empty($ar)) {
+        $ar = array_merge(static::_Array01Get(), static::_Array02Get(), static::_Array03Get(), static::_Array04Get(), static::_Array05Get(), static::_Array06Get(), static::_Array07Get(), static::_Array08Get(), static::_Array09Get(), static::_Array10Get(), static::_Array11Get(), static::_Array12Get());
+        if ( ! empty($ar)) {
             $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
             $return .= '<br/>';
         }
@@ -94,8 +69,52 @@ abstract class a_Mainadmin {
         return $return;
     }
     /* -------------------------------------------------------------------- */
-    protected static function _XhtmlGet(): string {
-        return '';
+    protected static function _Array01Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array02Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array03Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array04Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array05Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array06Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array07Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array08Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array09Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array10Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array11Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array12Get(): array {
+        return [];
     }
     /* -------------------------------------------------------------------- */
     protected static function _StylesAr(): array {
@@ -108,28 +127,8 @@ abstract class a_Mainadmin {
         ];
     }
     /* -------------------------------------------------------------------- */
-    protected static function _Array1Get(): array {
-        return [];
-    }
-    /* -------------------------------------------------------------------- */
-    protected static function _Array2Get(): array {
-        return [];
-    }
-    /* -------------------------------------------------------------------- */
-    protected static function _Array3Get(): array {
-        return [];
-    }
-    /* -------------------------------------------------------------------- */
-    protected static function _Array4Get(): array {
-        return [];
-    }
-    /* -------------------------------------------------------------------- */
-    protected static function _Array5Get(): array {
-        return [];
-    }
-    /* -------------------------------------------------------------------- */
-    protected static function _Array6Get(): array {
-        return [];
+    protected static function _XhtmlGet(): string {
+        return '';
     }
     /* -------------------------------------------------------------------- */
 }
