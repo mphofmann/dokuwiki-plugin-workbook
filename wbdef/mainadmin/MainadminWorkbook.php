@@ -1,5 +1,5 @@
 <?php
-namespace workbookadmin\wbdef\mainadmin;
+namespace workbook\wbdef\mainadmin;
 use workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
 use workbook\wbinc\baseutil;
