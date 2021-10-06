@@ -58,9 +58,9 @@ class BaseadminExtension {
         // TYPE ID
         $return .= BaseadminExec::OutputHeadingGet(strtoupper("$inType $inId"));
         $filepath = self::__PathGet($inType, $inId);
-        $return .= BaseadminExec::OutputLinesGet('Path', $filepath);
-        $return .= BaseadminExec::OutputLinesGet('MTime', date('Y-m-d His', @filemtime($filepath)));
-        $return .= BaseadminExec::OutputLinesGet('Size', shell_exec("du -bsh $filepath | cut -f1"));
+        $return .= BaseadminExec::OutputLinesGet('Path', (file_exists($filepath)) ? $filepath : '');
+        $return .= BaseadminExec::OutputLinesGet('MTime', (file_exists($filepath)) ? date('Y-m-d His', filemtime($filepath)) : '');
+        $return .= BaseadminExec::OutputLinesGet('Size', (file_exists($filepath)) ? shell_exec("du -bsh $filepath | cut -f1") : '');
         // Remote
         $return .= BaseadminExec::OutputHeadingGet(strtoupper("Remote"));
         $src = self::__SystemsArGet('src', $inType, $inId);

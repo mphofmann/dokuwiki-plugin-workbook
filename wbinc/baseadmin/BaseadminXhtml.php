@@ -191,10 +191,10 @@ class BaseadminXhtml {
                 case 1:
                 case 0:
                     $val = (count($row) == 1) ? $row[0] : '&nbsp;';
-                    $str = ' colspan="99" ';
+                    $strattr = ' colspan="99" style="background:#eee"';
                     $td = (substr($val, 0, 3) == 'TH:') ? 'th' : 'td';
                     $val = ($td == 'th') ? substr($val, 3) : $val;
-                    $return .= "<$td $str><b>$val</b></$td>";
+                    $return .= "<$td $strattr><b>$val</b></$td>";
                     break;
                 default:
                     foreach ($row as $id => $val) {
