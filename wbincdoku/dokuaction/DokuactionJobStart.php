@@ -36,11 +36,12 @@ class DokuactionJobStart {
     public static function Event_AUTH_LOGIN_CHECK_BeforeExec(Doku_Event $Event, $inPara): void {
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            $Event->result = baseaction\BaseactionJob::Refresh($Event->data['user'], $Event->data['password'], 'plain', $Event->data['sticky']);
-            $Event->preventDefault();
-            $Event->stopPropagation();
-            global $USERINFO;
-            if (empty($USERINFO)) $USERINFO = $_SESSION[DOKU_COOKIE]['auth']['info'];
+            baseaction\BaseactionJob::Job00Exec();
+            if (empty($Event->data['user']) or empty($Event->data['password'])) {
+                $ar = baseaction\BaseactionJob::UserCurrentAr();
+                $Event->data['user'] = @$ar['user'];
+                $Event->data['password'] = @$ar['pass'];
+            }
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }
@@ -49,7 +50,7 @@ class DokuactionJobStart {
     public static function Event_DOKUWIKI_STARTED_AfterExec(Doku_Event $Event, $inPara): void { // forward start to e.g. start_de
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            baseaction\BaseactionJob::JobStartExec();
+            baseaction\BaseactionJob::Job10Exec();
             self::__ActionJobStartExec();
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);

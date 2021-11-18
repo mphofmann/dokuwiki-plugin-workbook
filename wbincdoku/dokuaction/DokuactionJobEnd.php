@@ -8,7 +8,7 @@ class DokuactionJobEnd {
     public static function Event_DOKUWIKI_DONE_AfterExec(Doku_Event $Event, $inPara): void { //
         if ( ! \_Wb_::RunmodeCheck('module-workbook')) return;
         try {
-            baseaction\BaseactionJob::JobEndExec();
+            baseaction\BaseactionJob::Job90Exec();
         } catch (\Throwable $t) {
             doku\DokuAreaMsg::ThrowableAdd('Warning', $t);
         }

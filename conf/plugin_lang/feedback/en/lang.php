@@ -1,3 +1,3 @@
 <?php
 
-include(__DIR__.'/../__inc/__lang.php');
+include(__DIR__ . '/../__inc/__lang.php');

@@ -2,7 +2,7 @@
 namespace workbook\wbinc\baseadmin;
 class BaseadminCrontab {
     /* -------------------------------------------------------------------- */
-    private static $__CronPhp = 'workbook/module/workbookcore/bin/wbjobclicron.php';
+    private static $__CronPhp = 'workbook/module/workbookcore/wbbin/wbjobclicron.php';
     //                               m   h d m w user   command
     private static $__CrontabLine = '*/5 * * * *        cd @GETCWD@; php -f @CRONPHP@';
     private static $__Cron_D_Line = '*/5 * * * * @USER@ cd @GETCWD@; php -f @CRONPHP@';

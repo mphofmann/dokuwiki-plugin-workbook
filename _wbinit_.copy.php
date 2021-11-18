@@ -245,7 +245,7 @@ class _Wb_ {
         if ( ! defined('WB_PATHCACHE')) define('WB_PATHCACHE', WB_ROOT . 'workbook/cache/');
         if ( ! defined('WB_PATHLOG')) define('WB_PATHLOG', WB_ROOT . 'workbook/log/');
         if ( ! defined('WB_PATHTMP')) define('WB_PATHTMP', WB_ROOT . 'workbook/tmp/');
-        // WB_RUNMODELIST (infra-linux infra-php infra-ioncube infra-webroot module-workbook module-workbookcore template-workbookinternal controller-wb controller-dokumodal controller-doku host-internal)
+        // WB_RUNMODELIST (infra-linux infra-php infra-ioncube infra-webroot module-workbook module-workbookcore template-workbookinternal controller-wb controller-dokuiframe controller-doku host-internal)
         if ( ! defined('WB_RUNMODELIST')) {
             $adds = [];
             if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') $adds[] = 'infra-linux';
@@ -257,7 +257,7 @@ class _Wb_ {
             if (is_dir(WB_ROOT . "lib/tpl/workbookinternal")) $adds[] = 'template-workbookinternal';
             if (file_exists(WB_ROOT . 'wb.php')) $adds[] = 'controller-wb';
             if (file_exists(WB_ROOT . 'doku.php') and strcmp(substr(@file_get_contents('VERSION'), 0, 10), '2020-07-29') >= 0) {
-                if (file_exists(WB_ROOT . 'dokumodal.php')) $adds[] = 'controller-dokumodal';
+                if (file_exists(WB_ROOT . 'dokuiframe.php')) $adds[] = 'controller-dokuiframe';
                 $adds[] = 'controller-doku';
             }
             if (self::__HostInternalCheck()) $adds[] = 'host-internal';

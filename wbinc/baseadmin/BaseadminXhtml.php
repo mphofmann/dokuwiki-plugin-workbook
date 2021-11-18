@@ -3,7 +3,7 @@ namespace workbook\wbinc\baseadmin;
 class BaseadminXhtml {
     /* -------------------------------------------------------------------- */
     private static $__Ar = [ //
-        'admin' => ['Infra' => '', 'Module' => '', 'Conf' => '', 'Config' => '',], //
+        'admin' => ['Infra' => '', 'Module' => '', 'Dokuwiki' => '', 'Conf' => '', 'Config' => '',], //
         'workbook' => ['Operating' => '', 'Marketplace' => '', 'Workbook' => '', 'Content' => '',], //
         'module' => ['Cron' => '', 'Inbox' => '', 'Mailing' => '', 'Monitor' => '', 'User' => '',], //
         'addon' => ['Move' => '', 'Sqlite' => '', 'Structassignment' => '', 'Structeditor' => '',], //
@@ -47,7 +47,7 @@ class BaseadminXhtml {
         if (file_exists('doku.php')) {
             $return .= "<table class='inline iframe' style='width:100%'>";
             $return .= "<tr><th style='text-align:center;cursor:pointer;' onclick='window.open(\"doku.php?{$inQuerystring}\") ;'><i class='fas fa-external-link-alt'></i> $inTitle</th></tr>";
-            $return .= "<tr><td><iframe src='dokumodal.php?$inQuerystring' style='width:100%; height:1200px;'></iframe></td></tr>";
+            $return .= "<tr><td><iframe src='dokuiframe.php?$inQuerystring' style='width:100%; height:1200px; resize:vertical;'></iframe></td></tr>";
             $return .= "</table>";
         }
         return $return;
@@ -113,7 +113,7 @@ class BaseadminXhtml {
         foreach ($returns as $id1 => $ar1) {
             foreach ($ar1 as $id2 => $val2) {
                 if ($val2 == 'exists') {
-                    $returns[$id1][$id2] = "<a href='?do=admin&page=workbook_admin&wb_main=" . strtolower($id2) . "'>$id2</a>";
+                    $returns[$id1][$id2] = "<a href='?wb_job=admin&do=admin&page=workbook_admin&wb_main=" . strtolower($id2) . "'>$id2</a>";
                 } else {
                     unset($returns[$id1][$id2]);
                 }
@@ -129,7 +129,7 @@ class BaseadminXhtml {
     public static function MenuGet($doHr = false): string {
         $return = "<div style='margin-bottom:5px'>";
         // strleft
-        $strleft = "<a href='?do=admin'><i class='fas fa-home'></i></a>" . " &nbsp; | &nbsp; ";
+        $strleft = "<a href='?wb_job=admin'><i class='fas fa-home'></i></a>" . " &nbsp; | &nbsp; ";
         // strcenter
         $strcenter = '';
         $ar = self::MenuAr();
@@ -148,7 +148,7 @@ class BaseadminXhtml {
         // strright
         $ar = [];
         if (\_Wb_::RunarchCheck('wb')) {
-            $ar[] = WB_CONTROLLER == 'wb.php' ? "<i class='fas fa-square' title='Workbook mode'></i>" : "<a href='wb.php?do=admin&page=workbook_admin&wb_message=wbmode' title='Switch to Workbook mode'><i class='fas fa-square'></i></a>";
+            $ar[] = WB_CONTROLLER == 'wb.php' ? "<i class='fas fa-square' title='Workbook mode'></i>" : "<a href='wb.php?wb_job=admin&page=workbook_admin&wb_message=wbmode' title='Switch to Workbook mode'><i class='fas fa-square'></i></a>";
         }
         if (\_Wb_::RunarchCheck('doku')) {
             $ar[] = WB_CONTROLLER == 'doku.php' ? "<i class='fas fa-pen-square' title='Dokuwiki mode'></i>" : "<a href='doku.php?do=admin&page=workbook_admin&wb_message=dokumode' title='Switch to Dokuwiki mode'><i class='fas fa-pen-square'></i></a>";
@@ -210,10 +210,6 @@ class BaseadminXhtml {
         $return .= '</table>';
         $return .= '</div>';
         return $return;
-    }
-    /* -------------------------------------------------------------------- */
-    public static function TextInstallLinkGet(): string {
-        return '<h2>The Workbooks are not installed yet. Do the <a href="?do=admin&page=workbook_install">installation</a> first.</h2>';
     }
     /* -------------------------------------------------------------------- */
 }

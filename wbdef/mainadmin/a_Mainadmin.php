@@ -1,6 +1,7 @@
 <?php
 namespace workbook\wbdef\mainadmin;
 use workbook\wbinc\baseadmin;
+use workbook\wbinc\basexhtml\BasexhtmlIcon;
 abstract class a_Mainadmin {
     /* -------------------------------------------------------------------- */
     protected static $_AdminOnly = false;
@@ -46,6 +47,12 @@ abstract class a_Mainadmin {
     /* -------------------------------------------------------------------- */
     public static function XhtmlGet(): string {
         $return = '';
+        // Switch check
+        if (WB_CONTROLLER != 'wb.php') {
+            if (file_exists('wb.php') and is_dir('workbook/module/workbook') and is_dir('workbook/module/workbookadmin') and is_dir('workbook/module/workbookcore')) {
+                $return .= "<p style='padding:5px; text-align:center;' class='wbc_backgroundcolor_yellow'><a href='wb.php?wb_job=admin'>" . BasexhtmlIcon::Get('fas fa-square') . " Switch to Workbook Mode</a></p>";
+            }
+        }
         // Output
         $return .= baseadmin\BaseadminExec::OutputGet(static::$_Out);
         // Heading
@@ -54,12 +61,13 @@ abstract class a_Mainadmin {
         $return .= static::_XhtmlGet();
         // Form
         $return .= '<form action="?" method="post">';
+        $return .= '<input type="hidden" name="wb_job"   value="admin" />';
         $return .= '<input type="hidden" name="do"   value="admin" />';
         $return .= '<input type="hidden" name="page" value="workbook_admin" />';
         $return .= '<input type="hidden" name="wb_main" value="' . static::$_Item . '" />';
         // doku\DokuXhtml::SecTokenEcho();
         // Table
-        $ar = array_merge(static::_Array01Get(), static::_Array02Get(), static::_Array03Get(), static::_Array04Get(), static::_Array05Get(), static::_Array06Get(), static::_Array07Get(), static::_Array08Get(), static::_Array09Get(), static::_Array10Get(), static::_Array11Get(), static::_Array12Get());
+        $ar = array_merge(static::_Array01Get(), static::_Array02Get(), static::_Array03Get(), static::_Array04Get(), static::_Array05Get(), static::_Array06Get(), static::_Array07Get(), static::_Array08Get(), static::_Array09Get(), static::_Array10Get(), static::_Array11Get(), static::_Array12Get(), static::_Array13Get(), static::_Array14Get(), static::_Array15Get());
         if ( ! empty($ar)) {
             $return .= baseadmin\BaseadminXhtml::TableGet($ar, static::_StylesAr());
             $return .= '<br/>';
@@ -114,6 +122,18 @@ abstract class a_Mainadmin {
     }
     /* -------------------------------------------------------------------- */
     protected static function _Array12Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array13Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array14Get(): array {
+        return [];
+    }
+    /* -------------------------------------------------------------------- */
+    protected static function _Array15Get(): array {
         return [];
     }
     /* -------------------------------------------------------------------- */

@@ -74,7 +74,7 @@ class BaseadminInfra {
                         // php.ini
                         $return .= BaseadminExec::OutputHeadingGet('PHP.INI');
                         $return .= BaseadminExec::OutputLinesGet('PHP.INI', php_ini_loaded_file());
-                        $ar = ['memory_limit' => '', 'max_execution_time' => '', 'safe_mode' => '', 'ignore_user_abort' => '', 'disable_functions' => '', 'sendmail_path' => ''];
+                        $ar = ['memory_limit' => '', 'max_execution_time' => '', 'upload_max_filesize' => '', 'post_max_size' => '', 'safe_mode' => '', 'ignore_user_abort' => '', 'disable_functions' => '', 'sendmail_path' => ''];
                         foreach ($ar as $id => $val) {
                             $return .= BaseadminExec::OutputLinesGet("PHP.INI: {$id}", ini_get($id));
                         }

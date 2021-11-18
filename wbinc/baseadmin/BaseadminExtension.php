@@ -154,15 +154,19 @@ class BaseadminExtension {
         return true;
     }
     /* -------------------------------------------------------------------- */
-    public static function RowAr($inExttype, $inGroup, array $inAr, $inAttr = ''): array {
+    public static function RowAr($inExttype, $inGroup, $inGroupSub, $inId, $inAttr = ''): array {
+        $strstatus = ($inAttr == 'disabled') ? BaseadminXhtml::StatusGet('white') : BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=info type=$inExttype id=$inId", BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=status type=$inExttype id=$inId"));
+        $cmd = (is_dir(self::__PathGet($inExttype, $inId))) ? 'Replace' : 'Install';
+        $strexec = BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=" . strtolower($cmd) . " type=$inExttype id=$inId", "[$cmd]", $inAttr);
+        if ($inGroup != 'depends' and $cmd == 'Replace') $strexec .= BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=remove type=$inExttype id=$inId", "[Remove]", $inAttr, 'xsmall', 'OK?');
+        $strlink = ($inExttype == 'module') ? '' : BaseadminXhtml::LinkGet("doku.php?do=admin&page=extension&tab=$inExttype");
+        return [$inId, BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=note type=$inExttype id=$inId"), $strstatus, $strexec, $strlink];
+    }
+    /* -------------------------------------------------------------------- */
+    public static function RowsAr($inExttype, $inGroup, $inGroupSub, array $inAr, $inAttr = ''): array {
         $returns = [];
         foreach ($inAr as $id => $ar) {
-            $strstatus = ($inAttr == 'disabled') ? BaseadminXhtml::StatusGet('white') : BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=info type=$inExttype id=$id", BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=status type=$inExttype id=$id"));
-            $cmd = is_dir(self::__PathGet($inExttype, $id)) ? 'Replace' : 'Install';
-            $strexec = BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=" . strtolower($cmd) . " type=$inExttype id=$id", "[$cmd]", $inAttr);
-            if ($inGroup != 'depends' and $cmd == 'Replace') $strexec .= BaseadminXhtml::ButtonGet("baseadmin\BaseadminExtension::Exec action=remove type=$inExttype id=$id", "[Remove]", $inAttr, 'xsmall', 'OK?');
-            $strlink = ($inExttype == 'module') ? '' : BaseadminXhtml::LinkGet("doku.php?do=admin&page=extension&tab=$inExttype");
-            $returns[] = [$id, BaseadminCmd::ExecGet("baseadmin\BaseadminExtension::Exec action=note type=$inExttype id=$id"), $strstatus, $strexec, $strlink];
+            $returns[] = self::RowAr($inExttype, $inGroup, $inGroupSub, $id, $inAttr);
         }
         return $returns;
     }

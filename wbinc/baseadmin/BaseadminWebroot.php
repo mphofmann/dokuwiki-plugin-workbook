@@ -2,49 +2,40 @@
 namespace workbook\wbinc\baseadmin;
 class BaseadminWebroot {
     /* -------------------------------------------------------------------- */
-    public static $Webroots = [ //
-        'wb.php' => 'Workbook controller', //
-        'dokumodal.php' => 'Doku-Modal controller', //
-        'index.php' => 'Controller switcher', //
-        'doku.php' => 'Dokuwiki controller', //
+    private static $__Ar = [ //
+        // workbookcore
+        'wb.php' => 'workbook/module/workbookcore/wbconf/', //
+        'index.php' => 'workbook/module/workbookcore/wbconf/', //
+        'dokuiframe.php' => 'workbook/module/workbookcore/wbconf/', //
+        // workbookdokuwiki
+        'bin/' => 'workbook/module/workbookdokuwiki/wbconf/', //
+        'inc/' => 'workbook/module/workbookdokuwiki/wbconf/', //
+        'lib/' => 'workbook/module/workbookdokuwiki/wbconf/', //
+        'vendor/' => 'workbook/module/workbookdokuwiki/wbconf/', //
+        'doku.php' => 'workbook/module/workbookdokuwiki/wbconf/', //
+        'VERSION' => 'workbook/module/workbookdokuwiki/wbconf/', //
     ];
     /* -------------------------------------------------------------------- */
     public static function Exec($inAction, $inFilepath) {
         $return = '';
         switch ($inAction) {
-            case 'install':
-                $filepath = "workbook/module/workbookcore/wbconf/$inFilepath";
-                if (file_exists($filepath)) {
-                    if (file_exists($inFilepath) and !file_exists("$inFilepath.orig")) {
-                        copy($inFilepath, "$inFilepath.orig");
-                    }
-                    copy($filepath, $inFilepath);
-                } else {
-                    BaseadminXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
-                }
-                break;
             case 'link':
-                $filepath = "workbook/module/workbookcore/wbconf/$inFilepath";
-                if (file_exists($filepath)) {
-                    if (is_file($inFilepath) and !file_exists("$inFilepath.orig")) {
-                        copy($inFilepath, "$inFilepath.orig");
-                    }
-                    if (file_exists($inFilepath)) unlink($inFilepath);
-                    symlink($filepath, $inFilepath);
+                if (isset(self::$__Ar[$inFilepath]) and file_exists(self::$__Ar[$inFilepath] . $inFilepath)) {
+                    $filepath = trim($inFilepath, '/');
+                    if ( ! file_exists("$inFilepath.orig") and (is_file($inFilepath) or is_dir($inFilepath))) rename($filepath, "$filepath.orig");
+                    if (file_exists($inFilepath)) unlink($filepath);
+                    symlink(self::$__Ar[$inFilepath] . $filepath, $filepath);
                 } else {
-                    BaseadminXhtmlMsg::Echo('Warning', '', '', "File '$filepath' is missing.");
+                    BaseadminXhtmlMsg::Echo('Warning', '', '', "File '$inFilepath' not defined/missing.");
                 }
                 break;
             case 'unlink':
-                unlink($inFilepath);
-                if (file_exists("$inFilepath.orig")) {
-                    copy("$inFilepath.orig", $inFilepath);
-                    unlink("$inFilepath.orig");
-                }
+                $filepath = trim($inFilepath, '/');
+                unlink($filepath);
+                if (file_exists("$filepath.orig")) rename("$filepath.orig", $filepath);
                 break;
             case 'status':
-                $rc = (strpos("index.php wb.php", $inFilepath) === false) ? file_exists($inFilepath) : is_link($inFilepath);
-                $color = $rc ? 'green' : 'red';
+                $color = (file_exists($inFilepath)) ? 'green' : 'red';
                 $return .= BaseadminXhtml::StatusGet($color);
                 break;
             default:
@@ -52,6 +43,14 @@ class BaseadminWebroot {
                 break;
         }
         return $return;
+    }
+    /* -------------------------------------------------------------------- */
+    public static function RowAr($inId, $inNote, $inAttr = '') {
+        $strstatus = ($inAttr == 'disabled') ? BaseadminXhtml::StatusGet('white') : BaseadminCmd::ExecGet("baseadmin\BaseadminWebroot::Exec action=status id=$inId");
+        $attr = (file_exists(self::$__Ar[$inId])) ? $inAttr : 'disabled';
+        $strexec = BaseadminXhtml::ButtonGet("baseadmin\BaseadminWebroot::Exec action=link id=$inId", '[Link]', (is_link(trim($inId, '/')) or ($attr == 'disabled')) ? 'disabled' : '');
+        $strexec .= BaseadminXhtml::ButtonGet("baseadmin\BaseadminWebroot::Exec action=unlink id=$inId", '[Unlink]', (is_link(trim($inId, '/')) and ($attr != 'disabled')) ? '' : 'disabled');
+        return [$inId, $inNote, $strstatus, $strexec, ''];
     }
     /* -------------------------------------------------------------------- */
 }
